@@ -2,18 +2,18 @@
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
 {% style %}
-  /* ── Overlay ── */
+  /* ── Overlay — light and soft ── */
   .ai-age-verify-overlay-{{ ai_gen_id }} {
     position: fixed;
     inset: 0;
-    background: rgba(26, 13, 18, 0.88);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    background: rgba(18, 14, 16, 0.52);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     z-index: 9998;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
   }
 
   .ai-age-verify-overlay-{{ ai_gen_id }}.active {
@@ -27,24 +27,24 @@
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -48%) scale(0.94);
-    background: linear-gradient(160deg, #FFF8F4 0%, #F6EEF2 100%);
-    border-radius: 28px;
+    transform: translate(-50%, -46%) scale(0.96);
+    background: #FDFAF8;
+    border-radius: 24px;
     padding: {{ block.settings.padding }}px;
     max-width: {{ block.settings.popup_width }}px;
     width: 90%;
     z-index: 9999;
     text-align: center;
     box-shadow:
-      0 24px 60px -10px rgba(123, 30, 58, 0.28),
-      0 8px 24px -4px rgba(123, 30, 58, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(212, 175, 55, 0.22);
+      0 2px 4px rgba(0, 0, 0, 0.04),
+      0 12px 40px rgba(0, 0, 0, 0.10),
+      0 32px 64px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.06);
     overflow: hidden;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0.4s ease;
+    transition: opacity 0.38s ease, transform 0.42s cubic-bezier(0.34, 1.4, 0.64, 1), visibility 0.38s ease;
   }
 
   .ai-age-verify-popup-{{ ai_gen_id }}.active {
@@ -54,31 +54,51 @@
     transform: translate(-50%, -50%) scale(1);
   }
 
-  /* ── Gold-pink top accent bar ── */
+  /* ── Thin rose-gold top accent ── */
   .ai-age-verify-popup-{{ ai_gen_id }}::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #D4AF37 0%, #E75480 50%, #7B1E3A 100%);
+    height: 3px;
+    background: linear-gradient(90deg, #E8C4B0 0%, #C9887A 40%, #B8727F 100%);
+    opacity: 0.7;
   }
 
-  /* ── Brand badge ── */
+  /* ── Shield icon badge ── */
+  .ai-age-verify-icon-{{ ai_gen_id }} {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #FDF0EC;
+    border: 1.5px solid rgba(200, 136, 122, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 8px auto 18px;
+  }
+
+  .ai-age-verify-icon-{{ ai_gen_id }} svg {
+    width: 24px;
+    height: 24px;
+    color: #B8727F;
+  }
+
+  /* ── Brand label ── */
   .ai-age-verify-brand-{{ ai_gen_id }} {
-    font-family: 'Tomato Grotesk', sans-serif;
-    font-size: 11px;
+    font-family: 'Tomato Grotesk', 'Myriad Pro', sans-serif;
+    font-size: 10px;
     font-weight: 600;
-    letter-spacing: 3px;
+    letter-spacing: 3.5px;
     text-transform: uppercase;
-    color: #D4AF37;
-    margin: 10px 0 18px;
+    color: #C9887A;
+    margin: 0 0 14px;
   }
 
   /* ── Logo ── */
   .ai-age-verify-logo-{{ ai_gen_id }} {
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
 
   .ai-age-verify-logo-{{ ai_gen_id }} img {
@@ -90,27 +110,29 @@
 
   /* ── Heading ── */
   .ai-age-verify-heading-{{ ai_gen_id }} {
-    font-family: 'Tomato Grotesk', sans-serif;
-    color: #1A0D12;
+    font-family: 'Tomato Grotesk', 'Myriad Pro', sans-serif;
+    color: #1C1C1E;
     font-size: {{ block.settings.heading_size }}px;
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    margin: 0;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin: 0 0 10px;
   }
 
-  /* ── Gold divider ── */
+  /* ── Subtle divider ── */
   .ai-age-verify-divider-{{ ai_gen_id }} {
-    width: 44px;
-    height: 2px;
-    background: linear-gradient(90deg, #D4AF37, #E75480);
+    width: 32px;
+    height: 1.5px;
+    background: linear-gradient(90deg, #E8C4B0, #C9887A);
     border-radius: 2px;
-    margin: 16px auto 20px;
+    margin: 0 auto 18px;
+    opacity: 0.6;
   }
 
   /* ── Message ── */
   .ai-age-verify-text-{{ ai_gen_id }} {
-    color: #555;
+    color: #6B6B6B;
+    font-family: 'Myriad Pro', 'Tomato Grotesk', sans-serif;
     font-size: {{ block.settings.text_size }}px;
     line-height: 1.65;
     margin: 0 0 28px;
@@ -120,62 +142,63 @@
     margin: 0;
   }
 
-  /* ── Buttons row ── */
+  /* ── Buttons ── */
   .ai-age-verify-buttons-{{ ai_gen_id }} {
     display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
   }
 
   .ai-age-verify-button-{{ ai_gen_id }} {
-    padding: 14px 36px;
-    border-radius: 60px;
-    font-family: 'Tomato Grotesk', sans-serif;
+    padding: 15px 32px;
+    border-radius: 50px;
+    font-family: 'Tomato Grotesk', 'Myriad Pro', sans-serif;
     font-size: {{ block.settings.button_text_size }}px;
     font-weight: 600;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.2px;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
-    min-width: 140px;
+    transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    width: 100%;
   }
 
-  /* Yes — solid pink */
+  /* Primary — muted warm rose */
   .ai-age-verify-button-yes-{{ ai_gen_id }} {
-    background: #E75480;
+    background: linear-gradient(135deg, #C9887A 0%, #B8727F 100%);
     color: #fff;
     border: none;
-    box-shadow: 0 6px 20px rgba(231, 84, 128, 0.35);
+    box-shadow: 0 4px 16px rgba(184, 114, 127, 0.28);
   }
 
   .ai-age-verify-button-yes-{{ ai_gen_id }}:hover {
-    background: #7B1E3A;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 28px rgba(123, 30, 58, 0.35);
+    background: linear-gradient(135deg, #B8727F 0%, #A45F6A 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 22px rgba(184, 114, 127, 0.34);
   }
 
-  /* No — ghost outline */
+  /* Secondary — white ghost */
   .ai-age-verify-button-no-{{ ai_gen_id }} {
-    background: transparent;
-    color: #7B1E3A;
-    border: 1.5px solid rgba(123, 30, 58, 0.28);
+    background: #fff;
+    color: #555;
+    border: 1.5px solid #E5E0DC;
   }
 
   .ai-age-verify-button-no-{{ ai_gen_id }}:hover {
-    background: rgba(123, 30, 58, 0.06);
-    border-color: #7B1E3A;
-    transform: translateY(-2px);
+    background: #F7F3F0;
+    border-color: #C9887A;
+    color: #333;
+    transform: translateY(-1px);
   }
 
   /* ── Footer ── */
   .ai-age-verify-footer-{{ ai_gen_id }} {
-    margin-top: 22px;
-    color: #aaa;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    color: #ABABAB;
     font-size: 11px;
-    line-height: 1.5;
-    letter-spacing: 0.2px;
-    border-top: 1px solid rgba(212, 175, 55, 0.14);
-    padding-top: 14px;
+    line-height: 1.6;
+    letter-spacing: 0.1px;
   }
 
   /* ── Mobile ── */
@@ -185,15 +208,7 @@
     }
 
     .ai-age-verify-heading-{{ ai_gen_id }} {
-      font-size: {{ block.settings.heading_size | times: 0.82 | round }}px;
-    }
-
-    .ai-age-verify-buttons-{{ ai_gen_id }} {
-      flex-direction: column;
-    }
-
-    .ai-age-verify-button-{{ ai_gen_id }} {
-      width: 100%;
+      font-size: {{ block.settings.heading_size | times: 0.85 | round }}px;
     }
   }
 {% endstyle %}
@@ -202,6 +217,12 @@
   <div class="ai-age-verify-overlay-{{ ai_gen_id }}"></div>
 
   <div class="ai-age-verify-popup-{{ ai_gen_id }}">
+
+    <div class="ai-age-verify-icon-{{ ai_gen_id }}">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+      </svg>
+    </div>
 
     {% if block.settings.logo %}
       <div class="ai-age-verify-logo-{{ ai_gen_id }}">
@@ -215,7 +236,7 @@
       </div>
     {% endif %}
 
-    <p class="ai-age-verify-brand-{{ ai_gen_id }}">✦ Arousique ✦</p>
+    <p class="ai-age-verify-brand-{{ ai_gen_id }}">Arousique</p>
 
     <h2 class="ai-age-verify-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
 
@@ -268,7 +289,6 @@
 
       checkAgeVerification() {
         if (!sessionStorage.getItem(this.storageKey)) {
-          // Defer one frame so the CSS transition fires on initial show
           requestAnimationFrame(() => this.showPopup());
         }
       }
@@ -297,10 +317,13 @@
             window.location.href = redirectUrl;
           } else {
             this.popup.innerHTML = `
-              <p class="ai-age-verify-brand-{{ ai_gen_id }}" style="margin-top:8px;">✦ Arousique ✦</p>
-              <div class="ai-age-verify-divider-{{ ai_gen_id }}"></div>
-              <p style="font-family:'Tomato Grotesk',sans-serif;color:#1A0D12;font-size:18px;font-weight:600;margin:0 0 8px;">Access Restricted</p>
-              <p style="color:#666;font-size:14px;line-height:1.6;margin:0;">{{ block.settings.no_access_message | escape }}</p>
+              <div class="ai-age-verify-icon-{{ ai_gen_id }}" style="margin:8px auto 18px;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" style="width:24px;height:24px;color:#B8727F;">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+                </svg>
+              </div>
+              <p style="font-family:'Tomato Grotesk',sans-serif;color:#1C1C1E;font-size:18px;font-weight:600;margin:0 0 10px;">Access Restricted</p>
+              <p style="color:#6B6B6B;font-size:14px;line-height:1.6;margin:0;">{{ block.settings.no_access_message | escape }}</p>
             `;
           }
         });
@@ -339,19 +362,19 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Are you 18 or older?"
+      "default": "Age verification"
     },
     {
       "type": "richtext",
       "id": "message",
       "label": "Message",
-      "default": "<p>Arousique is an intimate wellness destination for adults. Please confirm your age to enter.</p>"
+      "default": "<p>This website contains content for adults only. Please confirm you are 21 or older to continue.</p>"
     },
     {
       "type": "text",
       "id": "footer_text",
       "label": "Footer text",
-      "default": "By entering you confirm you are 18+ and agree to our terms of service."
+      "default": "By entering, you agree to our terms and conditions."
     },
     {
       "type": "header",
@@ -361,13 +384,13 @@
       "type": "text",
       "id": "yes_button_text",
       "label": "Yes button text",
-      "default": "Yes, I'm 18+"
+      "default": "I am 21 or older — enter"
     },
     {
       "type": "text",
       "id": "no_button_text",
       "label": "No button text",
-      "default": "No, exit"
+      "default": "I am under 21"
     },
     {
       "type": "url",
@@ -378,7 +401,7 @@
       "type": "text",
       "id": "no_access_message",
       "label": "No access message",
-      "default": "You must be 18 or older to access this website."
+      "default": "You must be 21 or older to access this website."
     },
     {
       "type": "header",
@@ -392,7 +415,7 @@
       "step": 20,
       "unit": "px",
       "label": "Popup width",
-      "default": 480
+      "default": 460
     },
     {
       "type": "range",
@@ -402,7 +425,7 @@
       "step": 4,
       "unit": "px",
       "label": "Padding",
-      "default": 44
+      "default": 40
     },
     {
       "type": "header",
@@ -416,7 +439,7 @@
       "step": 2,
       "unit": "px",
       "label": "Heading size",
-      "default": 30
+      "default": 28
     },
     {
       "type": "range",
