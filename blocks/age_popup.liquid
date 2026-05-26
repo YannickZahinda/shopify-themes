@@ -39,7 +39,7 @@
       0 2px 4px rgba(0, 0, 0, 0.04),
       0 12px 40px rgba(0, 0, 0, 0.10),
       0 32px 64px rgba(0, 0, 0, 0.06);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(212, 175, 55, 0.2);
     overflow: hidden;
     opacity: 0;
     visibility: hidden;
@@ -54,7 +54,7 @@
     transform: translate(-50%, -50%) scale(1);
   }
 
-  /* ── Thin rose-gold top accent ── */
+  /* ── Gold top accent bar ── */
   .ai-age-verify-popup-{{ ai_gen_id }}::before {
     content: '';
     position: absolute;
@@ -62,8 +62,7 @@
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, #E8C4B0 0%, #C9887A 40%, #B8727F 100%);
-    opacity: 0.7;
+    background: linear-gradient(90deg, #F5E070 0%, #D4AF37 40%, #B8903A 100%);
   }
 
   /* ── Shield icon badge ── */
@@ -71,8 +70,8 @@
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    background: #FDF0EC;
-    border: 1.5px solid rgba(200, 136, 122, 0.25);
+    background: #FBF5E0;
+    border: 1.5px solid rgba(212, 175, 55, 0.35);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -82,7 +81,7 @@
   .ai-age-verify-icon-{{ ai_gen_id }} svg {
     width: 24px;
     height: 24px;
-    color: #B8727F;
+    color: #C9A030;
   }
 
   /* ── Brand label ── */
@@ -92,7 +91,7 @@
     font-weight: 600;
     letter-spacing: 3.5px;
     text-transform: uppercase;
-    color: #C9887A;
+    color: #C9A030;
     margin: 0 0 14px;
   }
 
@@ -119,14 +118,13 @@
     margin: 0 0 10px;
   }
 
-  /* ── Subtle divider ── */
+  /* ── Gold divider ── */
   .ai-age-verify-divider-{{ ai_gen_id }} {
-    width: 32px;
-    height: 1.5px;
-    background: linear-gradient(90deg, #E8C4B0, #C9887A);
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, #F5E070, #D4AF37, #B8903A);
     border-radius: 2px;
     margin: 0 auto 18px;
-    opacity: 0.6;
   }
 
   /* ── Message ── */
@@ -162,30 +160,30 @@
     width: 100%;
   }
 
-  /* Primary — muted warm rose */
+  /* Primary — gold */
   .ai-age-verify-button-yes-{{ ai_gen_id }} {
-    background: linear-gradient(135deg, #C9887A 0%, #B8727F 100%);
+    background: linear-gradient(135deg, #D4AF37 0%, #B8903A 100%);
     color: #fff;
     border: none;
-    box-shadow: 0 4px 16px rgba(184, 114, 127, 0.28);
+    box-shadow: 0 4px 18px rgba(212, 175, 55, 0.38);
   }
 
   .ai-age-verify-button-yes-{{ ai_gen_id }}:hover {
-    background: linear-gradient(135deg, #B8727F 0%, #A45F6A 100%);
+    background: linear-gradient(135deg, #C9A030 0%, #A07828 100%);
     transform: translateY(-1px);
-    box-shadow: 0 8px 22px rgba(184, 114, 127, 0.34);
+    box-shadow: 0 8px 24px rgba(212, 175, 55, 0.45);
   }
 
-  /* Secondary — white ghost */
+  /* Secondary — white ghost with gold border on hover */
   .ai-age-verify-button-no-{{ ai_gen_id }} {
     background: #fff;
     color: #555;
-    border: 1.5px solid #E5E0DC;
+    border: 1.5px solid #E8E0CC;
   }
 
   .ai-age-verify-button-no-{{ ai_gen_id }}:hover {
-    background: #F7F3F0;
-    border-color: #C9887A;
+    background: #FDFAF0;
+    border-color: #D4AF37;
     color: #333;
     transform: translateY(-1px);
   }
@@ -194,7 +192,7 @@
   .ai-age-verify-footer-{{ ai_gen_id }} {
     margin-top: 20px;
     padding-top: 16px;
-    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    border-top: 1px solid rgba(212, 175, 55, 0.15);
     color: #ABABAB;
     font-size: 11px;
     line-height: 1.6;
@@ -318,7 +316,7 @@
           } else {
             this.popup.innerHTML = `
               <div class="ai-age-verify-icon-{{ ai_gen_id }}" style="margin:8px auto 18px;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" style="width:24px;height:24px;color:#B8727F;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" style="width:24px;height:24px;color:#C9A030;">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
                 </svg>
               </div>
