@@ -1369,6 +1369,7 @@
           
           mainImage.style.opacity = '0.5';
           setTimeout(() => {
+            mainImage.srcset = '';
             mainImage.src = newSrc;
             mainImage.style.opacity = '1';
           }, 150);
@@ -1463,6 +1464,7 @@
           if (variantImage && mainImg) {
             mainImg.style.opacity = '0.5';
             setTimeout(() => {
+              mainImg.srcset = '';
               mainImg.src = variantImage;
               mainImg.style.opacity = '1';
             }, 200);
