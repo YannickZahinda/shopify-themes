@@ -2,118 +2,190 @@
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
 {% style %}
+  /* ── Overlay ── */
   .ai-age-verify-overlay-{{ ai_gen_id }} {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: {{ block.settings.overlay_color }};
-    opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+    inset: 0;
+    background: rgba(26, 13, 18, 0.88);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     z-index: 9998;
-    display: none;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
   }
 
   .ai-age-verify-overlay-{{ ai_gen_id }}.active {
-    display: block;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
   }
 
+  /* ── Popup card ── */
   .ai-age-verify-popup-{{ ai_gen_id }} {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: {{ block.settings.popup_background }};
-    border-radius: {{ block.settings.border_radius }}px;
+    transform: translate(-50%, -48%) scale(0.94);
+    background: linear-gradient(160deg, #FFF8F4 0%, #F6EEF2 100%);
+    border-radius: 28px;
     padding: {{ block.settings.padding }}px;
     max-width: {{ block.settings.popup_width }}px;
     width: 90%;
     z-index: 9999;
     text-align: center;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    display: none;
+    box-shadow:
+      0 24px 60px -10px rgba(123, 30, 58, 0.28),
+      0 8px 24px -4px rgba(123, 30, 58, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0.4s ease;
   }
 
   .ai-age-verify-popup-{{ ai_gen_id }}.active {
-    display: block;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+    transform: translate(-50%, -50%) scale(1);
   }
 
+  /* ── Gold-pink top accent bar ── */
+  .ai-age-verify-popup-{{ ai_gen_id }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #D4AF37 0%, #E75480 50%, #7B1E3A 100%);
+  }
+
+  /* ── Brand badge ── */
+  .ai-age-verify-brand-{{ ai_gen_id }} {
+    font-family: 'Tomato Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #D4AF37;
+    margin: 10px 0 18px;
+  }
+
+  /* ── Logo ── */
   .ai-age-verify-logo-{{ ai_gen_id }} {
-    margin-bottom: 24px;
+    margin-bottom: 14px;
   }
 
   .ai-age-verify-logo-{{ ai_gen_id }} img {
     max-width: {{ block.settings.logo_width }}px;
     height: auto;
     margin: 0 auto;
+    display: block;
   }
 
+  /* ── Heading ── */
   .ai-age-verify-heading-{{ ai_gen_id }} {
-    color: {{ block.settings.heading_color }};
+    font-family: 'Tomato Grotesk', sans-serif;
+    color: #1A0D12;
     font-size: {{ block.settings.heading_size }}px;
-    margin: 0 0 16px;
     font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin: 0;
   }
 
+  /* ── Gold divider ── */
+  .ai-age-verify-divider-{{ ai_gen_id }} {
+    width: 44px;
+    height: 2px;
+    background: linear-gradient(90deg, #D4AF37, #E75480);
+    border-radius: 2px;
+    margin: 16px auto 20px;
+  }
+
+  /* ── Message ── */
   .ai-age-verify-text-{{ ai_gen_id }} {
-    color: {{ block.settings.text_color }};
+    color: #555;
     font-size: {{ block.settings.text_size }}px;
-    margin: 0 0 32px;
-    line-height: 1.5;
+    line-height: 1.65;
+    margin: 0 0 28px;
   }
 
+  .ai-age-verify-text-{{ ai_gen_id }} p {
+    margin: 0;
+  }
+
+  /* ── Buttons row ── */
   .ai-age-verify-buttons-{{ ai_gen_id }} {
     display: flex;
-    gap: 16px;
+    gap: 12px;
     justify-content: center;
     flex-wrap: wrap;
   }
 
   .ai-age-verify-button-{{ ai_gen_id }} {
-    padding: 14px 32px;
-    border: none;
-    border-radius: {{ block.settings.button_border_radius }}px;
+    padding: 14px 36px;
+    border-radius: 60px;
+    font-family: 'Tomato Grotesk', sans-serif;
     font-size: {{ block.settings.button_text_size }}px;
     font-weight: 600;
+    letter-spacing: 0.4px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 120px;
+    transition: background 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
+    min-width: 140px;
   }
 
+  /* Yes — solid pink */
   .ai-age-verify-button-yes-{{ ai_gen_id }} {
-    background-color: {{ block.settings.yes_button_color }};
-    color: {{ block.settings.yes_button_text_color }};
+    background: #E75480;
+    color: #fff;
+    border: none;
+    box-shadow: 0 6px 20px rgba(231, 84, 128, 0.35);
   }
 
   .ai-age-verify-button-yes-{{ ai_gen_id }}:hover {
-    background-color: {{ block.settings.yes_button_hover_color }};
+    background: #7B1E3A;
     transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(123, 30, 58, 0.35);
   }
 
+  /* No — ghost outline */
   .ai-age-verify-button-no-{{ ai_gen_id }} {
-    background-color: {{ block.settings.no_button_color }};
-    color: {{ block.settings.no_button_text_color }};
+    background: transparent;
+    color: #7B1E3A;
+    border: 1.5px solid rgba(123, 30, 58, 0.28);
   }
 
   .ai-age-verify-button-no-{{ ai_gen_id }}:hover {
-    background-color: {{ block.settings.no_button_hover_color }};
+    background: rgba(123, 30, 58, 0.06);
+    border-color: #7B1E3A;
     transform: translateY(-2px);
   }
 
+  /* ── Footer ── */
   .ai-age-verify-footer-{{ ai_gen_id }} {
-    margin-top: 24px;
-    color: {{ block.settings.text_color }};
-    font-size: 12px;
-    opacity: 0.7;
+    margin-top: 22px;
+    color: #aaa;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.2px;
+    border-top: 1px solid rgba(212, 175, 55, 0.14);
+    padding-top: 14px;
   }
 
+  /* ── Mobile ── */
   @media screen and (max-width: 749px) {
     .ai-age-verify-popup-{{ ai_gen_id }} {
-      padding: {{ block.settings.padding | times: 0.7 }}px;
+      padding: {{ block.settings.padding | times: 0.75 | round }}px {{ block.settings.padding | times: 0.65 | round }}px;
     }
 
     .ai-age-verify-heading-{{ ai_gen_id }} {
-      font-size: {{ block.settings.heading_size | times: 0.8 }}px;
+      font-size: {{ block.settings.heading_size | times: 0.82 | round }}px;
     }
 
     .ai-age-verify-buttons-{{ ai_gen_id }} {
@@ -128,8 +200,9 @@
 
 <age-verification-{{ ai_gen_id }} {{ block.shopify_attributes }}>
   <div class="ai-age-verify-overlay-{{ ai_gen_id }}"></div>
-  
+
   <div class="ai-age-verify-popup-{{ ai_gen_id }}">
+
     {% if block.settings.logo %}
       <div class="ai-age-verify-logo-{{ ai_gen_id }}">
         <img
@@ -142,20 +215,24 @@
       </div>
     {% endif %}
 
+    <p class="ai-age-verify-brand-{{ ai_gen_id }}">✦ Arousique ✦</p>
+
     <h2 class="ai-age-verify-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
-    
+
+    <div class="ai-age-verify-divider-{{ ai_gen_id }}"></div>
+
     <div class="ai-age-verify-text-{{ ai_gen_id }}">
       {{ block.settings.message }}
     </div>
 
     <div class="ai-age-verify-buttons-{{ ai_gen_id }}">
-      <button 
+      <button
         class="ai-age-verify-button-{{ ai_gen_id }} ai-age-verify-button-yes-{{ ai_gen_id }}"
         data-action="yes"
       >
         {{ block.settings.yes_button_text }}
       </button>
-      <button 
+      <button
         class="ai-age-verify-button-{{ ai_gen_id }} ai-age-verify-button-no-{{ ai_gen_id }}"
         data-action="no"
       >
@@ -168,6 +245,7 @@
         {{ block.settings.footer_text }}
       </div>
     {% endif %}
+
   </div>
 </age-verification-{{ ai_gen_id }}>
 
@@ -189,10 +267,9 @@
       }
 
       checkAgeVerification() {
-        const isVerified = sessionStorage.getItem(this.storageKey);
-        
-        if (!isVerified) {
-          this.showPopup();
+        if (!sessionStorage.getItem(this.storageKey)) {
+          // Defer one frame so the CSS transition fires on initial show
+          requestAnimationFrame(() => this.showPopup());
         }
       }
 
@@ -214,6 +291,19 @@
           this.hidePopup();
         });
 
+        this.noButton.addEventListener('click', () => {
+          const redirectUrl = '{{ block.settings.redirect_url }}';
+          if (redirectUrl && redirectUrl !== '') {
+            window.location.href = redirectUrl;
+          } else {
+            this.popup.innerHTML = `
+              <p class="ai-age-verify-brand-{{ ai_gen_id }}" style="margin-top:8px;">✦ Arousique ✦</p>
+              <div class="ai-age-verify-divider-{{ ai_gen_id }}"></div>
+              <p style="font-family:'Tomato Grotesk',sans-serif;color:#1A0D12;font-size:18px;font-weight:600;margin:0 0 8px;">Access Restricted</p>
+              <p style="color:#666;font-size:14px;line-height:1.6;margin:0;">{{ block.settings.no_access_message | escape }}</p>
+            `;
+          }
+        });
       }
     }
 
@@ -249,19 +339,19 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Age Verification Required"
+      "default": "Are you 18 or older?"
     },
     {
       "type": "richtext",
       "id": "message",
       "label": "Message",
-      "default": "<p>You must be 21 years or older to access this website. Please confirm your age to continue.</p>"
+      "default": "<p>Arousique is an intimate wellness destination for adults. Please confirm your age to enter.</p>"
     },
     {
       "type": "text",
       "id": "footer_text",
       "label": "Footer text",
-      "default": "By entering, you agree to our terms and conditions"
+      "default": "By entering you confirm you are 18+ and agree to our terms of service."
     },
     {
       "type": "header",
@@ -271,24 +361,24 @@
       "type": "text",
       "id": "yes_button_text",
       "label": "Yes button text",
-      "default": "I am 21+"
+      "default": "Yes, I'm 18+"
     },
     {
       "type": "text",
       "id": "no_button_text",
       "label": "No button text",
-      "default": "I am under 21"
+      "default": "No, exit"
     },
     {
       "type": "url",
       "id": "redirect_url",
-      "label": "Redirect URL for under 21"
+      "label": "Redirect URL (for underage visitors)"
     },
     {
       "type": "text",
       "id": "no_access_message",
       "label": "No access message",
-      "default": "Sorry, you must be 21 or older to access this website."
+      "default": "You must be 18 or older to access this website."
     },
     {
       "type": "header",
@@ -302,49 +392,17 @@
       "step": 20,
       "unit": "px",
       "label": "Popup width",
-      "default": 500
+      "default": 480
     },
     {
       "type": "range",
       "id": "padding",
       "min": 20,
       "max": 60,
-      "step": 5,
+      "step": 4,
       "unit": "px",
       "label": "Padding",
-      "default": 40
-    },
-    {
-      "type": "range",
-      "id": "border_radius",
-      "min": 0,
-      "max": 40,
-      "step": 2,
-      "unit": "px",
-      "label": "Border radius",
-      "default": 16
-    },
-    {
-      "type": "color",
-      "id": "popup_background",
-      "label": "Background color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "overlay_color",
-      "label": "Overlay color",
-      "default": "#000000"
-    },
-    {
-      "type": "range",
-      "id": "overlay_opacity",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "%",
-      "label": "Overlay opacity",
-      "default": 80
+      "default": 44
     },
     {
       "type": "header",
@@ -358,13 +416,7 @@
       "step": 2,
       "unit": "px",
       "label": "Heading size",
-      "default": 32
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading color",
-      "default": "#000000"
+      "default": 30
     },
     {
       "type": "range",
@@ -374,27 +426,11 @@
       "step": 1,
       "unit": "px",
       "label": "Text size",
-      "default": 16
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color",
-      "default": "#666666"
+      "default": 15
     },
     {
       "type": "header",
       "content": "Button style"
-    },
-    {
-      "type": "range",
-      "id": "button_border_radius",
-      "min": 0,
-      "max": 40,
-      "step": 2,
-      "unit": "px",
-      "label": "Button border radius",
-      "default": 8
     },
     {
       "type": "range",
@@ -404,43 +440,7 @@
       "step": 1,
       "unit": "px",
       "label": "Button text size",
-      "default": 16
-    },
-    {
-      "type": "color",
-      "id": "yes_button_color",
-      "label": "Yes button color",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "yes_button_text_color",
-      "label": "Yes button text color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "yes_button_hover_color",
-      "label": "Yes button hover color",
-      "default": "#333333"
-    },
-    {
-      "type": "color",
-      "id": "no_button_color",
-      "label": "No button color",
-      "default": "#f5f5f5"
-    },
-    {
-      "type": "color",
-      "id": "no_button_text_color",
-      "label": "No button text color",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "no_button_hover_color",
-      "label": "No button hover color",
-      "default": "#e0e0e0"
+      "default": 15
     }
   ],
   "presets": [
