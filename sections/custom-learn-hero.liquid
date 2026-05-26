@@ -1,0 +1,273 @@
+{% comment %}
+  Custom Hero Section with Background Image and Adjustable Text Position
+  Compatible with Shopify Horizon Theme
+{% endcomment %}
+
+<style>
+  .custom-hero-section {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: #f0f0f0;
+  }
+
+  .custom-hero-section__background {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .custom-hero-section__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    padding: 60px 20px;
+  }
+
+  .custom-hero-section__text-wrapper {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+  }
+
+  .custom-hero-section__text-container {
+    max-width: 600px;
+  }
+
+  .custom-hero-section__heading {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 20px 0;
+    color: #1a1a1a;
+  }
+
+  .custom-hero-section__subheading {
+    font-size: clamp(16px, 2vw, 20px);
+    line-height: 1.6;
+    margin: 0 0 30px 0;
+    color: #333;
+  }
+
+  .custom-hero-section__button {
+    display: inline-block;
+    padding: 14px 32px;
+    background-color: #000;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+
+  .custom-hero-section__button:hover {
+    background-color: #333;
+    color: #fff;
+  }
+
+  /* Overlay option */
+  .custom-hero-section__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    .custom-hero-section__content {
+      padding: 40px 20px;
+    }
+
+    .custom-hero-section__text-container {
+      max-width: 100%;
+    }
+  }
+</style>
+
+<section class="custom-hero-section">
+  {% if section.settings.background_image != blank %}
+    <img 
+      src="{{ section.settings.background_image | image_url: width: 2000 }}"
+      srcset="{{ section.settings.background_image | image_url: width: 600 }} 600w,
+              {{ section.settings.background_image | image_url: width: 1200 }} 1200w,
+              {{ section.settings.background_image | image_url: width: 2000 }} 2000w"
+      alt="{{ section.settings.background_image.alt | escape }}"
+      class="custom-hero-section__background"
+      loading="lazy"
+    >
+  {% endif %}
+
+  {% if section.settings.show_overlay %}
+    <div class="custom-hero-section__overlay" style="background-color: {{ section.settings.overlay_color }}; opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+  {% endif %}
+
+  <div class="custom-hero-section__content">
+    <div class="custom-hero-section__text-wrapper">
+      <div class="custom-hero-section__text-container" style="margin-left: {{ section.settings.text_horizontal_position }}%; text-align: {{ section.settings.text_alignment }};">
+        
+        {% if section.settings.heading != blank %}
+          <h1 class="custom-hero-section__heading" style="color: {{ section.settings.heading_color }};">
+            {{ section.settings.heading }}
+          </h1>
+        {% endif %}
+
+        {% if section.settings.subheading != blank %}
+          <p class="custom-hero-section__subheading" style="color: {{ section.settings.subheading_color }};">
+            {{ section.settings.subheading }}
+          </p>
+        {% endif %}
+
+        {% if section.settings.button_text != blank and section.settings.button_link != blank %}
+          <a href="{{ section.settings.button_link }}" class="custom-hero-section__button" style="background-color: {{ section.settings.button_background }}; color: {{ section.settings.button_text_color }};">
+            {{ section.settings.button_text }}
+          </a>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Custom Hero Section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image",
+      "info": "Section will automatically adjust to image size"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay",
+      "label": "Show Overlay",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay Opacity",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Text Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Let's Talk Intimacy"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "From confidence to curiosity—real stories, smart advice, and everything in between."
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Text Position"
+    },
+    {
+      "type": "range",
+      "id": "text_horizontal_position",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "%",
+      "label": "Horizontal Position",
+      "default": 0,
+      "info": "Move text left to right"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Hero Section"
+    }
+  ]
+}
+{% endschema %}

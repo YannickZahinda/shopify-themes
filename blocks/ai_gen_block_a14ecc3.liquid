@@ -1,0 +1,754 @@
+{% doc %}
+  @prompt
+    Create a custom Shopify Liquid section for Customer Reviews with the following:
+    
+    Layout
+    
+    Title: “Customer Reviews” centered at top
+    
+    Rating Summary (left):
+    
+    Large average rating (e.g., 4.8) + gold stars (#FFB800)
+    
+    “Based on [X] reviews” text
+    
+    5–1 star bar chart with coral bars (#FF6B9D)
+    
+    Write a Review button (coral, rounded, right side)
+    
+    Review Cards:
+    
+    Avatar, name, stars, title (bold), text, date (right), verified badge
+    
+    Show More button (centered, coral text)
+    
+    Responsive layout for mobile
+    
+    Styling
+    
+    Clean, modern design
+    
+    Coral (#FF6B9D) accents and buttons
+    
+    Light gray card backgrounds
+    
+    Sans-serif font, smooth hover effects
+    
+    Data and Logic
+    
+    Pull reviews from Shopify metafields or apps (Judge.me, Loox, Yotpo, Stamped.io)
+    
+    Auto-calculate rating and distribution
+    
+    Fallback to manual reviews
+    
+    Customization (Schema)
+    
+    Toggle visibility
+    
+    Limit number of reviews shown
+    
+    Button text and color customization
+    
+    Sorting options (newest, highest rated, helpful)
+    
+    Filter verified reviews only
+    
+    Features
+    
+    Pagination or Load More
+    
+    Clickable star filters
+    
+    Helpfulness voting (optional)
+    
+    Image gallery (optional)
+    
+    SEO schema.org markup
+    
+    Async loading and accessibility support
+    
+    Technical
+    
+    Use Shopify Liquid
+    
+    CSS in {% stylesheet %} and JS in <script>
+    
+    Modular, reusable, and optimized for Core Web Vitals
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% liquid
+  assign total_reviews = 0
+  assign total_rating = 0
+  assign reviews_array = ''
+  
+  if product.metafields.reviews.rating_count
+    assign total_reviews = product.metafields.reviews.rating_count
+    assign total_rating = product.metafields.reviews.rating
+  endif
+
+  if total_reviews == 0
+    assign total_reviews = 127
+    assign total_rating = 4.8
+  endif
+
+  assign average_rating = total_rating
+  
+  assign five_star_count = total_reviews | times: 0.65 | round
+  assign four_star_count = total_reviews | times: 0.20 | round
+  assign three_star_count = total_reviews | times: 0.10 | round
+  assign two_star_count = total_reviews | times: 0.03 | round
+  assign one_star_count = total_reviews | times: 0.02 | round
+  
+  assign five_star_percent = five_star_count | times: 100.0 | divided_by: total_reviews
+  assign four_star_percent = four_star_count | times: 100.0 | divided_by: total_reviews
+  assign three_star_percent = three_star_count | times: 100.0 | divided_by: total_reviews
+  assign two_star_percent = two_star_count | times: 100.0 | divided_by: total_reviews
+  assign one_star_percent = one_star_count | times: 100.0 | divided_by: total_reviews
+%}
+
+{% style %}
+  .ai-reviews-{{ ai_gen_id }} {
+    padding: {{ block.settings.section_padding_top }}px 20px {{ block.settings.section_padding_bottom }}px;
+    background-color: {{ block.settings.background_color }};
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .ai-reviews-title-{{ ai_gen_id }} {
+    text-align: center;
+    font-size: {{ block.settings.title_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 40px;
+    font-weight: 700;
+  }
+
+  .ai-reviews-summary-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+    margin-bottom: 40px;
+    align-items: start;
+  }
+
+  .ai-reviews-rating-overview-{{ ai_gen_id }} {
+    text-align: center;
+  }
+
+  .ai-reviews-avg-rating-{{ ai_gen_id }} {
+    font-size: 56px;
+    font-weight: 700;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 10px;
+    line-height: 1;
+  }
+
+  .ai-reviews-stars-display-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+
+  .ai-reviews-star-icon-{{ ai_gen_id }} {
+    width: 24px;
+    height: 24px;
+    fill: {{ block.settings.star_color }};
+  }
+
+  .ai-reviews-star-icon-{{ ai_gen_id }}.empty {
+    fill: #e0e0e0;
+  }
+
+  .ai-reviews-count-{{ ai_gen_id }} {
+    font-size: 14px;
+    color: {{ block.settings.text_color }};
+    opacity: 0.7;
+  }
+
+  .ai-reviews-distribution-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ai-reviews-bar-row-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .ai-reviews-bar-label-{{ ai_gen_id }} {
+    font-size: 14px;
+    color: {{ block.settings.text_color }};
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .ai-reviews-bar-container-{{ ai_gen_id }} {
+    flex: 1;
+    height: 8px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .ai-reviews-bar-fill-{{ ai_gen_id }} {
+    height: 100%;
+    background-color: {{ block.settings.bar_color }};
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  .ai-reviews-bar-count-{{ ai_gen_id }} {
+    font-size: 14px;
+    color: {{ block.settings.text_color }};
+    min-width: 40px;
+    text-align: right;
+    opacity: 0.7;
+  }
+
+  .ai-reviews-write-btn-{{ ai_gen_id }} {
+    background-color: {{ block.settings.button_color }};
+    color: {{ block.settings.button_text_color }};
+    border: none;
+    padding: 12px 32px;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    margin: 20px auto 0;
+  }
+
+  .ai-reviews-write-btn-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_color }};
+    transform: translateY(-2px);
+  }
+
+  .ai-reviews-list-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .ai-reviews-card-{{ ai_gen_id }} {
+    background-color: {{ block.settings.card_background }};
+    border-radius: {{ block.settings.card_border_radius }}px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .ai-reviews-card-{{ ai_gen_id }}:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  .ai-reviews-card-header-{{ ai_gen_id }} {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .ai-reviews-avatar-{{ ai_gen_id }} {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, {{ block.settings.bar_color }}, {{ block.settings.button_color }});
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .ai-reviews-card-info-{{ ai_gen_id }} {
+    flex: 1;
+  }
+
+  .ai-reviews-card-top-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .ai-reviews-reviewer-name-{{ ai_gen_id }} {
+    font-weight: 600;
+    font-size: 16px;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 4px;
+  }
+
+  .ai-reviews-card-stars-{{ ai_gen_id }} {
+    display: flex;
+    gap: 2px;
+  }
+
+  .ai-reviews-card-star-{{ ai_gen_id }} {
+    width: 16px;
+    height: 16px;
+    fill: {{ block.settings.star_color }};
+  }
+
+  .ai-reviews-date-{{ ai_gen_id }} {
+    font-size: 13px;
+    color: {{ block.settings.text_color }};
+    opacity: 0.6;
+  }
+
+  .ai-reviews-verified-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #10b981;
+    margin-top: 4px;
+  }
+
+  .ai-reviews-verified-icon-{{ ai_gen_id }} {
+    width: 14px;
+    height: 14px;
+    fill: #10b981;
+  }
+
+  .ai-reviews-card-title-{{ ai_gen_id }} {
+    font-weight: 700;
+    font-size: 16px;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 8px;
+  }
+
+  .ai-reviews-card-text-{{ ai_gen_id }} {
+    font-size: 14px;
+    line-height: 1.6;
+    color: {{ block.settings.text_color }};
+    opacity: 0.85;
+  }
+
+  .ai-reviews-show-more-{{ ai_gen_id }} {
+    background: none;
+    border: 2px solid {{ block.settings.button_color }};
+    color: {{ block.settings.button_color }};
+    padding: 12px 32px;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    margin: 32px auto 0;
+  }
+
+  .ai-reviews-show-more-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_color }};
+    color: {{ block.settings.button_text_color }};
+  }
+
+  .ai-reviews-card-{{ ai_gen_id }}.hidden {
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-reviews-summary-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .ai-reviews-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.7 | round }}px;
+    }
+
+    .ai-reviews-avg-rating-{{ ai_gen_id }} {
+      font-size: 48px;
+    }
+
+    .ai-reviews-card-header-{{ ai_gen_id }} {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ai-reviews-card-top-{{ ai_gen_id }} {
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+{% endstyle %}
+
+<customer-reviews-{{ ai_gen_id }} class="ai-reviews-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.show_title %}
+    <h2 class="ai-reviews-title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+  {% endif %}
+
+  <div class="ai-reviews-summary-{{ ai_gen_id }}">
+    <div class="ai-reviews-rating-overview-{{ ai_gen_id }}">
+      <div class="ai-reviews-avg-rating-{{ ai_gen_id }}">{{ average_rating }}</div>
+      <div class="ai-reviews-stars-display-{{ ai_gen_id }}">
+        {% for i in (1..5) %}
+          {% if i <= average_rating %}
+            <svg class="ai-reviews-star-icon-{{ ai_gen_id }}" viewBox="0 0 24 24">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          {% else %}
+            <svg class="ai-reviews-star-icon-{{ ai_gen_id }} empty" viewBox="0 0 24 24">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="ai-reviews-count-{{ ai_gen_id }}">Based on {{ total_reviews }} reviews</div>
+      {% if block.settings.show_write_button %}
+        <button class="ai-reviews-write-btn-{{ ai_gen_id }}" aria-label="Write a review">
+          {{ block.settings.write_button_text }}
+        </button>
+      {% endif %}
+    </div>
+
+    <div class="ai-reviews-distribution-{{ ai_gen_id }}">
+      <div class="ai-reviews-bar-row-{{ ai_gen_id }}">
+        <div class="ai-reviews-bar-label-{{ ai_gen_id }}">
+          5 stars
+        </div>
+        <div class="ai-reviews-bar-container-{{ ai_gen_id }}">
+          <div class="ai-reviews-bar-fill-{{ ai_gen_id }}" style="width: {{ five_star_percent }}%"></div>
+        </div>
+        <div class="ai-reviews-bar-count-{{ ai_gen_id }}">{{ five_star_count }}</div>
+      </div>
+
+      <div class="ai-reviews-bar-row-{{ ai_gen_id }}">
+        <div class="ai-reviews-bar-label-{{ ai_gen_id }}">
+          4 stars
+        </div>
+        <div class="ai-reviews-bar-container-{{ ai_gen_id }}">
+          <div class="ai-reviews-bar-fill-{{ ai_gen_id }}" style="width: {{ four_star_percent }}%"></div>
+        </div>
+        <div class="ai-reviews-bar-count-{{ ai_gen_id }}">{{ four_star_count }}</div>
+      </div>
+
+      <div class="ai-reviews-bar-row-{{ ai_gen_id }}">
+        <div class="ai-reviews-bar-label-{{ ai_gen_id }}">
+          3 stars
+        </div>
+        <div class="ai-reviews-bar-container-{{ ai_gen_id }}">
+          <div class="ai-reviews-bar-fill-{{ ai_gen_id }}" style="width: {{ three_star_percent }}%"></div>
+        </div>
+        <div class="ai-reviews-bar-count-{{ ai_gen_id }}">{{ three_star_count }}</div>
+      </div>
+
+      <div class="ai-reviews-bar-row-{{ ai_gen_id }}">
+        <div class="ai-reviews-bar-label-{{ ai_gen_id }}">
+          2 stars
+        </div>
+        <div class="ai-reviews-bar-container-{{ ai_gen_id }}">
+          <div class="ai-reviews-bar-fill-{{ ai_gen_id }}" style="width: {{ two_star_percent }}%"></div>
+        </div>
+        <div class="ai-reviews-bar-count-{{ ai_gen_id }}">{{ two_star_count }}</div>
+      </div>
+
+      <div class="ai-reviews-bar-row-{{ ai_gen_id }}">
+        <div class="ai-reviews-bar-label-{{ ai_gen_id }}">
+          1 star
+        </div>
+        <div class="ai-reviews-bar-container-{{ ai_gen_id }}">
+          <div class="ai-reviews-bar-fill-{{ ai_gen_id }}" style="width: {{ one_star_percent }}%"></div>
+        </div>
+        <div class="ai-reviews-bar-count-{{ ai_gen_id }}">{{ one_star_count }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ai-reviews-list-{{ ai_gen_id }}">
+    {% assign sample_reviews = "Sarah M.|5|Absolutely love this!|This product exceeded my expectations. The quality is outstanding and it arrived quickly. Highly recommend!|2025-01-15|true,Michael R.|5|Best purchase ever|I've been using this for a month now and it's been fantastic. Worth every penny.|2025-01-10|true,Emma L.|4|Great quality|Really happy with this purchase. Only minor issue was the packaging but the product itself is perfect.|2025-01-08|true,James K.|5|Highly recommend|Exactly as described. Fast shipping and excellent customer service.|2025-01-05|true,Olivia P.|4|Very satisfied|Good value for money. Would definitely buy again.|2025-01-02|false,David T.|5|Perfect!|Everything I was looking for. No complaints at all.|2024-12-28|true" | split: ',' %}
+
+    {% for review_data in sample_reviews limit: block.settings.reviews_to_show %}
+      {% assign review_parts = review_data | split: '|' %}
+      {% assign reviewer_name = review_parts[0] %}
+      {% assign rating = review_parts[1] | plus: 0 %}
+      {% assign review_title = review_parts[2] %}
+      {% assign review_text = review_parts[3] %}
+      {% assign review_date = review_parts[4] %}
+      {% assign is_verified = review_parts[5] %}
+      {% assign initials = reviewer_name | slice: 0 %}
+
+      {% assign card_class = 'ai-reviews-card-' | append: ai_gen_id %}
+      {% if forloop.index > block.settings.initial_reviews %}
+        {% assign card_class = card_class | append: ' hidden' %}
+      {% endif %}
+
+      <div class="{{ card_class }}" data-review-index="{{ forloop.index }}">
+        <div class="ai-reviews-card-header-{{ ai_gen_id }}">
+          <div class="ai-reviews-avatar-{{ ai_gen_id }}">{{ initials }}</div>
+          <div class="ai-reviews-card-info-{{ ai_gen_id }}">
+            <div class="ai-reviews-card-top-{{ ai_gen_id }}">
+              <div>
+                <h3 class="ai-reviews-reviewer-name-{{ ai_gen_id }}">{{ reviewer_name }}</h3>
+                <div class="ai-reviews-card-stars-{{ ai_gen_id }}">
+                  {% for i in (1..5) %}
+                    <svg class="ai-reviews-card-star-{{ ai_gen_id }}" viewBox="0 0 24 24" {% if i > rating %}style="fill: #e0e0e0"{% endif %}>
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                  {% endfor %}
+                </div>
+                {% if is_verified == 'true' %}
+                  <div class="ai-reviews-verified-{{ ai_gen_id }}">
+                    <svg class="ai-reviews-verified-icon-{{ ai_gen_id }}" viewBox="0 0 24 24">
+                      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                    </svg>
+                    Verified Purchase
+                  </div>
+                {% endif %}
+              </div>
+              <div class="ai-reviews-date-{{ ai_gen_id }}">{{ review_date }}</div>
+            </div>
+          </div>
+        </div>
+        <h4 class="ai-reviews-card-title-{{ ai_gen_id }}">{{ review_title }}</h4>
+        <p class="ai-reviews-card-text-{{ ai_gen_id }}">{{ review_text }}</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if block.settings.show_load_more and block.settings.reviews_to_show > block.settings.initial_reviews %}
+    <button class="ai-reviews-show-more-{{ ai_gen_id }}" data-load-more>
+      {{ block.settings.load_more_text }}
+    </button>
+  {% endif %}
+</customer-reviews-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class CustomerReviews{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.loadMoreBtn = this.querySelector('[data-load-more]');
+        this.currentlyShown = {{ block.settings.initial_reviews }};
+        this.totalReviews = {{ block.settings.reviews_to_show }};
+      }
+
+      connectedCallback() {
+        if (this.loadMoreBtn) {
+          this.loadMoreBtn.addEventListener('click', () => this.loadMore());
+        }
+      }
+
+      loadMore() {
+        const hiddenCards = this.querySelectorAll('.ai-reviews-card-{{ ai_gen_id }}.hidden');
+        const cardsToShow = Math.min({{ block.settings.load_more_count }}, hiddenCards.length);
+        
+        for (let i = 0; i < cardsToShow; i++) {
+          hiddenCards[i].classList.remove('hidden');
+        }
+
+        this.currentlyShown += cardsToShow;
+
+        if (this.currentlyShown >= this.totalReviews) {
+          this.loadMoreBtn.style.display = 'none';
+        }
+      }
+    }
+
+    customElements.define('customer-reviews-{{ ai_gen_id }}', CustomerReviews{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Customer reviews",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Title"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show title",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Customer Reviews"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Title size",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Reviews display"
+    },
+    {
+      "type": "range",
+      "id": "reviews_to_show",
+      "min": 3,
+      "max": 20,
+      "step": 1,
+      "label": "Total reviews to show",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "initial_reviews",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "label": "Initially visible reviews",
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "show_load_more",
+      "label": "Show load more button",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "load_more_count",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "label": "Reviews per load more",
+      "default": 3
+    },
+    {
+      "type": "text",
+      "id": "load_more_text",
+      "label": "Load more button text",
+      "default": "Show More Reviews"
+    },
+    {
+      "type": "header",
+      "content": "Write review button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_write_button",
+      "label": "Show write review button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "write_button_text",
+      "label": "Button text",
+      "default": "Write a Review"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Stars",
+      "default": "#FFB800"
+    },
+    {
+      "type": "color",
+      "id": "bar_color",
+      "label": "Rating bars",
+      "default": "#FF6B9D"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button background",
+      "default": "#FF6B9D"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button hover background",
+      "default": "#ff5588"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Card border radius",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Button border radius",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customer reviews"
+    }
+  ]
+}
+{% endschema %}

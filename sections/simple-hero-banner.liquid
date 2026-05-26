@@ -1,0 +1,470 @@
+{% assign banner_id = section.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .banner-section-{{ banner_id }} {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    {% if section.settings.background_image %}
+      background-image: url('{{ section.settings.background_image | image_url: width: 2000 }}');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: {{ section.settings.banner_height }}px;
+    {% else %}
+      background-color: #f5f5f5;
+      min-height: {{ section.settings.banner_height }}px;
+    {% endif %}
+  }
+
+  .banner-placeholder-{{ banner_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  .banner-placeholder-{{ banner_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 400px;
+    max-height: 400px;
+    opacity: 0.3;
+  }
+
+  .banner-overlay-{{ banner_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: {{ section.settings.overlay_color }};
+    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    z-index: 2;
+  }
+
+  .banner-content-{{ banner_id }} {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: 1400px;
+    padding: {{ section.settings.padding_top }}px {{ section.settings.padding_horizontal }}px {{ section.settings.padding_bottom }}px;
+    text-align: {{ section.settings.text_alignment }};
+  }
+
+  .banner-heading-{{ banner_id }} {
+    font-size: {{ section.settings.heading_size }}px;
+    color: {{ section.settings.heading_color }};
+    margin: 0 0 16px;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
+  .banner-subheading-{{ banner_id }} {
+    font-size: {{ section.settings.subheading_size }}px;
+    color: {{ section.settings.subheading_color }};
+    margin: 0 0 24px;
+    line-height: 1.5;
+  }
+
+  .banner-button-wrapper-{{ banner_id }} {
+    display: flex;
+    {% if section.settings.text_alignment == 'left' %}
+      justify-content: flex-start;
+    {% elsif section.settings.text_alignment == 'right' %}
+      justify-content: flex-end;
+    {% else %}
+      justify-content: center;
+    {% endif %}
+  }
+
+  /* ── BUTTON FIX: explicit color on all states so text never disappears ── */
+  .banner-button-{{ banner_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: {{ section.settings.button_padding_vertical }}px {{ section.settings.button_padding_horizontal }}px;
+    background-color: {{ section.settings.button_background_color }};
+    color: {{ section.settings.button_text_color }} !important;
+    text-decoration: none;
+    border-radius: {{ section.settings.button_border_radius }}px;
+    font-size: {{ section.settings.button_font_size }}px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid {{ section.settings.button_background_color }};
+    cursor: pointer;
+    /* Prevent the global `color` transition from interfering */
+    -webkit-text-fill-color: {{ section.settings.button_text_color }};
+  }
+
+  .banner-button-{{ banner_id }}:hover {
+    background-color: {{ section.settings.button_hover_background }};
+    border-color: {{ section.settings.button_hover_background }};
+    color: {{ section.settings.button_text_color }} !important;
+    -webkit-text-fill-color: {{ section.settings.button_text_color }};
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  /* ── COLLECTION PAGE: product images sized correctly ── */
+  .template-collection .product-card img,
+  .template-collection product-card img,
+  .template-collection .product-grid__card img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    border-radius: 0 !important;
+  }
+
+  /* Restore card image wrapper proportions */
+  .template-collection .card-gallery,
+  .template-collection .product-card__image,
+  .template-collection .product-media-container {
+    aspect-ratio: 1 / 1 !important;
+    overflow: hidden !important;
+  }
+
+  @media screen and (max-width: 989px) {
+    .banner-section-{{ banner_id }} {
+      min-height: {{ section.settings.banner_height | times: 0.75 }}px;
+    }
+
+    .banner-heading-{{ banner_id }} {
+      font-size: {{ section.settings.heading_size | times: 0.75 }}px;
+    }
+
+    .banner-subheading-{{ banner_id }} {
+      font-size: {{ section.settings.subheading_size | times: 0.9 }}px;
+    }
+
+    .banner-content-{{ banner_id }} {
+      padding: {{ section.settings.padding_top | times: 0.75 }}px {{ section.settings.padding_horizontal | times: 0.8 }}px {{ section.settings.padding_bottom | times: 0.75 }}px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .banner-section-{{ banner_id }} {
+      {% if section.settings.mobile_background_image %}
+        background-image: url('{{ section.settings.mobile_background_image | image_url: width: 1000 }}');
+      {% endif %}
+      background-size: cover;
+      width: 100vw;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: {{ section.settings.mobile_height }}px;
+    }
+
+    .banner-content-{{ banner_id }} {
+      width: 100%;
+      padding: {{ section.settings.padding_top | times: 0.6 }}px 20px {{ section.settings.padding_bottom | times: 0.6 }}px;
+    }
+
+    .banner-heading-{{ banner_id }} {
+      font-size: {{ section.settings.heading_size | times: 0.6 }}px;
+      margin-bottom: 12px;
+    }
+
+    .banner-subheading-{{ banner_id }} {
+      font-size: {{ section.settings.subheading_size | times: 0.85 }}px;
+      margin-bottom: 20px;
+    }
+
+    .banner-button-{{ banner_id }} {
+      padding: {{ section.settings.button_padding_vertical | times: 0.9 }}px {{ section.settings.button_padding_horizontal | times: 0.9 }}px;
+      font-size: {{ section.settings.button_font_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="banner-section-{{ banner_id }}" {{ section.shopify_attributes }}>
+  {% if section.settings.background_image == blank %}
+    <div class="banner-placeholder-{{ banner_id }}">
+      {{ 'hero-apparel-1' | placeholder_svg_tag }}
+    </div>
+  {% endif %}
+
+  <div class="banner-overlay-{{ banner_id }}"></div>
+
+  <div class="banner-content-{{ banner_id }}">
+    {% if section.settings.heading != blank %}
+      <h2 class="banner-heading-{{ banner_id }}">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    {% if section.settings.subheading != blank %}
+      <p class="banner-subheading-{{ banner_id }}">{{ section.settings.subheading }}</p>
+    {% endif %}
+
+    {% if section.settings.button_text != blank %}
+      <div class="banner-button-wrapper-{{ banner_id }}">
+        <a
+          href="{{ section.settings.button_link }}"
+          class="banner-button-{{ banner_id }}"
+        >
+          {{ section.settings.button_text }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Desktop Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "range",
+      "id": "banner_height",
+      "min": 300,
+      "max": 900,
+      "step": 50,
+      "unit": "px",
+      "label": "Banner height",
+      "default": 500
+    },
+    {
+      "type": "header",
+      "content": "Mobile Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_background_image",
+      "label": "Mobile background image",
+      "info": "Optional - uses desktop image if not set"
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "min": 300,
+      "max": 700,
+      "step": 50,
+      "unit": "px",
+      "label": "Mobile height",
+      "default": 400
+    },
+    {
+      "type": "header",
+      "content": "Overlay Settings"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay opacity",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "min": 20,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Horizontal padding",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading text",
+      "default": "Welcome to Our Store"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 56
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Subheading"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading text",
+      "default": "Discover our amazing collection"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 14,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Subheading size",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Button font size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "min": 8,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Button vertical padding",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Button horizontal padding",
+      "default": 35
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button background",
+      "default": "#7B1E3A"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button hover background",
+      "default": "#E75480"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Button border radius",
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}

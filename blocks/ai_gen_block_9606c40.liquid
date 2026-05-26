@@ -1,0 +1,766 @@
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+<div class="promo-wrapper-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+
+    <!-- Section Header -->
+    <div class="promo-inner-{{ ai_gen_id }}">
+      <div class="promo-header-{{ ai_gen_id }}">
+        {% if block.settings.section_title != blank %}
+          <h2 class="promo-title-{{ ai_gen_id }}">{{ block.settings.section_title }}</h2>
+        {% endif %}
+        {% if block.settings.section_subtitle != blank %}
+          <p class="promo-subtitle-{{ ai_gen_id }}">{{ block.settings.section_subtitle }}</p>
+        {% endif %}
+        <div class="promo-accent-{{ ai_gen_id }}"></div>
+      </div>
+    </div>
+
+    <!-- Horizontal Scroll — full-width, outside page-width so it bleeds edge-to-edge on mobile -->
+    <div class="promo-scroll-{{ ai_gen_id }}">
+      <div class="promo-grid-{{ ai_gen_id }}">
+
+        <!-- Card 1 -->
+        {% assign card_1_heading = block.settings.card_1_heading | default: 'Discreet Packaging' %}
+        {% assign card_1_subheading = block.settings.card_1_subheading | default: 'No mention of product or brand on shipping box' %}
+        {% assign card_1_emoji = block.settings.card_1_emoji | default: '📦' %}
+        {% assign card_1_button_label = block.settings.card_1_button_label | default: 'Show Discreet Box' %}
+        {% assign card_1_button_link = block.settings.card_1_button_link | default: '' %}
+        <div class="promo-card-{{ ai_gen_id }}">
+          <div class="promo-icon-wrap-{{ ai_gen_id }}">
+            <span class="promo-emoji-{{ ai_gen_id }}">{{ card_1_emoji }}</span>
+          </div>
+          <div class="promo-content-{{ ai_gen_id }}">
+            <h3 class="promo-heading-{{ ai_gen_id }}">{{ card_1_heading }}</h3>
+            <p class="promo-subheading-{{ ai_gen_id }}">{{ card_1_subheading }}</p>
+          </div>
+          <div class="promo-btn-wrap-{{ ai_gen_id }}">
+            <a href="{{ card_1_button_link }}" class="promo-btn-{{ ai_gen_id }}">
+              {{ card_1_button_label }}
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        {% assign card_2_heading = block.settings.card_2_heading | default: 'Never Used Before?' %}
+        {% assign card_2_subheading = block.settings.card_2_subheading | default: 'Get Our Free Course' %}
+        {% assign card_2_emoji = block.settings.card_2_emoji | default: '🎓' %}
+        {% assign card_2_button_label = block.settings.card_2_button_label | default: 'Learn More' %}
+        {% assign card_2_button_link = block.settings.card_2_button_link | default: '' %}
+        <div class="promo-card-{{ ai_gen_id }}">
+          <div class="promo-icon-wrap-{{ ai_gen_id }} promo-icon-pink-{{ ai_gen_id }}">
+            <span class="promo-emoji-{{ ai_gen_id }}">{{ card_2_emoji }}</span>
+          </div>
+          <div class="promo-content-{{ ai_gen_id }}">
+            <h3 class="promo-heading-{{ ai_gen_id }}">{{ card_2_heading }}</h3>
+            <p class="promo-subheading-{{ ai_gen_id }}">{{ card_2_subheading }}</p>
+          </div>
+          <div class="promo-btn-wrap-{{ ai_gen_id }}">
+            <a href="{{ card_2_button_link }}" class="promo-btn-{{ ai_gen_id }}">
+              {{ card_2_button_label }}
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        {% assign card_3_heading = block.settings.card_3_heading | default: 'Medical-Grade' %}
+        {% assign card_3_subheading = block.settings.card_3_subheading | default: 'Premium body-safe materials you can trust' %}
+        {% assign card_3_emoji = block.settings.card_3_emoji | default: '🔬' %}
+        {% assign card_3_button_label = block.settings.card_3_button_label | default: 'Body-Safe Materials' %}
+        {% assign card_3_button_link = block.settings.card_3_button_link | default: '' %}
+        <div class="promo-card-{{ ai_gen_id }}">
+          <div class="promo-icon-wrap-{{ ai_gen_id }} promo-icon-plum-{{ ai_gen_id }}">
+            <span class="promo-emoji-{{ ai_gen_id }}">{{ card_3_emoji }}</span>
+          </div>
+          <div class="promo-content-{{ ai_gen_id }}">
+            <h3 class="promo-heading-{{ ai_gen_id }}">{{ card_3_heading }}</h3>
+            <p class="promo-subheading-{{ ai_gen_id }}">{{ card_3_subheading }}</p>
+          </div>
+          <div class="promo-btn-wrap-{{ ai_gen_id }}">
+            <a href="{{ card_3_button_link }}" class="promo-btn-{{ ai_gen_id }}">
+              {{ card_3_button_label }}
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        {% assign card_4_heading = block.settings.card_4_heading | default: 'Deal of the Day' %}
+        {% assign card_4_subheading = block.settings.card_4_subheading | default: 'Exclusive daily offers for our community' %}
+        {% assign card_4_emoji = block.settings.card_4_emoji | default: '🏷️' %}
+        {% assign card_4_button_label = block.settings.card_4_button_label | default: 'Use Code: 10% OFF' %}
+        {% assign card_4_button_link = block.settings.card_4_button_link | default: '' %}
+        <div class="promo-card-{{ ai_gen_id }}">
+          <div class="promo-icon-wrap-{{ ai_gen_id }}">
+            <span class="promo-emoji-{{ ai_gen_id }}">{{ card_4_emoji }}</span>
+          </div>
+          <div class="promo-content-{{ ai_gen_id }}">
+            <h3 class="promo-heading-{{ ai_gen_id }}">{{ card_4_heading }}</h3>
+            <p class="promo-subheading-{{ ai_gen_id }}">{{ card_4_subheading }}</p>
+          </div>
+          <div class="promo-btn-wrap-{{ ai_gen_id }}">
+            <a href="{{ card_4_button_link }}" class="promo-btn-{{ ai_gen_id }}">
+              {{ card_4_button_label }}
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 5 (optional) -->
+        {% if block.settings.card_5_heading != blank %}
+        <div class="promo-card-{{ ai_gen_id }}">
+          <div class="promo-icon-wrap-{{ ai_gen_id }} promo-icon-pink-{{ ai_gen_id }}">
+            <span class="promo-emoji-{{ ai_gen_id }}">{{ block.settings.card_5_emoji }}</span>
+          </div>
+          <div class="promo-content-{{ ai_gen_id }}">
+            <h3 class="promo-heading-{{ ai_gen_id }}">{{ block.settings.card_5_heading }}</h3>
+            {% if block.settings.card_5_subheading != blank %}
+              <p class="promo-subheading-{{ ai_gen_id }}">{{ block.settings.card_5_subheading }}</p>
+            {% endif %}
+          </div>
+          {% if block.settings.card_5_button_label != blank %}
+            <div class="promo-btn-wrap-{{ ai_gen_id }}">
+              <a href="{{ block.settings.card_5_button_link }}" class="promo-btn-{{ ai_gen_id }}">
+                {{ block.settings.card_5_button_label }}
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          {% endif %}
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+
+    <!-- Scroll Hint (desktop only) -->
+    <div class="promo-scroll-hint-{{ ai_gen_id }}">
+      <span>Scroll to see more</span>
+    </div>
+
+</div>
+
+{% style %}
+  .promo-wrapper-{{ ai_gen_id }} {
+    padding: {{ block.settings.section_padding_top }}px 0 {{ block.settings.section_padding_bottom }}px;
+    background: linear-gradient(135deg, #FFF8F4 0%, #F6EEF2 100%);
+    /* Break out of parent container to fill full viewport width */
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
+    box-sizing: border-box;
+  }
+
+  .promo-inner-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ── Header ── */
+  .promo-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .promo-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: 700;
+    color: #1A0D12;
+    margin: 0 0 10px;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .promo-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    color: #8B6B7A;
+    margin: 0 auto;
+    max-width: 500px;
+  }
+
+  .promo-accent-{{ ai_gen_id }} {
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #D4AF37, #E75480);
+    margin: 14px auto 0;
+    border-radius: 3px;
+  }
+
+  /* ── Scroll container — full viewport width ── */
+  .promo-scroll-{{ ai_gen_id }} {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    /* Visible scrollbar on desktop so user knows it scrolls */
+    padding-bottom: 10px;
+    cursor: grab;
+  }
+
+  .promo-scroll-{{ ai_gen_id }}:active { cursor: grabbing; }
+
+  /* Styled scrollbar — desktop */
+  .promo-scroll-{{ ai_gen_id }}::-webkit-scrollbar { height: 4px; }
+  .promo-scroll-{{ ai_gen_id }}::-webkit-scrollbar-track { background: #E8D9E0; border-radius: 10px; margin: 0 20px; }
+  .promo-scroll-{{ ai_gen_id }}::-webkit-scrollbar-thumb { background: linear-gradient(90deg, #D4AF37, #E75480); border-radius: 10px; }
+
+  /* ── Grid — horizontal, never wraps ── */
+  .promo-grid-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: {{ block.settings.card_gap }}px;
+    /* Left padding = typical page margin; right padding gives breathing room after last card */
+    padding: 8px 24px 8px 24px;
+    width: max-content;
+    align-items: stretch;
+    box-sizing: border-box;
+  }
+
+  /* ── Card ── */
+  .promo-card-{{ ai_gen_id }} {
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding: 28px 20px 22px;
+    text-align: center;
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    box-shadow: 0 6px 18px rgba(31, 17, 23, 0.07);
+    position: relative;
+    overflow: hidden;
+    scroll-snap-align: start;
+    flex: 0 0 {{ block.settings.card_width }}px;
+    width: {{ block.settings.card_width }}px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  .promo-card-{{ ai_gen_id }}::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #D4AF37, #E75480, #7B1E3A);
+    transform: scaleX(0);
+    transition: transform 0.35s ease;
+  }
+
+  .promo-card-{{ ai_gen_id }}:hover::before { transform: scaleX(1); }
+
+  .promo-card-{{ ai_gen_id }}:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 32px rgba(31, 17, 23, 0.13);
+    border-color: rgba(212, 175, 55, 0.3);
+  }
+
+  /* ── Icon circle ── */
+  .promo-icon-wrap-{{ ai_gen_id }} {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FFFBEC 0%, #FFF3CC 100%);
+    border: 1.5px solid rgba(212, 175, 55, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+    flex-shrink: 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .promo-icon-pink-{{ ai_gen_id }} {
+    background: linear-gradient(135deg, #FFF0F5 0%, #FFE0EC 100%);
+    border-color: rgba(231, 84, 128, 0.2);
+  }
+
+  .promo-icon-plum-{{ ai_gen_id }} {
+    background: linear-gradient(135deg, #F9F0F3 0%, #F0E0E6 100%);
+    border-color: rgba(123, 30, 58, 0.15);
+  }
+
+  .promo-card-{{ ai_gen_id }}:hover .promo-icon-wrap-{{ ai_gen_id }} {
+    transform: scale(1.08);
+    box-shadow: 0 6px 16px rgba(212, 175, 55, 0.2);
+  }
+
+  .promo-emoji-{{ ai_gen_id }} {
+    font-size: 34px;
+    line-height: 1;
+    display: block;
+  }
+
+  /* ── Content ── */
+  .promo-content-{{ ai_gen_id }} {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .promo-heading-{{ ai_gen_id }} {
+    font-size: 15px;
+    font-weight: 700;
+    color: #2D1B2E;
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  .promo-subheading-{{ ai_gen_id }} {
+    font-size: 12px;
+    color: #8B6B7A;
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  /* ── Button ── */
+  .promo-btn-wrap-{{ ai_gen_id }} {
+    margin-top: 18px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .promo-btn-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 18px;
+    background: #7B1E3A;
+    color: #FFFFFF;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .promo-btn-{{ ai_gen_id }}:hover {
+    background: #E75480;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(231, 84, 128, 0.35);
+  }
+
+  .promo-btn-{{ ai_gen_id }}:active { transform: translateY(0); }
+
+  /* ── Scroll hint ── */
+  .promo-scroll-hint-{{ ai_gen_id }} {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 12px;
+    color: #B09AA8;
+    letter-spacing: 0.8px;
+  }
+
+  .promo-scroll-hint-{{ ai_gen_id }} span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    padding: 6px 18px;
+    border-radius: 50px;
+  }
+
+  .promo-scroll-hint-{{ ai_gen_id }} span::after {
+    content: '→';
+    animation: promoBounce-{{ ai_gen_id }} 1.5s ease infinite;
+  }
+
+  @keyframes promoBounce-{{ ai_gen_id }} {
+    0%, 100% { transform: translateX(0); }
+    50%       { transform: translateX(5px); }
+  }
+
+  /* ── Tablet ── */
+  @media screen and (max-width: 989px) {
+    .promo-card-{{ ai_gen_id }} {
+      flex: 0 0 {{ block.settings.card_width_tablet }}px;
+      width: {{ block.settings.card_width_tablet }}px;
+    }
+    .promo-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.85 | round }}px;
+    }
+  }
+
+  /* ── Mobile ── */
+  @media screen and (max-width: 749px) {
+    .promo-card-{{ ai_gen_id }} {
+      flex: 0 0 {{ block.settings.card_width_mobile }}px;
+      width: {{ block.settings.card_width_mobile }}px;
+      padding: 22px 16px 18px;
+    }
+    .promo-title-{{ ai_gen_id }}    { font-size: {{ block.settings.title_size_mobile }}px; }
+    .promo-subtitle-{{ ai_gen_id }} { font-size: {{ block.settings.subtitle_size_mobile }}px; }
+    .promo-icon-wrap-{{ ai_gen_id }} { width: 60px; height: 60px; }
+    .promo-emoji-{{ ai_gen_id }}    { font-size: 28px; }
+
+    /* Tighter side padding on mobile so first card peeks correctly */
+    .promo-grid-{{ ai_gen_id }} {
+      padding: 8px 16px 8px 16px;
+      gap: 14px;
+    }
+
+    /* Hide desktop scroll hint; dots hint is enough */
+    .promo-scroll-hint-{{ ai_gen_id }} { display: none; }
+
+    /* Show native scrollbar on mobile so users know it scrolls */
+    .promo-scroll-{{ ai_gen_id }}::-webkit-scrollbar { height: 3px; }
+  }
+  @media screen and (min-width: 990px) {
+    .promo-scroll-{{ ai_gen_id }} {
+      overflow-x: visible;
+      cursor: default;
+    }
+    .promo-grid-{{ ai_gen_id }} {
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 8px 24px;
+    }
+    .promo-scroll-hint-{{ ai_gen_id }} { display: none; }
+  }
+{% endstyle %}
+
+<script>
+(function() {
+  var container = document.querySelector('.promo-scroll-{{ ai_gen_id }}');
+  if (!container) return;
+
+  /* Mouse drag to scroll — desktop */
+  var isDragging = false, startX, scrollLeft;
+  container.addEventListener('mousedown', function(e) {
+    if (e.button !== 0) return;
+    isDragging = true;
+    startX = e.pageX - container.offsetLeft;
+    scrollLeft = container.scrollLeft;
+    container.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+  window.addEventListener('mousemove', function(e) {
+    if (!isDragging) return;
+    e.preventDefault();
+    var x = e.pageX - container.offsetLeft;
+    container.scrollLeft = scrollLeft - (x - startX) * 1.5;
+  });
+  window.addEventListener('mouseup', function() {
+    isDragging = false;
+    if (container) container.style.cursor = 'grab';
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Promotional Grid",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Why Choose Arousique?"
+    },
+    {
+      "type": "text",
+      "id": "section_subtitle",
+      "label": "Section Subtitle",
+      "default": "Experience luxury intimacy with complete peace of mind"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size (Desktop)",
+      "min": 24,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Title Size (Mobile)",
+      "min": 20,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle Size (Desktop)",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_mobile",
+      "label": "Subtitle Size (Mobile)",
+      "min": 11,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "header",
+      "content": "Card Settings"
+    },
+    {
+      "type": "range",
+      "id": "card_width",
+      "label": "Card Width (Desktop)",
+      "min": 180,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "default": 240
+    },
+    {
+      "type": "range",
+      "id": "card_width_tablet",
+      "label": "Card Width (Tablet)",
+      "min": 180,
+      "max": 280,
+      "step": 10,
+      "unit": "px",
+      "default": 220
+    },
+    {
+      "type": "range",
+      "id": "card_width_mobile",
+      "label": "Card Width (Mobile)",
+      "min": 160,
+      "max": 260,
+      "step": 10,
+      "unit": "px",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Gap Between Cards",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Padding Top",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Padding Bottom",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Card 1"
+    },
+    {
+      "type": "text",
+      "id": "card_1_emoji",
+      "label": "Emoji",
+      "default": "📦"
+    },
+    {
+      "type": "text",
+      "id": "card_1_heading",
+      "label": "Heading",
+      "default": "Discreet Packaging"
+    },
+    {
+      "type": "textarea",
+      "id": "card_1_subheading",
+      "label": "Subheading",
+      "default": "No mention of product or brand on shipping box"
+    },
+    {
+      "type": "text",
+      "id": "card_1_button_label",
+      "label": "Button Label",
+      "default": "Show Discreet Box"
+    },
+    {
+      "type": "url",
+      "id": "card_1_button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Card 2"
+    },
+    {
+      "type": "text",
+      "id": "card_2_emoji",
+      "label": "Emoji",
+      "default": "🎓"
+    },
+    {
+      "type": "text",
+      "id": "card_2_heading",
+      "label": "Heading",
+      "default": "Never Used Before?"
+    },
+    {
+      "type": "textarea",
+      "id": "card_2_subheading",
+      "label": "Subheading",
+      "default": "Get Our Free Course"
+    },
+    {
+      "type": "text",
+      "id": "card_2_button_label",
+      "label": "Button Label",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "card_2_button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Card 3"
+    },
+    {
+      "type": "text",
+      "id": "card_3_emoji",
+      "label": "Emoji",
+      "default": "🔬"
+    },
+    {
+      "type": "text",
+      "id": "card_3_heading",
+      "label": "Heading",
+      "default": "Medical-Grade"
+    },
+    {
+      "type": "textarea",
+      "id": "card_3_subheading",
+      "label": "Subheading",
+      "default": "Premium body-safe materials you can trust"
+    },
+    {
+      "type": "text",
+      "id": "card_3_button_label",
+      "label": "Button Label",
+      "default": "Body-Safe Materials"
+    },
+    {
+      "type": "url",
+      "id": "card_3_button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Card 4"
+    },
+    {
+      "type": "text",
+      "id": "card_4_emoji",
+      "label": "Emoji",
+      "default": "🏷️"
+    },
+    {
+      "type": "text",
+      "id": "card_4_heading",
+      "label": "Heading",
+      "default": "Deal of the Day"
+    },
+    {
+      "type": "textarea",
+      "id": "card_4_subheading",
+      "label": "Subheading",
+      "default": "Exclusive daily offers for our community"
+    },
+    {
+      "type": "text",
+      "id": "card_4_button_label",
+      "label": "Button Label",
+      "default": "Use Code: 10% OFF"
+    },
+    {
+      "type": "url",
+      "id": "card_4_button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Card 5 (Optional)"
+    },
+    {
+      "type": "text",
+      "id": "card_5_emoji",
+      "label": "Emoji",
+      "default": "⭐"
+    },
+    {
+      "type": "text",
+      "id": "card_5_heading",
+      "label": "Heading",
+      "info": "Leave blank to hide this card"
+    },
+    {
+      "type": "textarea",
+      "id": "card_5_subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "card_5_button_label",
+      "label": "Button Label"
+    },
+    {
+      "type": "url",
+      "id": "card_5_button_link",
+      "label": "Button Link"
+    }
+  ],
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
+  ],
+  "presets": [
+    {
+      "name": "Promotional Grid"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,321 @@
+{% style %}
+  /* Contact Form - Figma Design Exact Match */
+  
+  /* Section background */
+  .shopify-section:has([data-block-type="contact-form"]),
+  section:has(.contact-form) {
+    background: linear-gradient(135deg, #ffc4e1 0%, #ffd4f0 50%, #ffe4f7 100%) !important;
+    padding: 80px 40px !important;
+  }
+
+  /* Main container */
+  .contact-form-wrapper,
+  .contact-form__container {
+    max-width: 80vh !important;
+    margin: 0 auto !important;
+  }
+
+  /* Heading - Get in Touch */
+  .contact-form h2,
+  .contact-form .heading,
+  h2:has(+ .contact-form),
+  .rte:has(+ .contact-form) h2 {
+    text-align: left !important;
+    font-size: 48px !important;
+    font-weight: 400 !important;
+    color: #44348D !important;
+    margin: 0 0 50px 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Form grid structure */
+  .contact-form {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 30px 24px !important;
+    max-width: 1000px !important;
+    margin: 0 auto !important;
+  }
+
+  /* All form fields */
+  .contact-form .field,
+  .contact-form__field,
+  .contact-form > div {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  /* Labels styling */
+  .contact-form .field__label,
+  .contact-form label {
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    color: #5a4570 !important;
+    margin-bottom: 10px !important;
+    display: block !important;
+    text-align: left !important;
+  }
+
+  /* Input fields - square/rectangular design */
+  .contact-form input[type="text"],
+  .contact-form input[type="email"],
+  .contact-form input[type="tel"] {
+    background: rgba(255, 255, 255, 0.7) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    /* padding: 20px 24px !important; */
+    font-size: 15px !important;
+    color: #666 !important;
+    width: 100% !important;
+    height: 60px !important;
+    box-sizing: border-box !important;
+    transition: all 0.2s ease !important;
+  }
+
+  /* Textarea styling */
+  .contact-form textarea {
+    background: rgba(255, 255, 255, 0.7) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 20px 24px !important;
+    font-size: 15px !important;
+    color: #666 !important;
+    width: 100% !important;
+    min-height: 60px !important;
+    box-sizing: border-box !important;
+    resize: vertical !important;
+    font-family: inherit !important;
+  }
+
+  /* Placeholder styling */
+  .contact-form input::placeholder,
+  .contact-form textarea::placeholder {
+    color: #b3b3b3 !important;
+    opacity: 1 !important;
+  }
+
+  /* Focus states */
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    outline: none !important;
+    background: rgba(255, 255, 255, 0.85) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  /* Message field - full width */
+  .contact-form .field:has(textarea),
+  .contact-form__field:has(textarea),
+  .contact-form > div:has(textarea),
+  .contact-form [class*="message"],
+  .contact-form [id*="message"],
+  .contact-form div:nth-child(5) {
+    grid-column: 1 / -1 !important;
+  }
+
+  /* Submit button container - full width, aligned right */
+  .contact-form__button,
+  .contact-form .field--submit,
+  .contact-form > div:has(button[type="submit"]),
+  .contact-form div:last-child {
+    grid-column: 1 / -1 !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: left !important;
+    margin-top: 10px !important;
+  }
+
+  /* Submit button - aligned to right */
+  .contact-form button[type="submit"],
+  .contact-form .button {
+    background: #F85F73 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 50px !important;
+    padding: 18px 60px !important;
+    font-size: 17px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 6px 20px rgba(255, 123, 157, 0.4) !important;
+    text-transform: none !important;
+    letter-spacing: 0.3px !important;
+    margin-left: auto !important;
+    display: inline-block !important;
+  }
+
+  /* Button hover */
+  .contact-form button[type="submit"]:hover,
+  .contact-form .button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(255, 123, 157, 0.5) !important;
+  }
+
+  /* Button active */
+  .contact-form button[type="submit"]:active,
+  .contact-form .button:active {
+    transform: translateY(0) !important;
+  }
+
+  /* Form messages */
+  .contact-form .form-status,
+  .contact-form .errors,
+  .contact-form .success {
+    grid-column: 1 / -1 !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 15px !important;
+    padding: 15px 20px !important;
+    margin-bottom: 20px !important;
+  }
+
+  /* Remove any default styling */
+  .contact-form input,
+  .contact-form textarea,
+  .contact-form button {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+  }
+
+  /* ✅ Updated Field Order - First+Last, Email+Phone same line */
+  .contact-form > div:nth-child(1) { grid-column: 1; grid-row: 1; } /* First Name */
+  .contact-form > div:nth-child(2) { grid-column: 2; grid-row: 1; } /* Last Name */
+  .contact-form > div:nth-child(3) { grid-column: 1; grid-row: 2; } /* Email */
+  .contact-form > div:nth-child(4) { grid-column: 2; grid-row: 2; } /* Phone */
+  .contact-form > div:nth-child(5) { grid-column: 1 / -1; grid-row: 3; } /* Message */
+  .contact-form > div:nth-child(6) { grid-column: 1 / -1; grid-row: 4; } /* Button */
+
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .shopify-section:has([data-block-type="contact-form"]),
+    section:has(.contact-form) {
+      padding: 50px 20px !important;
+    }
+    
+    .contact-form {
+      grid-template-columns: 1fr !important;
+      gap: 20px !important;
+    }
+    
+    .contact-form h2,
+    .contact-form .heading {
+      font-size: 36px !important;
+      margin-bottom: 35px !important;
+    }
+    
+    .contact-form input[type="text"],
+    .contact-form input[type="email"],
+    .contact-form input[type="tel"] {
+      height: 60px !important;
+    }
+    
+    .contact-form textarea {
+      min-height: 60px !important;
+    }
+
+    .contact-form__button,
+    .contact-form .field--submit,
+    .contact-form > div:has(button[type="submit"]) {
+      justify-content: center !important;
+    }
+    
+    .contact-form button[type="submit"],
+    .contact-form .button {
+      padding: 16px 50px !important;
+      margin-left: 0 !important;
+    }
+
+    /* Reset field order on mobile */
+    .contact-form > div:nth-child(1),
+    .contact-form > div:nth-child(2),
+    .contact-form > div:nth-child(3),
+    .contact-form > div:nth-child(4),
+    .contact-form > div:nth-child(5),
+    .contact-form > div:nth-child(6) {
+      grid-column: 1 !important;
+      grid-row: auto !important;
+    }
+  }
+{% endstyle %}
+
+{% capture submit_button %}
+  {% content_for 'block', type: 'contact-form-submit-button', id: 'submit-button' %}
+{% endcapture %}
+
+{% render 'contact-form', settings: block.settings, submit_button: submit_button %}
+
+{% schema %}
+{
+  "name": "t:names.contact_form",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "width",
+      "label": "t:settings.width_desktop",
+      "options": [
+        { "value": "fit-content", "label": "t:options.fit_content" },
+        { "value": "custom", "label": "t:options.custom" }
+      ],
+      "default": "fit-content"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "t:settings.width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.width == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "width_mobile",
+      "label": "t:settings.width_mobile",
+      "options": [
+        { "value": "fit-content", "label": "t:options.fit_content" },
+        { "value": "custom", "label": "t:options.custom" }
+      ],
+      "default": "fit-content"
+    },
+    {
+      "type": "range",
+      "id": "custom_width_mobile",
+      "label": "t:settings.width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.width_mobile == 'custom' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_color_scheme",
+      "label": "t:settings.inherit_color_scheme",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    { "type": "range", "id": "padding-block-start", "label": "t:settings.top", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-block-end", "label": "t:settings.bottom", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-start", "label": "t:settings.left", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end", "label": "t:settings.right", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 }
+  ],
+  "presets": [
+    { "name": "t:names.contact_form", "category": "t:categories.forms" }
+  ]
+}
+{% endschema %}

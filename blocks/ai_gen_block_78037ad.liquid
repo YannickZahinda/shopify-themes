@@ -1,0 +1,509 @@
+{% doc %}
+  @prompt
+    Same as before, but with a separate option to add a mobile background image that appears only on smaller screens.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-hero-arousique-wrapper-{{ ai_gen_id }} {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+  }
+
+  .ai-hero-arousique-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    min-height: {{ block.settings.section_min_height }}px;
+    background: linear-gradient(
+      to right,
+      {{ block.settings.gradient_color_left }},
+      {{ block.settings.gradient_color_right }}
+    );
+    padding: {{ block.settings.section_padding_top }}px 20px {{ block.settings.section_padding_bottom }}px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  {% if block.settings.background_image %}
+    .ai-hero-arousique-{{ ai_gen_id }}::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('{{ block.settings.background_image | image_url: width: 2000 }}');
+      background-size: {{ block.settings.background_image_fit }};
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: {{ block.settings.background_image_opacity | divided_by: 100.0 }};
+      z-index: 0;
+    }
+  {% endif %}
+
+  /* Mobile-specific background image */
+  @media screen and (max-width: 768px) {
+    {% if block.settings.background_image_mobile %}
+      .ai-hero-arousique-{{ ai_gen_id }}::before {
+        background-image: url('{{ block.settings.background_image_mobile | image_url: width: 1000 }}');
+        background-size: {{ block.settings.background_image_fit }};
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+    {% endif %}
+  }
+
+  .ai-hero-arousique-container-{{ ai_gen_id }} {
+    position: relative;
+    z-index: 1;
+    max-width: {{ block.settings.card_max_width }}px;
+    width: 100%;
+  }
+
+  .ai-hero-arousique-card-{{ ai_gen_id }} {
+    background: {{ block.settings.card_background }};
+    border-radius: {{ block.settings.card_border_radius }}px;
+    padding: {{ block.settings.card_padding }}px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, {{ block.settings.card_shadow_opacity | divided_by: 100.0 }});
+    text-align: center;
+  }
+
+  .ai-hero-arousique-card-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 {{ block.settings.heading_margin_bottom }}px;
+    line-height: 1.2;
+  }
+
+  .ai-hero-arousique-card-statements-{{ ai_gen_id }} {
+    font-size: {{ block.settings.statements_size }}px;
+    color: {{ block.settings.statements_color }};
+    line-height: 1.4;
+    margin: 0 0 {{ block.settings.statements_margin_bottom }}px;
+    font-weight: 500;
+  }
+
+  .ai-hero-arousique-card-description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.description_size }}px;
+    color: {{ block.settings.description_color }};
+    line-height: 1.5;
+    margin: 0 0 {{ block.settings.description_margin_bottom }}px;
+  }
+
+  .ai-hero-arousique-card-button-{{ ai_gen_id }} {
+    display: inline-block;
+    background: {{ block.settings.button_background }};
+    color: {{ block.settings.button_text_color }};
+    padding: {{ block.settings.button_padding_vertical }}px {{ block.settings.button_padding_horizontal }}px;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    text-decoration: none;
+    font-size: {{ block.settings.button_font_size }}px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .ai-hero-arousique-card-button-{{ ai_gen_id }}:hover {
+    background: {{ block.settings.button_hover_background }};
+    color: {{ block.settings.button_hover_text_color }};
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-hero-arousique-{{ ai_gen_id }} {
+      min-height: auto;
+      padding: 40px 15px;
+    }
+
+    .ai-hero-arousique-card-{{ ai_gen_id }} {
+      padding: 25px 20px;
+    }
+
+    .ai-hero-arousique-card-heading-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.heading_size }}px * 0.8);
+    }
+
+    .ai-hero-arousique-card-statements-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.statements_size }}px * 0.85);
+    }
+
+    .ai-hero-arousique-card-description-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.description_size }}px * 0.9);
+    }
+
+    .ai-hero-arousique-card-button-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.button_font_size }}px * 0.9);
+      padding: 10px 20px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-hero-arousique-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-hero-arousique-container-{{ ai_gen_id }}">
+    <div class="ai-hero-arousique-card-{{ ai_gen_id }}">
+      {% if block.settings.card_heading != blank %}
+        <h2 class="ai-hero-arousique-card-heading-{{ ai_gen_id }}">
+          {{ block.settings.card_heading }}
+        </h2>
+      {% endif %}
+
+      {% if block.settings.card_statements != blank %}
+        <div class="ai-hero-arousique-card-statements-{{ ai_gen_id }}">
+          {{ block.settings.card_statements }}
+        </div>
+      {% endif %}
+
+      {% if block.settings.card_description != blank %}
+        <div class="ai-hero-arousique-card-description-{{ ai_gen_id }}">
+          {{ block.settings.card_description }}
+        </div>
+      {% endif %}
+
+      {% if block.settings.button_text != blank %}
+        <a
+          href="{{ block.settings.button_link }}"
+          class="ai-hero-arousique-card-button-{{ ai_gen_id }}"
+        >
+          {{ block.settings.button_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Arousique hero",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Desktop background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Mobile background image"
+    },
+    {
+      "type": "select",
+      "id": "background_image_fit",
+      "label": "Image fit",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        },
+        {
+          "value": "auto",
+          "label": "Original size"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "range",
+      "id": "background_image_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Image opacity",
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_left",
+      "label": "Gradient left color",
+      "default": "#FFD4D4"
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_right",
+      "label": "Gradient right color",
+      "default": "#B8E6D5"
+    },
+    {
+      "type": "range",
+      "id": "section_min_height",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Minimum height",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Card"
+    },
+    {
+      "type": "range",
+      "id": "card_max_width",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Maximum width",
+      "default": 500
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "card_shadow_opacity",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "%",
+      "label": "Shadow opacity",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "richtext",
+      "id": "card_heading",
+      "label": "Heading",
+      "default": "<p>❤️ At Arousique, We Believe...</p>"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "heading_margin_bottom",
+      "min": 5,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Heading bottom spacing",
+      "default": 15
+    },
+    {
+      "type": "richtext",
+      "id": "card_statements",
+      "label": "Statements",
+      "default": "<p>Pleasure is empowering.<br/>Education is liberating.<br/>Confidence is sexy.</p>"
+    },
+    {
+      "type": "color",
+      "id": "statements_color",
+      "label": "Statements color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "statements_size",
+      "min": 14,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Statements size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "statements_margin_bottom",
+      "min": 5,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Statements bottom spacing",
+      "default": 15
+    },
+    {
+      "type": "richtext",
+      "id": "card_description",
+      "label": "Description",
+      "default": "<p>We're here to guide you with trusted advice, expert insights, and a judgment-free space to explore what feels right for you.</p>"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "description_margin_bottom",
+      "min": 5,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Description bottom spacing",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Text",
+      "default": "LEARN WITH AROUSIQUE"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Link"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Background",
+      "default": "#FF69B4"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Hover background",
+      "default": "#FF1493"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Hover text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "min": 6,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "min": 16,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Horizontal padding",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 25
+    }
+  ],
+  "presets": [
+    {
+      "name": "Arousique hero"
+    }
+  ]
+}
+{% endschema %}

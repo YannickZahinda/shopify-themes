@@ -1,0 +1,862 @@
+{% comment %}
+  Modern Footer Block for Shopify
+  - Deep purple/navy content area with brand, links, and newsletter
+  - Coral/salmon copyright bar at bottom
+  - Fully responsive and customizable
+{% endcomment %}
+
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-footer-{{ ai_gen_id }} {
+    width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  .ai-footer-content-{{ ai_gen_id }} {
+    background-color: {{ block.settings.content_bg_color }};
+    padding: {{ block.settings.content_padding }}px 20px;
+  }
+
+  .ai-footer-container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .ai-footer-brand-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ai-footer-brand-name-{{ ai_gen_id }} {
+    font-size: {{ block.settings.brand_name_size }}px;
+    font-weight: 700;
+    color: {{ block.settings.brand_text_color }};
+    margin: 0;
+    letter-spacing: 1px;
+  }
+
+  .ai-footer-tagline-{{ ai_gen_id }} {
+    color: {{ block.settings.tagline_color }};
+    font-size: {{ block.settings.tagline_size }}px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .ai-footer-social-{{ ai_gen_id }} {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .ai-footer-social-link-{{ ai_gen_id }} {
+    color: {{ block.settings.social_icon_color }};
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-footer-social-link-{{ ai_gen_id }}:hover {
+    opacity: 0.7;
+  }
+
+  .ai-footer-social-link-{{ ai_gen_id }} svg {
+    width: {{ block.settings.social_icon_size }}px;
+    height: {{ block.settings.social_icon_size }}px;
+  }
+
+  .ai-footer-links-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+
+  .ai-footer-link-column-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ai-footer-link-header-{{ ai_gen_id }} {
+    font-size: {{ block.settings.link_header_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.brand_text_color }};
+    margin: 0 0 4px 0;
+  }
+
+  .ai-footer-link-{{ ai_gen_id }} {
+    color: {{ block.settings.tagline_color }};
+    font-size: {{ block.settings.link_size }}px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .ai-footer-link-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.brand_text_color }};
+  }
+
+  .ai-footer-newsletter-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ai-footer-newsletter-header-{{ ai_gen_id }} {
+    font-size: {{ block.settings.newsletter_header_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.brand_text_color }};
+    margin: 0;
+  }
+
+  .ai-footer-newsletter-subtext-{{ ai_gen_id }} {
+    color: {{ block.settings.tagline_color }};
+    font-size: {{ block.settings.newsletter_subtext_size }}px;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .ai-footer-newsletter-form-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .ai-footer-newsletter-input-{{ ai_gen_id }} {
+    padding: 12px 16px;
+    border: 1px solid {{ block.settings.input_border_color }};
+    border-radius: {{ block.settings.input_border_radius }}px;
+    background-color: {{ block.settings.input_bg_color }};
+    color: {{ block.settings.input_text_color }};
+    font-size: 14px;
+  }
+
+  .ai-footer-newsletter-input-{{ ai_gen_id }}::placeholder {
+    color: {{ block.settings.input_placeholder_color }};
+  }
+
+  .ai-footer-newsletter-button-{{ ai_gen_id }} {
+    padding: 12px 24px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    border: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-footer-newsletter-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_bg_color }};
+  }
+
+  .ai-footer-newsletter-success-{{ ai_gen_id }} {
+    color: {{ block.settings.success_color }};
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  .ai-footer-newsletter-error-{{ ai_gen_id }} {
+    color: {{ block.settings.error_color }};
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  .ai-footer-bottom-{{ ai_gen_id }} {
+    background-color: {{ block.settings.bottom_bg_color }};
+    padding: {{ block.settings.bottom_padding }}px 20px;
+  }
+
+  .ai-footer-bottom-container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .ai-footer-copyright-{{ ai_gen_id }} {
+    color: {{ block.settings.bottom_text_color }};
+    font-size: {{ block.settings.copyright_size }}px;
+    margin: 0;
+  }
+
+  .ai-footer-legal-{{ ai_gen_id }} {
+    display: flex;
+    gap: 16px;
+  }
+
+  .ai-footer-legal-link-{{ ai_gen_id }} {
+    color: {{ block.settings.bottom_text_color }};
+    font-size: {{ block.settings.legal_link_size }}px;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-footer-legal-link-{{ ai_gen_id }}:hover {
+    opacity: 0.8;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .ai-footer-container-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .ai-footer-links-{{ ai_gen_id }} {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-footer-links-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .ai-footer-bottom-container-{{ ai_gen_id }} {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .ai-footer-legal-{{ ai_gen_id }} {
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+{% endstyle %}
+
+<footer class="ai-footer-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-footer-content-{{ ai_gen_id }}">
+    <div class="ai-footer-container-{{ ai_gen_id }}">
+      <div class="ai-footer-brand-{{ ai_gen_id }}">
+        <h2 class="ai-footer-brand-name-{{ ai_gen_id }}">{{ block.settings.brand_name }}</h2>
+        <p class="ai-footer-tagline-{{ ai_gen_id }}">{{ block.settings.tagline }}</p>
+        
+        <div class="ai-footer-social-{{ ai_gen_id }}">
+          {% if block.settings.instagram_url != blank %}
+            <a href="{{ block.settings.instagram_url }}" class="ai-footer-social-link-{{ ai_gen_id }}" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+          {% endif %}
+          
+          {% if block.settings.facebook_url != blank %}
+            <a href="{{ block.settings.facebook_url }}" class="ai-footer-social-link-{{ ai_gen_id }}" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </a>
+          {% endif %}
+          
+          {% if block.settings.youtube_url != blank %}
+            <a href="{{ block.settings.youtube_url }}" class="ai-footer-social-link-{{ ai_gen_id }}" target="_blank" rel="noopener" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="ai-footer-links-{{ ai_gen_id }}">
+        <div class="ai-footer-link-column-{{ ai_gen_id }}">
+          <h3 class="ai-footer-link-header-{{ ai_gen_id }}">{{ block.settings.quick_links_header }}</h3>
+          {% if block.settings.quick_link_1_text != blank %}
+            <a href="{{ block.settings.quick_link_1_url }}" class="ai-footer-link-{{ ai_gen_id }}">{{ block.settings.quick_link_1_text }}</a>
+          {% endif %}
+          {% if block.settings.quick_link_2_text != blank %}
+            <a href="{{ block.settings.quick_link_2_url }}" class="ai-footer-link-{{ ai_gen_id }}">{{ block.settings.quick_link_2_text }}</a>
+          {% endif %}
+          {% if block.settings.quick_link_3_text != blank %}
+            <a href="{{ block.settings.quick_link_3_url }}" class="ai-footer-link-{{ ai_gen_id }}">{{ block.settings.quick_link_3_text }}</a>
+          {% endif %}
+          {% if block.settings.quick_link_4_text != blank %}
+            <a href="{{ block.settings.quick_link_4_url }}" class="ai-footer-link-{{ ai_gen_id }}">{{ block.settings.quick_link_4_text }}</a>
+          {% endif %}
+        </div>
+
+        <div class="ai-footer-link-column-{{ ai_gen_id }}">
+          <h3 class="ai-footer-link-header-{{ ai_gen_id }}">{{ block.settings.support_header }}</h3>
+          {% if block.settings.support_link_1_text != blank %}
+            <a href="{{ block.settings.support_link_1_url }}" class="ai-footer-link-{{ ai_gen_id }}">{{ block.settings.support_link_1_text }}</a>
+          {% endif %}
+          {% if block.settings.support_link_2_text != blank %}
+            <a href="{{ block.settings.support_link_2_url }}" class="ai-footer-link-{{ ai_gen_id }}">{{ block.settings.support_link_2_text }}</a>
+          {% endif %}
+          {% if block.settings.support_link_3_text != blank %}
+            <a href="{{ block.settings.support_link_3_url }}" class="ai-footer-link-{{ ai_gen_id }}">{{ block.settings.support_link_3_text }}</a>
+          {% endif %}
+          {% if block.settings.support_link_4_text != blank %}
+            <a href="{{ block.settings.support_link_4_url }}" class="ai-footer-link-{{ ai_gen_id }}">{{ block.settings.support_link_4_text }}</a>
+          {% endif %}
+        </div>
+
+        <div class="ai-footer-link-column-{{ ai_gen_id }}">
+          <h3 class="ai-footer-link-header-{{ ai_gen_id }}">{{ block.settings.about_header }}</h3>
+          {% if block.settings.about_link_1_text != blank %}
+            <a href="{{ block.settings.about_link_1_url }}" class="ai-footer-link-{{ ai_gen_id }}">{{ block.settings.about_link_1_text }}</a>
+          {% endif %}
+          {% if block.settings.about_link_2_text != blank %}
+            <a href="{{ block.settings.about_link_2_url }}" class="ai-footer-link-{{ ai_gen_id }}">{{ block.settings.about_link_2_text }}</a>
+          {% endif %}
+          {% if block.settings.about_link_3_text != blank %}
+            <a href="{{ block.settings.about_link_3_url }}" class="ai-footer-link-{{ ai_gen_id }}">{{ block.settings.about_link_3_text }}</a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="ai-footer-newsletter-{{ ai_gen_id }}">
+        <h3 class="ai-footer-newsletter-header-{{ ai_gen_id }}">{{ block.settings.newsletter_header }}</h3>
+        <p class="ai-footer-newsletter-subtext-{{ ai_gen_id }}">{{ block.settings.newsletter_subtext }}</p>
+        
+        {%- form 'customer', class: 'ai-footer-newsletter-form-' | append: ai_gen_id -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <input
+            type="email"
+            name="contact[email]"
+            class="ai-footer-newsletter-input-{{ ai_gen_id }}"
+            value="{{ form.email }}"
+            aria-required="true"
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="email"
+            {% if form.errors %}
+              aria-invalid="true"
+              aria-describedby="ai-footer-newsletter-error-{{ ai_gen_id }}"
+            {% endif %}
+            {% if form.posted_successfully? %}
+              aria-describedby="ai-footer-newsletter-success-{{ ai_gen_id }}"
+            {% endif %}
+            placeholder="{{ block.settings.email_placeholder }}"
+            required
+          >
+          <button type="submit" class="ai-footer-newsletter-button-{{ ai_gen_id }}">
+            {{ block.settings.button_text }}
+          </button>
+          
+          {%- if form.errors -%}
+            <div id="ai-footer-newsletter-error-{{ ai_gen_id }}" class="ai-footer-newsletter-error-{{ ai_gen_id }}">
+              {{ form.errors.messages.email }}
+            </div>
+          {%- endif -%}
+          
+          {%- if form.posted_successfully? -%}
+            <div id="ai-footer-newsletter-success-{{ ai_gen_id }}" class="ai-footer-newsletter-success-{{ ai_gen_id }}">
+              {{ block.settings.success_message }}
+            </div>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+
+  <div class="ai-footer-bottom-{{ ai_gen_id }}">
+    <div class="ai-footer-bottom-container-{{ ai_gen_id }}">
+      <p class="ai-footer-copyright-{{ ai_gen_id }}">{{ block.settings.copyright_text }}</p>
+      <div class="ai-footer-legal-{{ ai_gen_id }}">
+        {% if block.settings.privacy_url != blank %}
+          <a href="{{ block.settings.privacy_url }}" class="ai-footer-legal-link-{{ ai_gen_id }}">Privacy Policy</a>
+        {% endif %}
+        {% if block.settings.terms_url != blank %}
+          <a href="{{ block.settings.terms_url }}" class="ai-footer-legal-link-{{ ai_gen_id }}">Terms of Use</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Modern Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand Section"
+    },
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand Name",
+      "default": "AROUSIQUE"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Discover premium products crafted with care and passion. We believe in quality, sustainability, and creating meaningful experiences for our customers."
+    },
+    {
+      "type": "range",
+      "id": "brand_name_size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Brand Name Size",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "tagline_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Tagline Size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Social Media"
+    },
+    {
+      "type": "text",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "text",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "text",
+      "id": "youtube_url",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "range",
+      "id": "social_icon_size",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon Size",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Quick Links"
+    },
+    {
+      "type": "text",
+      "id": "quick_links_header",
+      "label": "Header",
+      "default": "Quick Links"
+    },
+    {
+      "type": "text",
+      "id": "quick_link_1_text",
+      "label": "Link 1 Text",
+      "default": "Home"
+    },
+    {
+      "type": "text",
+      "id": "quick_link_1_url",
+      "label": "Link 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "quick_link_2_text",
+      "label": "Link 2 Text",
+      "default": "Shop"
+    },
+    {
+      "type": "text",
+      "id": "quick_link_2_url",
+      "label": "Link 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "quick_link_3_text",
+      "label": "Link 3 Text",
+      "default": "Quiz"
+    },
+    {
+      "type": "text",
+      "id": "quick_link_3_url",
+      "label": "Link 3 URL"
+    },
+    {
+      "type": "text",
+      "id": "quick_link_4_text",
+      "label": "Link 4 Text",
+      "default": "Learn"
+    },
+    {
+      "type": "text",
+      "id": "quick_link_4_url",
+      "label": "Link 4 URL"
+    },
+    {
+      "type": "header",
+      "content": "Support Links"
+    },
+    {
+      "type": "text",
+      "id": "support_header",
+      "label": "Header",
+      "default": "Support"
+    },
+    {
+      "type": "text",
+      "id": "support_link_1_text",
+      "label": "Link 1 Text",
+      "default": "Support"
+    },
+    {
+      "type": "text",
+      "id": "support_link_1_url",
+      "label": "Link 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "support_link_2_text",
+      "label": "Link 2 Text",
+      "default": "Account/Cart"
+    },
+    {
+      "type": "text",
+      "id": "support_link_2_url",
+      "label": "Link 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "support_link_3_text",
+      "label": "Link 3 Text",
+      "default": "Banking"
+    },
+    {
+      "type": "text",
+      "id": "support_link_3_url",
+      "label": "Link 3 URL"
+    },
+    {
+      "type": "text",
+      "id": "support_link_4_text",
+      "label": "Link 4 Text",
+      "default": "Blogs"
+    },
+    {
+      "type": "text",
+      "id": "support_link_4_url",
+      "label": "Link 4 URL"
+    },
+    {
+      "type": "header",
+      "content": "About Links"
+    },
+    {
+      "type": "text",
+      "id": "about_header",
+      "label": "Header",
+      "default": "About"
+    },
+    {
+      "type": "text",
+      "id": "about_link_1_text",
+      "label": "Link 1 Text",
+      "default": "About AROUSIQUE"
+    },
+    {
+      "type": "text",
+      "id": "about_link_1_url",
+      "label": "Link 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "about_link_2_text",
+      "label": "Link 2 Text",
+      "default": "Delivery & Returns"
+    },
+    {
+      "type": "text",
+      "id": "about_link_2_url",
+      "label": "Link 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "about_link_3_text",
+      "label": "Link 3 Text",
+      "default": "Careers"
+    },
+    {
+      "type": "text",
+      "id": "about_link_3_url",
+      "label": "Link 3 URL"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_header",
+      "label": "Header",
+      "default": "Share email and get discount"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_subtext",
+      "label": "Subtext",
+      "default": "Get access to special offers, hot promotions, & exciting new releases straight to your inbox"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email Placeholder",
+      "default": "Type your Email ID"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success Message",
+      "default": "Thanks for subscribing!"
+    },
+    {
+      "type": "range",
+      "id": "newsletter_header_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Header Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "newsletter_subtext_size",
+      "min": 11,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtext Size",
+      "default": 13
+    },
+    {
+      "type": "header",
+      "content": "Copyright Section"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "AROUSIQUE®2025 All Rights Reserved"
+    },
+    {
+      "type": "text",
+      "id": "privacy_url",
+      "label": "Privacy Policy URL"
+    },
+    {
+      "type": "text",
+      "id": "terms_url",
+      "label": "Terms of Use URL"
+    },
+    {
+      "type": "range",
+      "id": "copyright_size",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Copyright Text Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "legal_link_size",
+      "min": 11,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Legal Link Size",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "link_header_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Link Header Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "link_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Link Size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "content_bg_color",
+      "label": "Content Background",
+      "default": "#3b2a6f"
+    },
+    {
+      "type": "color",
+      "id": "brand_text_color",
+      "label": "Brand and Headers",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "tagline_color",
+      "label": "Body Text",
+      "default": "#e0d9f0"
+    },
+    {
+      "type": "color",
+      "id": "social_icon_color",
+      "label": "Social Icons",
+      "default": "#ffd700"
+    },
+    {
+      "type": "color",
+      "id": "input_bg_color",
+      "label": "Input Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "input_text_color",
+      "label": "Input Text",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "input_placeholder_color",
+      "label": "Input Placeholder",
+      "default": "#999999"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "Input Border",
+      "default": "#dddddd"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background",
+      "default": "#ffd700"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Button Hover Background",
+      "default": "#ffed4e"
+    },
+    {
+      "type": "color",
+      "id": "bottom_bg_color",
+      "label": "Bottom Bar Background",
+      "default": "#ff6b6b"
+    },
+    {
+      "type": "color",
+      "id": "bottom_text_color",
+      "label": "Bottom Bar Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "success_color",
+      "label": "Success Message",
+      "default": "#4caf50"
+    },
+    {
+      "type": "color",
+      "id": "error_color",
+      "label": "Error Message",
+      "default": "#f44336"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Content Padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "bottom_padding",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Bar Padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "input_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Input Border Radius",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Border Radius",
+      "default": 6
+    }
+  ],
+  "presets": [
+    {
+      "name": "Modern Footer"
+    }
+  ]
+}
+{% endschema %}

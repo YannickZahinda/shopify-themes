@@ -1,0 +1,885 @@
+{% comment %}
+  AROUSIQUE PREMIUM BLOG CARDS — Compact Horizontal Scroll
+  Shorter cards, cleaner design
+{% endcomment %}
+
+<style>
+  .bc-section-{{ section.id }} {
+    background: {{ section.settings.background_color }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Premium Background Decorations */
+  .bc-section-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .bc-section-{{ section.id }}::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(231, 84, 128, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .bc-container-{{ section.id }} {
+    max-width: {{ section.settings.container_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Premium Header */
+  .bc-header-{{ section.id }} {
+    text-align: center;
+    margin-bottom: {{ section.settings.header_margin }}px;
+  }
+
+  .bc-badge-{{ section.id }} {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #D4AF37;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 6px 20px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    backdrop-filter: blur(4px);
+  }
+
+  .bc-title-{{ section.id }} {
+    font-size: {{ section.settings.title_size_desktop }}px;
+    font-weight: 700;
+    color: {{ section.settings.title_color }} !important;
+    margin: 0 0 15px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .bc-subtitle-{{ section.id }} {
+    font-size: {{ section.settings.subtitle_size_desktop }}px;
+    color: {{ section.settings.subtitle_color }};
+    margin: 0 auto;
+    line-height: 1.6;
+    max-width: 550px;
+  }
+
+  .bc-gold-accent-{{ section.id }} {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #D4AF37, #E75480);
+    margin: 20px auto 0;
+    border-radius: 3px;
+  }
+
+  /* Horizontal Scroll Container */
+  .bc-scroll-container-{{ section.id }} {
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 15px;
+  }
+
+  /* Hidden scrollbar */
+  .bc-scroll-container-{{ section.id }} {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .bc-scroll-container-{{ section.id }}::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Flex Grid - Horizontal Layout */
+  .bc-grid-{{ section.id }} {
+    display: flex;
+    flex-direction: row;
+    gap: {{ section.settings.card_gap }}px;
+    width: fit-content;
+  }
+
+  /* SHORTER Premium Card */
+  .bc-card-{{ section.id }} {
+    background: linear-gradient(160deg, {{ section.settings.card_background }} 0%, #FDF6F9 100%);
+    border-radius: {{ section.settings.card_radius }}px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    box-shadow: 0 5px 15px rgba(45, 27, 46, 0.06), 0 1px 3px rgba(212, 175, 55, 0.08);
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    text-decoration: none;
+    color: inherit;
+    scroll-snap-align: start;
+    flex: 0 0 {{ section.settings.card_width }}px;
+    position: relative;
+  }
+
+  /* Animated Top Border */
+  .bc-card-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #D4AF37, #E75480, #7B1E3A);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+
+  .bc-card-{{ section.id }}:hover::before {
+    transform: scaleX(1);
+  }
+
+  .bc-card-{{ section.id }}:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(45, 27, 46, 0.1);
+    border-color: rgba(212, 175, 55, 0.2);
+  }
+
+  /* COMPACT Image Wrapper */
+  .bc-img-wrapper-{{ section.id }} {
+    position: relative;
+    width: 100%;
+    aspect-ratio: {{ section.settings.image_aspect_ratio }};
+    overflow: hidden;
+    background: linear-gradient(135deg, #F6EEF2, #EDD9E5);
+  }
+
+  .bc-img-{{ section.id }} {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .bc-card-{{ section.id }}:hover .bc-img-{{ section.id }} {
+    transform: scale(1.05);
+  }
+
+  .bc-img-placeholder-{{ section.id }} {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #F6EEF2, #EDD9E5);
+  }
+
+  .bc-img-placeholder-{{ section.id }} svg {
+    width: 40px;
+    height: 40px;
+    stroke: #D4AF37;
+  }
+
+  /* Category Badge */
+  .bc-category-{{ section.id }} {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(27, 13, 18, 0.7);
+    backdrop-filter: blur(8px);
+    color: #D4AF37;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 50px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    z-index: 2;
+  }
+
+  /* COMPACT Content Area */
+  .bc-content-{{ section.id }} {
+    padding: {{ section.settings.content_padding }}px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+  }
+
+  /* Meta Info - Smaller */
+  .bc-meta-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: #8B6B7A;
+  }
+
+  .bc-author-initial-{{ section.id }} {
+    width: {{ section.settings.author_image_size }}px;
+    height: {{ section.settings.author_image_size }}px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7B1E3A, #E75480);
+    color: #F6EEF2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  .bc-meta-sep-{{ section.id }} {
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: #D4C0CC;
+  }
+
+  /* Title - Smaller, Tighter */
+  .bc-card-title-{{ section.id }} {
+    font-size: {{ section.settings.card_title_size_desktop }}px;
+    font-weight: 700;
+    color: {{ section.settings.card_title_color }};
+    margin: 0;
+    line-height: 1.3;
+    transition: color 0.2s ease;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .bc-card-{{ section.id }}:hover .bc-card-title-{{ section.id }} {
+    color: #E75480;
+  }
+
+  /* Excerpt - Shorter */
+  .bc-excerpt-{{ section.id }} {
+    font-size: {{ section.settings.excerpt_size_desktop }}px;
+    color: {{ section.settings.excerpt_color }};
+    line-height: 1.45;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Compact Footer */
+  .bc-footer-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 6px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(212, 175, 55, 0.08);
+  }
+
+  .bc-read-time-{{ section.id }} {
+    font-size: 9px;
+    color: #C4A5B0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .bc-read-time-{{ section.id }} svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  .bc-arrow-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: {{ section.settings.button_background }};
+    color: #FFFFFF;
+    transition: all 0.2s ease;
+  }
+
+  .bc-arrow-{{ section.id }} svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  .bc-card-{{ section.id }}:hover .bc-arrow-{{ section.id }} {
+    background: {{ section.settings.button_hover_background }};
+    transform: translateX(2px);
+  }
+
+  /* Scroll Hint */
+  .bc-scroll-hint-{{ section.id }} {
+    text-align: center;
+    margin-top: 25px;
+  }
+
+  .bc-scroll-hint-{{ section.id }} span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: #8B6B7A;
+    background: rgba(212, 175, 55, 0.08);
+    padding: 5px 16px;
+    border-radius: 50px;
+  }
+
+  .bc-scroll-hint-{{ section.id }} span::after {
+    content: '→';
+    animation: bounceRight 1.5s ease infinite;
+  }
+
+  @keyframes bounceRight {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(4px); }
+  }
+
+  /* Responsive */
+  @media screen and (max-width: 989px) {
+    .bc-card-{{ section.id }} {
+      width: {{ section.settings.card_width_tablet }}px;
+    }
+    .bc-title-{{ section.id }} {
+      font-size: {{ section.settings.title_size_mobile }}px;
+    }
+    .bc-subtitle-{{ section.id }} {
+      font-size: {{ section.settings.subtitle_size_mobile }}px;
+    }
+    .bc-card-title-{{ section.id }} {
+      font-size: {{ section.settings.card_title_size_mobile }}px;
+    }
+    .bc-excerpt-{{ section.id }} {
+      font-size: {{ section.settings.excerpt_size_mobile }}px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .bc-card-{{ section.id }} {
+      width: {{ section.settings.card_width_mobile }}px;
+    }
+    .bc-scroll-hint-{{ section.id }} {
+      display: none;
+    }
+    .bc-content-{{ section.id }} {
+      padding: 12px;
+    }
+    .bc-card-title-{{ section.id }} {
+      font-size: 14px;
+    }
+    .bc-excerpt-{{ section.id }} {
+      font-size: 11px;
+    }
+    .bc-meta-{{ section.id }} {
+      font-size: 9px;
+    }
+    .bc-author-initial-{{ section.id }} {
+      width: 24px;
+      height: 24px;
+      font-size: 9px;
+    }
+  }
+</style>
+
+<section class="bc-section-{{ section.id }}">
+  <div class="bc-container-{{ section.id }}">
+
+    <!-- Header -->
+    <div class="bc-header-{{ section.id }}">
+      {% if section.settings.badge_text != blank %}
+        <div class="bc-badge-{{ section.id }}">{{ section.settings.badge_text }}</div>
+      {% endif %}
+      {% if section.settings.title != blank %}
+        <h2 class="bc-title-{{ section.id }}">{{ section.settings.title }}</h2>
+      {% endif %}
+      {% if section.settings.subtitle != blank %}
+        <p class="bc-subtitle-{{ section.id }}">{{ section.settings.subtitle }}</p>
+      {% endif %}
+      <div class="bc-gold-accent-{{ section.id }}"></div>
+    </div>
+
+    <!-- Horizontal Scroll Container -->
+    <div class="bc-scroll-container-{{ section.id }}">
+      <div class="bc-grid-{{ section.id }}">
+        {% for block in section.blocks %}
+          {% assign article = articles[block.settings.blog_post] %}
+          {% if article %}
+            <a href="{{ article.url }}" class="bc-card-{{ section.id }}" {{ block.shopify_attributes }}>
+
+              <!-- Image Section -->
+              <div class="bc-img-wrapper-{{ section.id }}">
+                {% if article.image %}
+                  <img
+                    class="bc-img-{{ section.id }}"
+                    src="{{ article.image | image_url: width: 400 }}"
+                    srcset="
+                      {{ article.image | image_url: width: 300 }} 300w,
+                      {{ article.image | image_url: width: 400 }} 400w,
+                      {{ article.image | image_url: width: 600 }} 600w
+                    "
+                    sizes="(max-width: 749px) 85vw, (max-width: 989px) 45vw, 25vw"
+                    alt="{{ article.title | escape }}"
+                    loading="lazy"
+                    width="400"
+                    height="320"
+                  >
+                {% else %}
+                  <div class="bc-img-placeholder-{{ section.id }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                      <rect x="3" y="3" width="18" height="18" rx="2"/>
+                      <circle cx="8.5" cy="8.5" r="1.5"/>
+                      <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                  </div>
+                {% endif %}
+
+                {% if article.tags.size > 0 %}
+                  <span class="bc-category-{{ section.id }}">{{ article.tags.first }}</span>
+                {% endif %}
+              </div>
+
+              <!-- Content Section -->
+              <div class="bc-content-{{ section.id }}">
+                <div class="bc-meta-{{ section.id }}">
+                  {% assign display_author = block.settings.custom_author_name | default: article.author %}
+                  <div class="bc-author-initial-{{ section.id }}">{{ display_author | slice: 0 | upcase }}</div>
+                  <span>{{ display_author | truncate: 14 }}</span>
+                  <span class="bc-meta-sep-{{ section.id }}"></span>
+                  <span>{{ article.published_at | date: "%b %d, %Y" }}</span>
+                </div>
+
+                <h3 class="bc-card-title-{{ section.id }}">{{ article.title | truncate: 50 }}</h3>
+
+                {% if article.excerpt != blank %}
+                  <p class="bc-excerpt-{{ section.id }}">{{ article.excerpt | strip_html | truncate: section.settings.excerpt_length }}</p>
+                {% else %}
+                  <p class="bc-excerpt-{{ section.id }}">{{ article.content | strip_html | truncate: section.settings.excerpt_length }}</p>
+                {% endif %}
+
+                <div class="bc-footer-{{ section.id }}">
+                  <span class="bc-read-time-{{ section.id }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    {{ section.settings.read_time_label }}
+                  </span>
+                  <span class="bc-arrow-{{ section.id }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <line x1="5" y1="12" x2="19" y2="12"/>
+                      <polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Scroll Hint -->
+    <div class="bc-scroll-hint-{{ section.id }}">
+      <span>Swipe to explore more articles</span>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  // Grab and drag functionality for horizontal scroll
+  (function() {
+    const container = document.querySelector('.bc-scroll-container-{{ section.id }}');
+    if (!container) return;
+    
+    let isDragging = false;
+    let startX;
+    let scrollLeft;
+    
+    container.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) return;
+      isDragging = true;
+      startX = e.pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+      container.style.cursor = 'grabbing';
+      e.preventDefault();
+    });
+    
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      container.scrollLeft = scrollLeft - walk;
+    });
+    
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+      container.style.cursor = 'grab';
+    });
+    
+    container.style.cursor = 'grab';
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Premium Blog Cards",
+  "tag": "section",
+  "class": "custom-blog-cards-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "✨ Section Header"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "FEATURED STORIES"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Between the Sheets: The Arousique Blog"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Unlock the secrets to better sex, deeper intimacy, and unapologetic self-love."
+    },
+    {
+      "type": "text",
+      "id": "read_time_label",
+      "label": "Read Time Label",
+      "default": "2 min read"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#D4A0B0"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "label": "Container Width",
+      "min": 1000,
+      "max": 1600,
+      "step": 100,
+      "default": 1400,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 20,
+      "max": 80,
+      "step": 10,
+      "default": 50,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 20,
+      "max": 80,
+      "step": 10,
+      "default": 50,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "header_margin",
+      "label": "Header Bottom Margin",
+      "min": 20,
+      "max": 60,
+      "step": 10,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "📝 Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 24,
+      "max": 48,
+      "step": 2,
+      "default": 32,
+      "unit": "px",
+      "label": "Title Size (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "min": 28,
+      "max": 60,
+      "step": 2,
+      "default": 42,
+      "unit": "px",
+      "label": "Title Size (Desktop)"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#F6EEF2"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_mobile",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 14,
+      "unit": "px",
+      "label": "Subtitle Size (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_desktop",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "unit": "px",
+      "label": "Subtitle Size (Desktop)"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#8B6B7A"
+    },
+    {
+      "type": "header",
+      "content": "📦 Card Settings"
+    },
+    {
+      "type": "range",
+      "id": "card_width",
+      "min": 240,
+      "max": 340,
+      "step": 10,
+      "default": 280,
+      "unit": "px",
+      "label": "Card Width (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "card_width_tablet",
+      "min": 220,
+      "max": 300,
+      "step": 10,
+      "default": 260,
+      "unit": "px",
+      "label": "Card Width (Tablet)"
+    },
+    {
+      "type": "range",
+      "id": "card_width_mobile",
+      "min": 220,
+      "max": 280,
+      "step": 10,
+      "default": 260,
+      "unit": "px",
+      "label": "Card Width (Mobile)"
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Image Aspect Ratio",
+      "options": [
+        { "value": "4 / 5", "label": "Tall (4:5)" },
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "16 / 9", "label": "Landscape (16:9)" }
+      ],
+      "default": "1 / 1"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 12,
+      "max": 28,
+      "step": 2,
+      "default": 18,
+      "unit": "px",
+      "label": "Card Border Radius"
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "min": 12,
+      "max": 28,
+      "step": 2,
+      "default": 20,
+      "unit": "px",
+      "label": "Gap Between Cards"
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "min": 10,
+      "max": 18,
+      "step": 2,
+      "default": 12,
+      "unit": "px",
+      "label": "Card Content Padding"
+    },
+    {
+      "type": "header",
+      "content": "📝 Card Typography"
+    },
+    {
+      "type": "range",
+      "id": "card_title_size_mobile",
+      "min": 13,
+      "max": 18,
+      "step": 1,
+      "default": 15,
+      "unit": "px",
+      "label": "Card Title Size (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "card_title_size_desktop",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "default": 16,
+      "unit": "px",
+      "label": "Card Title Size (Desktop)"
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Card Title Color",
+      "default": "#2D1B2E"
+    },
+    {
+      "type": "range",
+      "id": "excerpt_size_mobile",
+      "min": 10,
+      "max": 13,
+      "step": 1,
+      "default": 11,
+      "unit": "px",
+      "label": "Excerpt Size (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "excerpt_size_desktop",
+      "min": 11,
+      "max": 14,
+      "step": 1,
+      "default": 12,
+      "unit": "px",
+      "label": "Excerpt Size (Desktop)"
+    },
+    {
+      "type": "color",
+      "id": "excerpt_color",
+      "label": "Excerpt Color",
+      "default": "#8B6B7A"
+    },
+    {
+      "type": "range",
+      "id": "excerpt_length",
+      "min": 50,
+      "max": 100,
+      "step": 10,
+      "default": 70,
+      "unit": "ch",
+      "label": "Excerpt Length"
+    },
+    {
+      "type": "header",
+      "content": "👤 Author"
+    },
+    {
+      "type": "range",
+      "id": "author_image_size",
+      "min": 20,
+      "max": 28,
+      "step": 2,
+      "default": 24,
+      "unit": "px",
+      "label": "Author Image Size"
+    },
+    {
+      "type": "header",
+      "content": "🎯 Button Arrow"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Arrow Background",
+      "default": "#7B1E3A"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Arrow Hover Background",
+      "default": "#E75480"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "blog_card",
+      "name": "Blog Card",
+      "settings": [
+        {
+          "type": "article",
+          "id": "blog_post",
+          "label": "Select Blog Post"
+        },
+        {
+          "type": "text",
+          "id": "custom_author_name",
+          "label": "Custom Author Name",
+          "placeholder": "Team Arousique"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Author Image (Optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Premium Blog Cards"
+    }
+  ]
+}
+{% endschema %}

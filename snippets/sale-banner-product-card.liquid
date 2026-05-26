@@ -1,0 +1,101 @@
+{% comment %}
+  Renders a product card for the sale banner
+  Usage:
+  {% render 'sale-banner-product-card', product: product, ai_gen_id: ai_gen_id, block: block, index: index %}
+{% endcomment %}
+
+{% liquid
+  assign discount_key = 'discount_' | append: index
+  assign bestseller_key = 'bestseller_' | append: index
+  assign discount = block.settings[discount_key]
+  assign is_bestseller = block.settings[bestseller_key]
+  
+  assign discount_percent = 0
+  if product.compare_at_price > product.price
+    assign discount_percent = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price
+  endif
+
+  assign product_has_swatches = false
+  for product_option in product.options_with_values
+    assign swatch_count = product_option.values | map: 'swatch' | compact | size
+    if swatch_count > 0
+      assign product_has_swatches = true
+    endif
+  endfor
+%}
+
+<a href="{{ product.url }}" class="ai-sale-banner-product-card-{{ ai_gen_id }}" style="text-decoration: none; color: inherit; display: block; cursor: pointer;">
+  <div class="ai-sale-banner-product-image-wrapper-{{ ai_gen_id }}">
+    {% if product.featured_image %}
+      <img
+        src="{{ product.featured_image | image_url: width: 400 }}"
+        alt="{{ product.featured_image.alt | escape }}"
+        class="ai-sale-banner-product-image-{{ ai_gen_id }}"
+        loading="lazy"
+        width="400"
+        height="400"
+      >
+    {% else %}
+      <div class="ai-sale-banner-product-image-placeholder-{{ ai_gen_id }}">
+        {{ 'product-1' | placeholder_svg_tag }}
+      </div>
+    {% endif %}
+
+    {% if discount != blank %}
+      <span class="ai-sale-banner-discount-badge-{{ ai_gen_id }}">{{ discount }}</span>
+    {% elsif discount_percent > 0 %}
+      <span class="ai-sale-banner-discount-badge-{{ ai_gen_id }}">{{ discount_percent }}% OFF</span>
+    {% endif %}
+
+    {% if is_bestseller %}
+      <span class="ai-sale-banner-bestseller-badge-{{ ai_gen_id }}">Best Seller</span>
+    {% endif %}
+  </div>
+
+  <h3 class="ai-sale-banner-product-title-{{ ai_gen_id }}">{{ product.title }}</h3>
+
+  {% if product_has_swatches %}
+    <div class="ai-sale-banner-swatches-wrapper-{{ ai_gen_id }}">
+      {% render 'variant-swatches', product_resource: product %}
+    </div>
+  {% endif %}
+
+  <p class="ai-sale-banner-product-description-{{ ai_gen_id }}">{{ block.settings.product_description }}</p>
+
+  <div class="ai-sale-banner-rating-{{ ai_gen_id }}">
+    {% for j in (1..5) %}
+      <span class="ai-sale-banner-star-{{ ai_gen_id }}">★</span>
+    {% endfor %}
+  </div>
+
+  <div class="ai-sale-banner-price-wrapper-{{ ai_gen_id }}">
+    {% if product.compare_at_price > product.price %}
+      <span class="ai-sale-banner-original-price-{{ ai_gen_id }}">{{ product.compare_at_price | money }}</span>
+    {% endif %}
+    <span class="ai-sale-banner-sale-price-{{ ai_gen_id }}">{{ product.price | money }}</span>
+  </div>
+
+  <button class="ai-sale-banner-add-to-cart-{{ ai_gen_id }}" type="button">
+    {{ block.settings.cart_button_label }}
+  </button>
+</a>
+
+{% style %}
+  .ai-sale-banner-swatches-wrapper-{{ ai_gen_id }} {
+    margin: 10px 0;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .ai-sale-banner-swatches-wrapper-{{ ai_gen_id }} swatches-variant-picker-component {
+    justify-content: flex-start;
+  }
+
+  .ai-sale-banner-swatches-wrapper-{{ ai_gen_id }} .variant-option--swatches {
+    padding: 4px 0;
+  }
+
+  .ai-sale-banner-swatches-wrapper-{{ ai_gen_id }} overflow-list::part(list) {
+    gap: 6px;
+  }
+{% endstyle %}

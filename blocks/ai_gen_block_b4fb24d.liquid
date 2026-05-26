@@ -1,0 +1,275 @@
+{% comment %}
+  Scrolling Marquee Bar - Arousique Premium
+  Fixed: decimal step removed to prevent save-revert bug
+{% endcomment %}
+
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-marquee-bar-{{ ai_gen_id }} {
+    {% if block.settings.use_gradient %}
+      background: linear-gradient({{ block.settings.gradient_angle }}deg, {{ block.settings.gradient_color_1 }}, {{ block.settings.gradient_color_2 }});
+    {% else %}
+      background-color: {{ block.settings.background_color }};
+    {% endif %}
+    overflow-x: hidden;
+    overflow-y: hidden;
+    width: 100%;
+    max-width: 100vw;
+    padding: {{ block.settings.vertical_padding }}px 0;
+    position: relative;
+    margin: 0;
+    box-sizing: border-box;
+    /* Gold bottom border accent */
+    border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+  }
+
+  .ai-marquee-bar__track-{{ ai_gen_id }} {
+    display: flex;
+    width: fit-content;
+    animation: ai-marquee-scroll-{{ ai_gen_id }} {{ block.settings.scroll_speed }}s linear infinite;
+    will-change: transform;
+  }
+
+  .ai-marquee-bar__content-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    padding-right: {{ block.settings.item_spacing }}px;
+    flex-shrink: 0;
+  }
+
+  .ai-marquee-bar__text-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.font_size }}px;
+    font-weight: {{ block.settings.font_weight }};
+    text-transform: uppercase;
+    letter-spacing: {{ block.settings.letter_spacing }}px;
+    display: inline-block;
+    font-family: 'Tomato Grotesk', 'Myriad Pro', sans-serif;
+  }
+
+  .ai-marquee-bar__separator-{{ ai_gen_id }} {
+    margin: 0 {{ block.settings.separator_spacing }}px;
+    color: #D4AF37;
+    display: inline-block;
+    opacity: 0.8;
+  }
+
+  @keyframes ai-marquee-scroll-{{ ai_gen_id }} {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-marquee-bar__text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size | times: 0.85 | round }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-marquee-bar-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-marquee-bar__track-{{ ai_gen_id }}">
+    {% for i in (1..2) %}
+      <div class="ai-marquee-bar__content-{{ ai_gen_id }}">
+        {% if block.settings.message_1 != blank %}
+          <span class="ai-marquee-bar__text-{{ ai_gen_id }}">{{ block.settings.message_1 }}</span>
+          <span class="ai-marquee-bar__separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+        {% endif %}
+        {% if block.settings.message_2 != blank %}
+          <span class="ai-marquee-bar__text-{{ ai_gen_id }}">{{ block.settings.message_2 }}</span>
+          <span class="ai-marquee-bar__separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+        {% endif %}
+        {% if block.settings.message_3 != blank %}
+          <span class="ai-marquee-bar__text-{{ ai_gen_id }}">{{ block.settings.message_3 }}</span>
+          <span class="ai-marquee-bar__separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+        {% endif %}
+        {% if block.settings.message_4 != blank %}
+          <span class="ai-marquee-bar__text-{{ ai_gen_id }}">{{ block.settings.message_4 }}</span>
+          <span class="ai-marquee-bar__separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Scrolling marquee bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Messages"
+    },
+    {
+      "type": "text",
+      "id": "message_1",
+      "label": "Message 1",
+      "default": "COD AVAILABLE"
+    },
+    {
+      "type": "text",
+      "id": "message_2",
+      "label": "Message 2",
+      "default": "FREE DISCREET DELIVERY"
+    },
+    {
+      "type": "text",
+      "id": "message_3",
+      "label": "Message 3",
+      "default": "MEDICAL-GRADE MATERIALS"
+    },
+    {
+      "type": "text",
+      "id": "message_4",
+      "label": "Message 4",
+      "default": "1-3 DAY EXPRESS SHIPPING"
+    },
+    {
+      "type": "text",
+      "id": "separator",
+      "label": "Separator",
+      "default": "✦"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_gradient",
+      "label": "Use gradient background",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Solid background color",
+      "default": "#1A0D12"
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_1",
+      "label": "Gradient color 1",
+      "default": "#1A0D12"
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_2",
+      "label": "Gradient color 2",
+      "default": "#2D1B2E"
+    },
+    {
+      "type": "select",
+      "id": "gradient_angle",
+      "label": "Gradient angle",
+      "default": "90",
+      "options": [
+        { "value": "0",   "label": "0° (Top → Bottom)" },
+        { "value": "45",  "label": "45°" },
+        { "value": "90",  "label": "90° (Left → Right)" },
+        { "value": "135", "label": "135°" },
+        { "value": "180", "label": "180° (Bottom → Top)" },
+        { "value": "225", "label": "225°" },
+        { "value": "270", "label": "270° (Right → Left)" },
+        { "value": "315", "label": "315°" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Text Style"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#F6EEF2"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "default": "600",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "label": "Letter spacing",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "vertical_padding",
+      "min": 4,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "separator_spacing",
+      "min": 5,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Separator spacing",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "item_spacing",
+      "min": 20,
+      "max": 80,
+      "step": 10,
+      "unit": "px",
+      "label": "Item spacing",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "label": "Scroll speed (seconds)",
+      "default": 30
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scrolling marquee bar"
+    }
+  ]
+}
+{% endschema %}

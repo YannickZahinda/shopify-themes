@@ -1,0 +1,468 @@
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}">
+  {% liquid
+    assign total_blocks = section.blocks.size
+    assign grid_columns = total_blocks | at_most: 4
+    assign last_row_count = total_blocks | minus: 1 | modulo: 4 | plus: 1
+    assign tablet_last_row_count = total_blocks | minus: 1 | modulo: 3 | plus: 1
+    assign has_isolated_grid_item_desktop = false
+    assign has_isolated_grid_item_tablet = false
+
+    if total_blocks > 4 and last_row_count == 1
+      assign has_isolated_grid_item_desktop = true
+    endif
+
+    if total_blocks > 3 and tablet_last_row_count == 1
+      assign has_isolated_grid_item_tablet = true
+    endif
+  %}
+  
+  <div class="footer-content spacing-style
+      {% if has_isolated_grid_item_desktop %}footer-content--isolated-grid-item-desktop{% endif %}
+      {% if has_isolated_grid_item_tablet %}footer-content--isolated-grid-item-tablet{% endif %}"
+    style="{% render 'spacing-style', settings: section.settings %}
+      --footer-gap: {{ section.settings.gap }}px;
+      --grid-columns: {{ grid_columns }};
+      --last-row-count: {{ last_row_count }};
+      --tablet-last-row-count: {{ tablet_last_row_count }};">
+    {% content_for 'blocks' %}
+  </div>
+
+  {% if section.settings.show_copyright_bar %}
+  <div class="footer-copyright" style="background-color: {{ section.settings.copyright_bg_color }}; color: {{ section.settings.copyright_text_color }};">
+    <div class="footer-copyright-content">
+      <p>{{ section.settings.copyright_text }}</p>
+      {% if section.settings.show_privacy_links %}
+      <div class="footer-legal-links">
+        <a href="{{ section.settings.privacy_policy_url }}">{{ section.settings.privacy_text }}</a>
+        <span class="separator">|</span>
+        <a href="{{ section.settings.terms_url }}">{{ section.settings.terms_text }}</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .footer-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--footer-gap);
+  }
+
+  /* Mobile: Single column layout */
+  @media screen and (max-width: 749px) {
+    .footer-content {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Tablet: 2 column layout */
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .footer-content {
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-flow: row;
+    }
+    .footer-content--isolated-grid-item-tablet > :last-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* Desktop: 4 column layout matching Figma */
+  @media screen and (min-width: 990px) {
+    .footer-content {
+      grid-template-columns: 2fr 1fr 1fr 1.5fr;
+      align-items: start;
+    }
+
+    /* Force 4 columns when there are 4 blocks */
+    .footer-content:has(> :nth-child(4)) {
+      grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    }
+
+    .footer-content[style*='--grid-columns: 1'] {
+      justify-items: center;
+    }
+
+    .footer-content--isolated-grid-item-desktop > :last-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* Copyright bar styling */
+  .footer-copyright {
+    margin-top: 40px;
+    padding: 20px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .footer-copyright-content {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 14px;
+  }
+
+  .footer-copyright p {
+    margin: 0;
+  }
+
+  .footer-legal-links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .footer-legal-links a {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .footer-legal-links a:hover {
+    opacity: 0.7;
+  }
+
+  .footer-legal-links .separator {
+    opacity: 0.5;
+  }
+
+  @media screen and (max-width: 749px) {
+    .footer-copyright-content {
+      flex-direction: column;
+      text-align: center;
+      gap: 12px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.footer",
+  "class": "section-wrapper",
+  "tag": "footer",
+  "blocks": [
+    {
+      "type": "_divider"
+    },
+    {
+      "type": "@app"
+    },
+    {
+      "type": "button"
+    },
+    {
+      "type": "follow-on-shop"
+    },
+    {
+      "type": "group"
+    },
+    {
+      "type": "icon"
+    },
+    {
+      "type": "image"
+    },
+    {
+      "type": "menu"
+    },
+    {
+      "type": "payment-icons"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "logo"
+    },
+    {
+      "type": "jumbo-text"
+    },
+    {
+      "type": "social-links"
+    },
+    {
+      "type": "email-signup"
+    }
+  ],
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "t:options.page"
+        },
+        {
+          "value": "full-width",
+          "label": "t:options.full"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "t:settings.gap",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Copyright Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_copyright_bar",
+      "label": "Show copyright bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright text",
+      "default": "AROUSIQUE©2025 All Rights Reserved"
+    },
+    {
+      "type": "color",
+      "id": "copyright_bg_color",
+      "label": "Copyright bar background color",
+      "default": "#E85D75"
+    },
+    {
+      "type": "color",
+      "id": "copyright_text_color",
+      "label": "Copyright bar text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_privacy_links",
+      "label": "Show privacy & terms links",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "privacy_text",
+      "label": "Privacy policy text",
+      "default": "Privacy Policy"
+    },
+    {
+      "type": "url",
+      "id": "privacy_policy_url",
+      "label": "Privacy policy URL"
+    },
+    {
+      "type": "text",
+      "id": "terms_text",
+      "label": "Terms text",
+      "default": "Terms of Use"
+    },
+    {
+      "type": "url",
+      "id": "terms_url",
+      "label": "Terms of use URL"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Arousique Footer",
+      "category": "t:categories.footer",
+      "settings": {
+        "gap": 32,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 0,
+        "show_copyright_bar": true,
+        "copyright_text": "AROUSIQUE©2025 All Rights Reserved",
+        "copyright_bg_color": "#E85D75",
+        "copyright_text_color": "#FFFFFF",
+        "show_privacy_links": true,
+        "privacy_text": "Privacy Policy",
+        "terms_text": "Terms of Use"
+      },
+      "blocks": {
+        "brand-group": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "flex-start",
+            "gap": 12,
+            "width": "fill",
+            "inherit_color_scheme": true
+          },
+          "blocks": {
+            "brand-logo": {
+              "type": "logo",
+              "settings": {}
+            },
+            "brand-tagline": {
+              "type": "text",
+              "settings": {
+                "text": "<p><strong>Celebrate You Unapologetically!</strong></p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "body"
+              }
+            },
+            "brand-description": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Arousique is your go-to destination for elegant, mood-based adult wellness. From playful to relaxed, our curated collections empower you to express yourself with internet delivery and complete privacy.</p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "caption"
+              }
+            },
+            "social-links": {
+              "type": "social-links",
+              "settings": {}
+            }
+          },
+          "block_order": ["brand-logo", "brand-tagline", "brand-description", "social-links"]
+        },
+        "quick-links": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "flex-start",
+            "gap": 8,
+            "width": "fill"
+          },
+          "blocks": {
+            "quick-links-heading": {
+              "type": "text",
+              "settings": {
+                "text": "<h3>Quick Links</h3>",
+                "type_preset": "h5"
+              }
+            },
+            "quick-links-menu": {
+              "type": "menu",
+              "settings": {
+                "menu": "footer"
+              }
+            }
+          },
+          "block_order": ["quick-links-heading", "quick-links-menu"]
+        },
+        "support-links": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "flex-start",
+            "gap": 8,
+            "width": "fill"
+          },
+          "blocks": {
+            "support-heading": {
+              "type": "text",
+              "settings": {
+                "text": "<h3>Support</h3>",
+                "type_preset": "h5"
+              }
+            },
+            "support-menu": {
+              "type": "menu",
+              "settings": {
+                "menu": "footer-support"
+              }
+            }
+          },
+          "block_order": ["support-heading", "support-menu"]
+        },
+        "newsletter-group": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "flex-start",
+            "gap": 12,
+            "width": "fill",
+            "inherit_color_scheme": true
+          },
+          "blocks": {
+            "newsletter-heading": {
+              "type": "text",
+              "settings": {
+                "text": "<h3>Share email and get discount</h3>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "h5"
+              }
+            },
+            "newsletter-text": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Get access to special offers, hot promotions, & exciting deals delivered straight into your inbox.</p>",
+                "width": "100%",
+                "alignment": "left",
+                "type_preset": "caption"
+              }
+            },
+            "newsletter-form": {
+              "type": "email-signup",
+              "settings": {
+                "width": "fill"
+              }
+            }
+          },
+          "block_order": ["newsletter-heading", "newsletter-text", "newsletter-form"]
+        }
+      },
+      "block_order": ["brand-group", "quick-links", "support-links", "newsletter-group"]
+    }
+  ]
+}
+{% endschema %}

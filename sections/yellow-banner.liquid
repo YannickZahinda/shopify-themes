@@ -1,0 +1,88 @@
+{% comment %}
+  Arousique – Yellow USP banner
+  Customise in the theme editor (no code needed after install)
+{% endcomment %}
+
+<div class="arousique-banner">
+  <div class="arousique-banner__inner page-width">
+    <div class="arousique-banner__item">
+      <span class="arousique-banner__emoji">🔥</span>
+      <span class="arousique-banner__text">{{ section.settings.line1 }}</span>
+    </div>
+    <div class="arousique-banner__item">
+      <span class="arousique-banner__emoji">📚</span>
+      <span class="arousique-banner__text">{{ section.settings.line2 }}</span>
+    </div>
+    <div class="arousique-banner__item">
+      <span class="arousique-banner__emoji">✨</span>
+      <span class="arousique-banner__text">{{ section.settings.line3 }}</span>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Arousique USP banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "line1",
+      "label": "Line 1",
+      "default": "Pleasure is empowering."
+    },
+    {
+      "type": "text",
+      "id": "line2",
+      "label": "Line 2",
+      "default": "Education is liberating."
+    },
+    {
+      "type": "text",
+      "id": "line3",
+      "label": "Line 3",
+      "default": "Confidence is sexy."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Arousique USP banner",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.arousique-banner {
+  background: #E1E584;          /* Figma colour */
+  padding: 24px 0;
+  text-align: center;
+}
+
+.arousique-banner__inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+}
+
+.arousique-banner__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #000;
+}
+
+.arousique-banner__emoji {
+  font-size: 1.3em;
+}
+
+@media (max-width: 749px) {
+  .arousique-banner__inner {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+{% endstylesheet %}

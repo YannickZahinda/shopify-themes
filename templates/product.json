@@ -1,0 +1,881 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product-information",
+      "disabled": true,
+      "settings": {}
+    },
+    "custom_product_display_xUkwMy": {
+      "type": "custom-product-display",
+      "custom_css": [],
+      "name": "Custom Product Display",
+      "settings": {
+        "use_gradient_background": true,
+        "solid_bg_color": "#fff8f4",
+        "gradient_start_color": "#fff8f4",
+        "gradient_end_color": "#f6eef2",
+        "gradient_angle": 135,
+        "show_badge": true,
+        "show_rating": true,
+        "rating_count": "{{ product.metafields.custom.rating_count_text.value }}",
+        "sale_badge": "{{ product.metafields.custom.sale_badge_text.value }}",
+        "tax_text": "incl. of all taxes",
+        "show_swatches": true,
+        "show_uses_list": false,
+        "uses_label": "",
+        "add_to_cart_text": "Add to Cart",
+        "show_features": true,
+        "features_title": "Product Specifications",
+        "feature_1": "{{ product.metafields.custom.feature_1.value }}",
+        "feature_2": "{{ product.metafields.custom.feature_2.value }}",
+        "feature_3": "{{ product.metafields.custom.feature_3.value }}",
+        "feature_4": "{{ product.metafields.custom.feature_4.value }}",
+        "feature_5": "{{ product.metafields.custom.feature_5.value }}",
+        "feature_6": "{{ product.metafields.custom.feature_6.value }}",
+        "feature_7": "{{ product.metafields.custom.feature_7.value }}",
+        "feature_8": "{{ product.metafields.custom.feature_8.value }}",
+        "feature_9": "{{ product.metafields.custom.feature_9.value }}",
+        "feature_10": "{{ product.metafields.custom.feature_10.value }}",
+        "show_delivery_info": true,
+        "delivery_title": "Discreet Delivery",
+        "delivery_subtitle": "Our Products are delivered in discreet plain brown packaging",
+        "delivery_box_image": "shopify://shop_images/1.9.png",
+        "delivery_link_text": "See the box",
+        "show_how_to_use": true,
+        "how_to_title": "",
+        "how_to_video": "{{ product.metafields.custom.how_to_use.value }}",
+        "video_poster": "shopify://shop_images/Group_1000001767.png",
+        "instructions": "{{ product.metafields.custom.instructions_fallback | metafield_tag }}",
+        "show_return_policy": true,
+        "return_title": "Return",
+        "return_text": "<p>Your satisfaction means everything to us. While we do not offer returns due to the personal nature of our products, we’re happy to offer a replacement in the rare case of any damage or defect. If you face any such issue, kindly reach out to us within 24 hours of delivery along with an unboxing video — we’re here to help.</p>"
+      }
+    },
+    "blocks_6Rj64f": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_b4fb24d_7w3eWW": {
+          "type": "ai_gen_block_b4fb24d",
+          "settings": {
+            "message_1": "COD AVAILABLE",
+            "message_2": "FREE DISCREET & 1-3 DAY EXPRESS DELIVERY",
+            "message_3": "COD AVAILABLE",
+            "message_4": "FREE, DISCREET & 1-3 DAY EXPRESS DELIVERY",
+            "separator": "•",
+            "use_gradient": true,
+            "background_color": "#1a0d12",
+            "gradient_color_1": "#1a0d12",
+            "gradient_color_2": "#2d1b2e",
+            "gradient_angle": "90",
+            "text_color": "#ffffff",
+            "font_size": 14,
+            "font_weight": "700",
+            "letter_spacing": 1,
+            "vertical_padding": 12,
+            "separator_spacing": 20,
+            "item_spacing": 40,
+            "scroll_speed": 30
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_b4fb24d_7w3eWW"
+      ],
+      "name": "Scrolling marquee bar",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "video_gallery_reviews_6RrVPj": {
+      "type": "video-gallery-reviews",
+      "blocks": {
+        "video_TKpyFL": {
+          "type": "video",
+          "settings": {
+            "video_url": "https://www.youtube.com/watch?v=pJxeyK7it0o",
+            "video_title": ""
+          }
+        },
+        "video_cbJXXD": {
+          "type": "video",
+          "settings": {
+            "video_url": "https://www.youtube.com/watch?v=pJxeyK7it0o",
+            "video_title": ""
+          }
+        },
+        "video_KYehDE": {
+          "type": "video",
+          "settings": {
+            "video_url": "https://www.youtube.com/watch?v=pJxeyK7it0o",
+            "video_title": ""
+          }
+        },
+        "video_yLVjkG": {
+          "type": "video",
+          "settings": {
+            "video_url": "https://www.youtube.com/watch?v=pJxeyK7it0o",
+            "video_title": ""
+          }
+        },
+        "video_dmjjUU": {
+          "type": "video",
+          "settings": {
+            "video_url": "https://www.youtube.com/watch?v=pJxeyK7it0o",
+            "video_title": ""
+          }
+        },
+        "video_HyGNRE": {
+          "type": "video",
+          "settings": {
+            "video_url": "https://www.youtube.com/watch?v=pJxeyK7it0o",
+            "video_title": ""
+          }
+        }
+      },
+      "block_order": [
+        "video_TKpyFL",
+        "video_cbJXXD",
+        "video_KYehDE",
+        "video_yLVjkG",
+        "video_dmjjUU",
+        "video_HyGNRE"
+      ],
+      "disabled": true,
+      "name": "Video Reviews",
+      "settings": {
+        "section_title": "Watch Our Videos",
+        "section_subtitle": "Discover our latest content",
+        "desktop_video_width": 280,
+        "desktop_video_height": 440,
+        "desktop_gap": 15,
+        "desktop_columns": 3,
+        "mobile_video_width": 200,
+        "mobile_video_height": 300,
+        "mobile_gap": 16,
+        "mobile_columns": 1,
+        "enable_navigation": true,
+        "nav_button_bg": "#ffffff",
+        "nav_button_hover_bg": "#f0f0f0",
+        "nav_button_color": "#333333",
+        "border_radius": 12,
+        "background_color": "#ffffff",
+        "title_size": 32,
+        "title_color": "#333333",
+        "subtitle_size": 16,
+        "subtitle_color": "#666666",
+        "video_title_color": "#333333"
+      }
+    },
+    "product_recommendations_qggXJq": {
+      "type": "product-recommendations",
+      "blocks": {
+        "text_cbcgyb": {
+          "type": "text",
+          "name": "t:names.header",
+          "disabled": true,
+          "settings": {
+            "text": "<h3>You may also like </h3>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h4",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "disabled": true,
+          "static": true,
+          "settings": {
+            "product_card_gap": 8,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 8,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product_card_gallery_DNizbJ": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_card_media",
+              "settings": {
+                "image_ratio": "adapt",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_title_M7MJkb": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "price_gLWgA6": {
+              "type": "price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "left",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_card_gallery_DNizbJ",
+            "product_title_M7MJkb",
+            "price_gLWgA6"
+          ]
+        }
+      },
+      "block_order": [
+        "text_cbcgyb"
+      ],
+      "disabled": true,
+      "name": "t:names.product_recommendations",
+      "settings": {
+        "product": "{{ closest.product }}",
+        "recommendation_type": "related",
+        "layout_type": "grid",
+        "carousel_on_mobile": false,
+        "max_products": 4,
+        "columns": 4,
+        "mobile_columns": "2",
+        "columns_gap": 12,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "gap": 28,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "custom_customer_review_m8YMAq": {
+      "type": "custom-customer-review",
+      "blocks": {
+        "review_ewh4nt": {
+          "type": "review",
+          "settings": {
+            "reviewer_name": "Tavis B.",
+            "verified_purchase": true,
+            "rating": 5,
+            "review_title": "It's good, uses lots of lube",
+            "review_text": "It feels a bit weird at first but if you make sure you use alot of vibration/happily move when necessary, it'll feel amazing",
+            "review_date": "30/02/2025",
+            "review_images": "",
+            "helpful_count": 0
+          }
+        },
+        "review_nhzzRL": {
+          "type": "review",
+          "settings": {
+            "reviewer_name": "Tavis B.",
+            "verified_purchase": true,
+            "rating": 5,
+            "review_title": "It's good, uses lots of lube",
+            "review_text": "It feels a bit weird at first but if you make sure you use alot of vibration/happily move when necessary, it'll feel amazing",
+            "review_date": "30/02/2025",
+            "review_images": "",
+            "helpful_count": 0
+          }
+        },
+        "review_bCyL4N": {
+          "type": "review",
+          "settings": {
+            "reviewer_name": "Tavis B.",
+            "verified_purchase": true,
+            "rating": 5,
+            "review_title": "It's good, uses lots of lube",
+            "review_text": "It feels a bit weird at first but if you make sure you use alot of vibration/happily move when necessary, it'll feel amazing",
+            "review_date": "30/02/2025",
+            "review_images": "",
+            "helpful_count": 0
+          }
+        },
+        "review_8QNQHx": {
+          "type": "review",
+          "settings": {
+            "reviewer_name": "Tavis B.",
+            "verified_purchase": true,
+            "rating": 5,
+            "review_title": "It's good, uses lots of lube",
+            "review_text": "It feels a bit weird at first but if you make sure you use alot of vibration/happily move when necessary, it'll feel amazing",
+            "review_date": "30/02/2025",
+            "review_images": "",
+            "helpful_count": 0
+          }
+        }
+      },
+      "block_order": [
+        "review_ewh4nt",
+        "review_nhzzRL",
+        "review_bCyL4N",
+        "review_8QNQHx"
+      ],
+      "disabled": true,
+      "name": "Customer Reviews",
+      "settings": {
+        "section_title": "Customer Reviews",
+        "color_scheme": "",
+        "average_rating": "4.8",
+        "total_reviews": 6,
+        "star_5_count": 5,
+        "star_4_count": 8,
+        "star_3_count": 2,
+        "star_2_count": 0,
+        "star_1_count": 0,
+        "button_text": "WRITE A REVIEW",
+        "show_more_text": "Show More",
+        "show_less_text": "Show Less",
+        "reviews_to_show": 3,
+        "show_helpfulness": true
+      }
+    },
+    "faq_custom_dewqhP": {
+      "type": "faq-custom",
+      "blocks": {
+        "faq_item_EUXanH": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Are Arousique products safe to use?",
+            "answer": "<p>Yes, all our products are made with body-safe materials and thoroughly tested.</p>"
+          }
+        },
+        "faq_item_wQM3Jt": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I use the products both internally and externally?",
+            "answer": "<p>Please refer to individual product guidelines for specific usage instructions.</p>"
+          }
+        },
+        "faq_item_mqjdMb": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What payment options do you offer?",
+            "answer": "<p>We accept all major credit cards, PayPal, and other secure payment methods.</p>"
+          }
+        },
+        "faq_item_PcPRHX": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How quickly will my order arrive?",
+            "answer": "<p>Standard shipping takes 5-7 business days. Express shipping options are available at checkout.</p>"
+          }
+        },
+        "faq_item_p8FQ6w": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>We offer a 30-day return policy on unopened products. Please contact our support team for assistance.</p>"
+          }
+        },
+        "faq_item_fKNJYg": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I track my order?",
+            "answer": "<p>Yes! You'll receive a tracking number via email once your order ships.</p>"
+          }
+        },
+        "faq_item_wFfhP4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>Yes, we ship to most countries worldwide. Shipping costs and times vary by location.</p>"
+          }
+        },
+        "faq_item_HRJcfP": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Are your products discreetly packaged?",
+            "answer": "<p>Absolutely! All orders are shipped in plain, unmarked packaging for your privacy.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_EUXanH",
+        "faq_item_wQM3Jt",
+        "faq_item_mqjdMb",
+        "faq_item_PcPRHX",
+        "faq_item_p8FQ6w",
+        "faq_item_fKNJYg",
+        "faq_item_wFfhP4",
+        "faq_item_HRJcfP"
+      ],
+      "name": "Custom FAQ",
+      "settings": {
+        "heading": "FAQs",
+        "heading_color": "#2d1b2e",
+        "border_color": "#e75480",
+        "initial_visible": 8,
+        "see_more_text": "See More",
+        "see_less_text": "See Less"
+      }
+    },
+    "blocks_m3J4nJ": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_91845c6_6gp67d": {
+          "type": "ai_gen_block_91845c6",
+          "settings": {
+            "badge_text": "CURATED FOR YOU",
+            "badge_font_size": 11,
+            "title": "You May Also Like",
+            "title_size": 40,
+            "subtitle": "Every Mood Deserves a Different Kind of Pleasure",
+            "subtitle_size": 16,
+            "padding_top": 70,
+            "padding_bottom": 70,
+            "side_padding": 24,
+            "header_margin_bottom": 45,
+            "image_padding": 16,
+            "badge_top": 16,
+            "badge_left": 16,
+            "badge_padding_v": 6,
+            "badge_padding_h": 10,
+            "show_discount_badge": true,
+            "bestseller_product": "",
+            "bestseller_label": "Best Seller",
+            "content_padding_h": 16,
+            "content_padding_top": 16,
+            "content_padding_bottom": 16,
+            "product_title_size": 18,
+            "title_margin_bottom": 8,
+            "swatches_size": 28,
+            "swatches_gap": 8,
+            "show_description": true,
+            "show_rating": true,
+            "button_label": "ADD TO CART",
+            "nav_offset": 30,
+            "products_per_slide": 4,
+            "grid_gap": 24,
+            "product_1": "arousique-twist-it",
+            "product_2": "arousique-lip-trip",
+            "product_3": "titan",
+            "product_4": "arousique-rabbit",
+            "product_5": "",
+            "product_6": "",
+            "product_7": "",
+            "product_8": "",
+            "product_9": "",
+            "product_10": "",
+            "product_11": "",
+            "product_12": ""
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_4bba30f_ydDmGj": {
+          "type": "ai_gen_block_4bba30f",
+          "settings": {
+            "eyebrow": "SHOP BY MOOD",
+            "title": "What’s Your Vibe Tonight?🔥",
+            "subtitle": "Find the perfect touch for exactly how you feel.",
+            "title_size_desktop": 40,
+            "title_size_mobile": 28,
+            "subtitle_size_desktop": 18,
+            "subtitle_size_mobile": 14,
+            "max_width": 1400,
+            "section_padding_top": 60,
+            "section_padding_bottom": 60,
+            "header_spacing": 40,
+            "card_gap": 20,
+            "card_width_desktop": 300,
+            "card_width_tablet": 280,
+            "card_width_mobile": 260,
+            "card_radius": 28,
+            "card_padding": 20,
+            "card_title_size": 20,
+            "card_desc_size": 13,
+            "mood_1_enabled": true,
+            "mood_1_title": "",
+            "mood_1_description": "",
+            "mood_1_bg_color": "#b8e8d8",
+            "mood_1_bg_image": "shopify://shop_images/tzplz_jpeg.jpg",
+            "mood_1_collection": "all-products",
+            "mood_1_link": "",
+            "mood_2_enabled": true,
+            "mood_2_title": "",
+            "mood_2_description": "",
+            "mood_2_bg_color": "#f9b8d4",
+            "mood_2_bg_image": "shopify://shop_images/wld.jpg",
+            "mood_2_collection": "all-products",
+            "mood_2_link": "",
+            "mood_3_enabled": true,
+            "mood_3_title": "",
+            "mood_3_description": "",
+            "mood_3_bg_color": "#ffd166",
+            "mood_3_bg_image": "shopify://shop_images/own.jpg",
+            "mood_3_collection": "all-products",
+            "mood_3_link": "",
+            "mood_4_enabled": true,
+            "mood_4_title": "",
+            "mood_4_description": "",
+            "mood_4_bg_color": "#ffc7dc",
+            "mood_4_bg_image": "shopify://shop_images/nwtl.jpg",
+            "mood_4_collection": "all-products",
+            "mood_4_link": "",
+            "mood_5_enabled": true,
+            "mood_5_title": "",
+            "mood_5_description": "",
+            "mood_5_bg_color": "#ffbe5c",
+            "mood_5_bg_image": "shopify://shop_images/slwburn.jpg",
+            "mood_5_collection": "all-products",
+            "mood_5_link": "",
+            "mood_6_enabled": true,
+            "mood_6_title": "",
+            "mood_6_description": "",
+            "mood_6_bg_color": "#c8eed8",
+            "mood_6_bg_image": "shopify://shop_images/pbliss.jpg",
+            "mood_6_collection": "",
+            "mood_6_link": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_91845c6_6gp67d",
+        "ai_gen_block_4bba30f_ydDmGj"
+      ],
+      "custom_css": [
+        "[class*=\"ai-bestsellers-title\"] {font-family: \"Tomato Grotesk\", sans-serif !important; color: #e75480 !important; font-size: 34px !important;}",
+        "[class*=\"ai-bestsellers-subtitle\"] {font-size: 18px !important; font-family: \"Myriad Pro\" !important; color: #8b6b7a !important;}",
+        "[class*=\"ai-bestsellers-product-title\"] {color: #2d1b2e !important; font-weight: 500 !important;}",
+        "[class*=\"ai-bestsellers-product-description\"] {font-weight: 300 !important;}"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-1",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "simple_hero_banner_E6aeJt": {
+      "type": "simple-hero-banner",
+      "disabled": true,
+      "name": "Hero Banner",
+      "settings": {
+        "background_image": "shopify://shop_images/Frame_1000001832_b1a3bfe4-ea4c-49f0-b05a-748151afc435.png",
+        "banner_height": 300,
+        "mobile_background_image": "shopify://shop_images/Frame_2147207921_41c59f18-a625-416b-9a56-1321bf07e051.png",
+        "mobile_height": 300,
+        "overlay_color": "#000000",
+        "overlay_opacity": 0,
+        "text_alignment": "center",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_horizontal": 40,
+        "heading": "Need a Little Help?",
+        "heading_size": 42,
+        "heading_color": "#000000",
+        "subheading": "30-second quiz. Find the toy that fits your desire.",
+        "subheading_size": 20,
+        "subheading_color": "#000000",
+        "button_text": "FIND MY VIBE",
+        "button_link": "",
+        "button_font_size": 13,
+        "button_padding_vertical": 14,
+        "button_padding_horizontal": 35,
+        "button_background_color": "#f85f73",
+        "button_hover_background": "#f3586e",
+        "button_text_color": "#ffffff",
+        "button_border_radius": 38
+      }
+    },
+    "blocks_ttL7kx": {
+      "type": "_blocks",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "blocks_67Egbd": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_ea2e480_YMUiY8": {
+          "type": "ai_gen_block_ea2e480",
+          "settings": {
+            "heading": "The Arousique Promise",
+            "subheading": "Your satisfaction and privacy are our top priorities",
+            "heading_size": 40,
+            "subheading_size": 16,
+            "heading_color": "#e75480",
+            "subheading_color": "#7b1e3a",
+            "spacing_between_headings": 12,
+            "spacing_below_header": 48,
+            "background_color": "#f6eef2",
+            "padding_top": 72,
+            "padding_bottom": 72,
+            "columns_desktop": 6,
+            "columns_tablet": 3,
+            "columns_mobile": 3,
+            "grid_gap": 32,
+            "circle_size": 100,
+            "icon_padding": 0,
+            "icon_size": 48,
+            "spacing_below_icon": 16,
+            "enable_hover_effect": true,
+            "label_size": 14,
+            "label_color": "#7b1e3a",
+            "label_weight": 600,
+            "feature_1_enabled": true,
+            "feature_1_icon": "shopify://shop_images/warantyarousik.jpg",
+            "feature_1_label": "120-Day Warranty",
+            "feature_1_color": "#ffd147",
+            "feature_1_icon_color": "#ffffff",
+            "feature_2_enabled": true,
+            "feature_2_icon": "shopify://shop_images/arousikcube.jpg",
+            "feature_2_label": "100% Discreet Delivery",
+            "feature_2_color": "#ff5a8f",
+            "feature_2_icon_color": "#ffffff",
+            "feature_3_enabled": true,
+            "feature_3_icon": "shopify://shop_images/clockarousic.jpg",
+            "feature_3_label": "Sanitised & Sealed",
+            "feature_3_color": "#4a2b66",
+            "feature_3_icon_color": "#ffffff",
+            "feature_4_enabled": true,
+            "feature_4_icon": "shopify://shop_images/expert.jpg",
+            "feature_4_label": "24 * 7 Expert Support",
+            "feature_4_color": "#ffd147",
+            "feature_4_icon_color": "#ffffff",
+            "feature_5_enabled": true,
+            "feature_5_icon": "shopify://shop_images/medicalarousik.jpg",
+            "feature_5_label": "Medical-Grade, Body-Safe Materials",
+            "feature_5_color": "#ff5a8f",
+            "feature_5_icon_color": "#ffffff",
+            "feature_6_enabled": true,
+            "feature_6_icon": "shopify://shop_images/arousiktruck.jpg",
+            "feature_6_label": "Express Delivery + COD",
+            "feature_6_color": "#4a2b66",
+            "feature_6_icon_color": "#ffffff"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_ea2e480_YMUiY8"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 20,
+        "padding-block-end": 20
+      }
+    },
+    "17696702838e4e8d24": {
+      "type": "_blocks",
+      "blocks": {
+        "judge_me_reviews_review_widget_GTcmLw": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "no_reviews",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_GTcmLw"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    }
+  },
+  "order": [
+    "main",
+    "custom_product_display_xUkwMy",
+    "blocks_6Rj64f",
+    "video_gallery_reviews_6RrVPj",
+    "product_recommendations_qggXJq",
+    "custom_customer_review_m8YMAq",
+    "faq_custom_dewqhP",
+    "blocks_m3J4nJ",
+    "simple_hero_banner_E6aeJt",
+    "blocks_ttL7kx",
+    "blocks_67Egbd",
+    "17696702838e4e8d24"
+  ]
+}

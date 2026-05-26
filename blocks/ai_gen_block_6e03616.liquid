@@ -1,0 +1,489 @@
+{% doc %}
+  @prompt
+    Create a 2x2 grid section with 4 promotional cards with rounded corners and padding between cards:
+    Row 1:
+    
+    Left card (Dark Purple #3B2766): Title 'Discreet Packaging' with yellow lightning bolt emoji. Subtitle 'No mention of product or brand on shipping box'. Include circular product image (brown box) and a person holding a box on the right. Add yellow lightning bolt decorations.
+    Right card (Bright Yellow #FFD166): Title 'Never Used Before?' Subtitle 'No Get Our Free Course' (underlined text). Include dark purple 'LEARN MORE' button with arrow. Product images (pink/yellow vibrators) on the right side. Add yellow lightning bolt decorations.
+    
+    Row 2:
+    
+    Left card (Coral Pink #FF7B9C): White text 'Get 15% off on your 1st order' and 'Copy Code : 15%OFF'. Include image of blue gift card/voucher on the right. Add decorative lightning bolts and sunburst pattern in background.
+    Right card (Light Pink #FFB3D9): Dark text 'Get 15% off on your 1st order' and 'Copy Code : 15%OFF'. Include image of pink/red product on circular platform on the right. Add decorative lightning bolt elements.
+    
+    Section features:
+    
+    Full-width responsive grid
+    Equal height cards with rounded corners (16px)
+    20px gap between cards
+    Each card is clickable
+    2 columns on desktop, 1 column on mobile
+    Padding around entire section
+    Background images for each card
+    Customizable size and placement controls
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-promo-grid-{{ ai_gen_id }} {
+    padding: {{ block.settings.section_padding }}px;
+    width: 100%;
+  }
+
+  .ai-promo-grid__container-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: {{ block.settings.card_gap }}px;
+    max-width: 100%;
+  }
+
+  .ai-promo-card-{{ ai_gen_id }} {
+    position: relative;
+    border-radius: {{ block.settings.card_border_radius }}px;
+    padding: {{ block.settings.card_padding }}px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 280px;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit;
+    z-index: 0;
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}:hover {
+    transform: translateY(-4px);
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}--purple {
+    background-color: {{ block.settings.card_1_bg_color }};
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}--yellow {
+    background-color: {{ block.settings.card_2_bg_color }};
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}--coral {
+    background-color: {{ block.settings.card_3_bg_color }};
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}--pink {
+    background-color: {{ block.settings.card_4_bg_color }};
+  }
+
+  .ai-promo-card__content-{{ ai_gen_id }} {
+    position: relative;
+    z-index: 2;
+  }
+
+  .ai-promo-card__title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}--purple .ai-promo-card__title-{{ ai_gen_id }},
+  .ai-promo-card-{{ ai_gen_id }}--coral .ai-promo-card__title-{{ ai_gen_id }} {
+    color: {{ block.settings.light_text_color }};
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}--yellow .ai-promo-card__title-{{ ai_gen_id }},
+  .ai-promo-card-{{ ai_gen_id }}--pink .ai-promo-card__title-{{ ai_gen_id }} {
+    color: {{ block.settings.dark_text_color }};
+  }
+
+  .ai-promo-card__subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}--purple .ai-promo-card__subtitle-{{ ai_gen_id }},
+  .ai-promo-card-{{ ai_gen_id }}--coral .ai-promo-card__subtitle-{{ ai_gen_id }} {
+    color: {{ block.settings.light_text_color }};
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}--yellow .ai-promo-card__subtitle-{{ ai_gen_id }},
+  .ai-promo-card-{{ ai_gen_id }}--pink .ai-promo-card__subtitle-{{ ai_gen_id }} {
+    color: {{ block.settings.dark_text_color }};
+  }
+
+  .ai-promo-card__subtitle-{{ ai_gen_id }} u {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+  }
+
+  .ai-promo-card__button-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 16px;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-promo-card__button-{{ ai_gen_id }}:hover {
+    opacity: 0.9;
+  }
+
+  .ai-promo-card__button-arrow-{{ ai_gen_id }} {
+    width: 16px;
+    height: 16px;
+  }
+
+  .ai-promo-card__image-wrapper-{{ ai_gen_id }} {
+    position: absolute;
+    z-index: 1;
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}--purple .ai-promo-card__image-wrapper-{{ ai_gen_id }} {
+    right: {{ block.settings.card_1_image_right }}px;
+    bottom: {{ block.settings.card_1_image_bottom }}px;
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}--yellow .ai-promo-card__image-wrapper-{{ ai_gen_id }} {
+    right: {{ block.settings.card_2_image_right }}px;
+    bottom: {{ block.settings.card_2_image_bottom }}px;
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}--coral .ai-promo-card__image-wrapper-{{ ai_gen_id }} {
+    right: {{ block.settings.card_3_image_right }}px;
+    bottom: {{ block.settings.card_3_image_bottom }}px;
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}--pink .ai-promo-card__image-wrapper-{{ ai_gen_id }} {
+    right: {{ block.settings.card_4_image_right }}px;
+    bottom: {{ block.settings.card_4_image_bottom }}px;
+  }
+
+  .ai-promo-card__image-{{ ai_gen_id }} {
+    height: auto;
+    display: block;
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}--purple .ai-promo-card__image-{{ ai_gen_id }} {
+    max-width: {{ block.settings.card_1_image_size }}px;
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}--yellow .ai-promo-card__image-{{ ai_gen_id }} {
+    max-width: {{ block.settings.card_2_image_size }}px;
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}--coral .ai-promo-card__image-{{ ai_gen_id }} {
+    max-width: {{ block.settings.card_3_image_size }}px;
+  }
+
+  .ai-promo-card-{{ ai_gen_id }}--pink .ai-promo-card__image-{{ ai_gen_id }} {
+    max-width: {{ block.settings.card_4_image_size }}px;
+  }
+
+  .ai-promo-card__decoration-{{ ai_gen_id }} {
+    position: absolute;
+    z-index: 1;
+  }
+
+  .ai-promo-card__lightning-{{ ai_gen_id }} {
+    font-size: 24px;
+  }
+
+  .ai-promo-card__lightning-1-{{ ai_gen_id }} {
+    top: 20px;
+    right: 20px;
+  }
+
+  .ai-promo-card__lightning-2-{{ ai_gen_id }} {
+    bottom: 60px;
+    left: 20px;
+  }
+
+  .ai-promo-card__sunburst-{{ ai_gen_id }} {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .ai-promo-card__code-{{ ai_gen_id }} {
+    font-size: {{ block.settings.code_size }}px;
+    font-weight: 700;
+    margin-top: 8px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-promo-grid__container-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: {{ block.settings.card_gap_mobile }}px;
+    }
+
+    .ai-promo-card-{{ ai_gen_id }} {
+      min-height: 220px;
+    }
+
+    .ai-promo-card__title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.8 }}px;
+    }
+
+    .ai-promo-card__subtitle-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subtitle_size | times: 0.9 }}px;
+    }
+
+    .ai-promo-card__image-{{ ai_gen_id }} {
+      max-width: 100px;
+    }
+
+    .ai-promo-card__image-wrapper-{{ ai_gen_id }} {
+      right: 10px;
+      bottom: 10px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-promo-grid-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-promo-grid__container-{{ ai_gen_id }}">
+    
+    {% if block.settings.card_1_enabled %}
+      <a 
+        href="{{ block.settings.card_1_link }}" 
+        class="ai-promo-card-{{ ai_gen_id }} ai-promo-card-{{ ai_gen_id }}--purple"
+        {% if block.settings.card_1_bg_image %}
+          style="background-image: url('{{ block.settings.card_1_bg_image | image_url: width: 800 }}');"
+        {% endif %}
+      >
+        <div class="ai-promo-card__decoration-{{ ai_gen_id }} ai-promo-card__lightning-{{ ai_gen_id }} ai-promo-card__lightning-1-{{ ai_gen_id }}">
+          ⚡
+        </div>
+        <div class="ai-promo-card__decoration-{{ ai_gen_id }} ai-promo-card__lightning-{{ ai_gen_id }} ai-promo-card__lightning-2-{{ ai_gen_id }}">
+          ⚡
+        </div>
+        
+        <div class="ai-promo-card__content-{{ ai_gen_id }}">
+          <h3 class="ai-promo-card__title-{{ ai_gen_id }}">
+            {{ block.settings.card_1_title }}
+          </h3>
+          <p class="ai-promo-card__subtitle-{{ ai_gen_id }}">
+            {{ block.settings.card_1_subtitle }}
+          </p>
+        </div>
+
+        {% if block.settings.card_1_image %}
+          <div class="ai-promo-card__image-wrapper-{{ ai_gen_id }}">
+            <img 
+              src="{{ block.settings.card_1_image | image_url: width: 300 }}" 
+              alt="{{ block.settings.card_1_image.alt | escape }}"
+              class="ai-promo-card__image-{{ ai_gen_id }}"
+              loading="lazy"
+              width="150"
+              height="150"
+            >
+          </div>
+        {% endif %}
+      </a>
+    {% endif %}
+
+    {% if block.settings.card_2_enabled %}
+      <a 
+        href="{{ block.settings.card_2_link }}" 
+        class="ai-promo-card-{{ ai_gen_id }} ai-promo-card-{{ ai_gen_id }}--yellow"
+        {% if block.settings.card_2_bg_image %}
+          style="background-image: url('{{ block.settings.card_2_bg_image | image_url: width: 800 }}');"
+        {% endif %}
+      >
+        <div class="ai-promo-card__decoration-{{ ai_gen_id }} ai-promo-card__lightning-{{ ai_gen_id }} ai-promo-card__lightning-1-{{ ai_gen_id }}">
+          ⚡
+        </div>
+        
+        <div class="ai-promo-card__content-{{ ai_gen_id }}">
+          <h3 class="ai-promo-card__title-{{ ai_gen_id }}">
+            {{ block.settings.card_2_title }}
+          </h3>
+          <p class="ai-promo-card__subtitle-{{ ai_gen_id }}">
+            {{ block.settings.card_2_subtitle }}
+          </p>
+          
+          {% if block.settings.card_2_show_button %}
+            <span class="ai-promo-card__button-{{ ai_gen_id }}">
+              {{ block.settings.card_2_button_text }}
+              <svg class="ai-promo-card__button-arrow-{{ ai_gen_id }}" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 8H15M15 8L8 1M15 8L8 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          {% endif %}
+        </div>
+
+        {% if block.settings.card_2_image %}
+          <div class="ai-promo-card__image-wrapper-{{ ai_gen_id }}">
+            <img 
+              src="{{ block.settings.card_2_image | image_url: width: 300 }}" 
+              alt="{{ block.settings.card_2_image.alt | escape }}"
+              class="ai-promo-card__image-{{ ai_gen_id }}"
+              loading="lazy"
+              width="150"
+              height="150"
+            >
+          </div>
+        {% endif %}
+      </a>
+    {% endif %}
+
+    {% if block.settings.card_3_enabled %}
+      <a 
+        href="{{ block.settings.card_3_link }}" 
+        class="ai-promo-card-{{ ai_gen_id }} ai-promo-card-{{ ai_gen_id }}--coral"
+        {% if block.settings.card_3_bg_image %}
+          style="background-image: url('{{ block.settings.card_3_bg_image | image_url: width: 800 }}');"
+        {% endif %}
+      >
+        <div class="ai-promo-card__decoration-{{ ai_gen_id }} ai-promo-card__sunburst-{{ ai_gen_id }}"></div>
+        <div class="ai-promo-card__decoration-{{ ai_gen_id }} ai-promo-card__lightning-{{ ai_gen_id }} ai-promo-card__lightning-1-{{ ai_gen_id }}">
+          ⚡
+        </div>
+        
+        <div class="ai-promo-card__content-{{ ai_gen_id }}">
+          <h3 class="ai-promo-card__title-{{ ai_gen_id }}">
+            {{ block.settings.card_3_title }}
+          </h3>
+          <p class="ai-promo-card__code-{{ ai_gen_id }} ai-promo-card__subtitle-{{ ai_gen_id }}">
+            {{ block.settings.card_3_code }}
+          </p>
+        </div>
+
+        {% if block.settings.card_3_image %}
+          <div class="ai-promo-card__image-wrapper-{{ ai_gen_id }}">
+            <img 
+              src="{{ block.settings.card_3_image | image_url: width: 300 }}" 
+              alt="{{ block.settings.card_3_image.alt | escape }}"
+              class="ai-promo-card__image-{{ ai_gen_id }}"
+              loading="lazy"
+              width="150"
+              height="150"
+            >
+          </div>
+        {% endif %}
+      </a>
+    {% endif %}
+
+    {% if block.settings.card_4_enabled %}
+      <a 
+        href="{{ block.settings.card_4_link }}" 
+        class="ai-promo-card-{{ ai_gen_id }} ai-promo-card-{{ ai_gen_id }}--pink"
+        {% if block.settings.card_4_bg_image %}
+          style="background-image: url('{{ block.settings.card_4_bg_image | image_url: width: 800 }}');"
+        {% endif %}
+      >
+        <div class="ai-promo-card__decoration-{{ ai_gen_id }} ai-promo-card__lightning-{{ ai_gen_id }} ai-promo-card__lightning-1-{{ ai_gen_id }}">
+          ⚡
+        </div>
+        
+        <div class="ai-promo-card__content-{{ ai_gen_id }}">
+          <h3 class="ai-promo-card__title-{{ ai_gen_id }}">
+            {{ block.settings.card_4_title }}
+          </h3>
+          <p class="ai-promo-card__code-{{ ai_gen_id }} ai-promo-card__subtitle-{{ ai_gen_id }}">
+            {{ block.settings.card_4_code }}
+          </p>
+        </div>
+
+        {% if block.settings.card_4_image %}
+          <div class="ai-promo-card__image-wrapper-{{ ai_gen_id }}">
+            <img 
+              src="{{ block.settings.card_4_image | image_url: width: 300 }}" 
+              alt="{{ block.settings.card_4_image.alt | escape }}"
+              class="ai-promo-card__image-{{ ai_gen_id }}"
+              loading="lazy"
+              width="150"
+              height="150"
+            >
+          </div>
+        {% endif %}
+      </a>
+    {% endif %}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Promotional cards grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "card_4_title",
+      "label": "Title",
+      "default": "Get 15% off on your 1st order"
+    },
+    {
+      "type": "text",
+      "id": "card_4_code",
+      "label": "Code text",
+      "default": "Copy Code : 15%OFF"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_4_image",
+      "label": "Product image"
+    },
+    {
+      "type": "range",
+      "id": "card_4_image_size",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Product image size",
+      "default": 150
+    },
+    {
+      "type": "range",
+      "id": "card_4_image_right",
+      "min": -50,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Product image - right position",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "card_4_image_bottom",
+      "min": -50,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Product image - bottom position",
+      "default": 20
+    },
+    {
+      "type": "url",
+      "id": "card_4_link",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promotional cards grid"
+    }
+  ]
+}
+{% endschema %} 

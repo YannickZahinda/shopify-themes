@@ -1,0 +1,1121 @@
+{% comment %}
+  Shop By Mood — Arousique Premium (Horizontal Scroll)
+  Fixed: Images loading properly, better image handling
+{% endcomment %}
+
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  /* ── Section — Dark luxury background with ambient glow ── */
+  .ai-mood-{{ ai_gen_id }} {
+    background: radial-gradient(ellipse at 30% 40%, #1A0D12 0%, #0F0710 70%, #08040A 100%);
+    padding: {{ block.settings.section_padding_top }}px 0 {{ block.settings.section_padding_bottom }}px;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
+    overflow: hidden;
+  }
+
+  /* Premium ambient glow effects */
+  .ai-mood-{{ ai_gen_id }}::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -10%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(ellipse, rgba(231, 84, 128, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .ai-mood-{{ ai_gen_id }}::after {
+    content: '';
+    position: absolute;
+    bottom: -15%;
+    right: -10%;
+    width: 50%;
+    height: 50%;
+    background: radial-gradient(ellipse, rgba(212, 175, 55, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .ai-mood-wrap-{{ ai_gen_id }} {
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    padding: 0 20px;
+  }
+
+  /* ── Premium Header ── */
+  .ai-mood-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: {{ block.settings.header_spacing }}px;
+  }
+
+  .ai-mood-eyebrow-{{ ai_gen_id }} {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #D4AF37;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.12), rgba(212, 175, 55, 0.05));
+    padding: 6px 20px;
+    border-radius: 50px;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    margin-bottom: 20px;
+    backdrop-filter: blur(4px);
+  }
+
+  .ai-mood-title-{{ ai_gen_id }} {
+    color: #F6EEF2 !important;
+    font-size: {{ block.settings.title_size_desktop }}px;
+    font-weight: 700;
+    margin: 0 0 10px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .ai-mood-subtitle-{{ ai_gen_id }} {
+    color: #C4A5B0 !important;
+    font-size: {{ block.settings.subtitle_size_desktop }}px;
+    margin: 0 auto;
+    line-height: 1.6;
+    max-width: 520px;
+    font-weight: 400;
+  }
+
+  /* Premium gold accent with glow */
+  .ai-mood-accent-{{ ai_gen_id }} {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #D4AF37, #E75480, #D4AF37);
+    margin: 18px auto 0;
+    border-radius: 3px;
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+  }
+
+  /* ── Horizontal Scroll Container ── */
+  .ai-mood-scroll-container-{{ ai_gen_id }} {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 20px;
+  }
+
+  .ai-mood-scroll-container-{{ ai_gen_id }} {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .ai-mood-scroll-container-{{ ai_gen_id }}::-webkit-scrollbar { display: none; }
+
+  /* ── Horizontal Grid ── */
+  .ai-mood-grid-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: row;
+    gap: {{ block.settings.card_gap }}px;
+    width: fit-content;
+  }
+
+  /* ── Premium Card Design ── */
+  .ai-mood-card-{{ ai_gen_id }} {
+    position: relative;
+    flex: 0 0 {{ block.settings.card_width_desktop }}px;
+    scroll-snap-align: start;
+    border-radius: {{ block.settings.card_radius }}px;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+    transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    aspect-ratio: 4 / 5;
+  }
+
+  /* Ensure card has minimum height */
+  .ai-mood-card-{{ ai_gen_id }} {
+    min-height: 350px;
+  }
+
+  /* Premium card border on hover */
+  .ai-mood-card-{{ ai_gen_id }}::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: {{ block.settings.card_radius }}px;
+    padding: 1.5px;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0), rgba(212, 175, 55, 0.4));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .ai-mood-card-{{ ai_gen_id }}:hover::after {
+    opacity: 1;
+  }
+
+  .ai-mood-card-{{ ai_gen_id }}:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Background image — properly sized */
+  .ai-mood-card-bg-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    transition: transform 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    z-index: 0;
+  }
+
+  .ai-mood-card-{{ ai_gen_id }}:hover .ai-mood-card-bg-{{ ai_gen_id }} {
+    transform: scale(1.1);
+  }
+
+  /* Color fallback with gradient */
+  .ai-mood-card-color-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    transition: transform 0.5s ease;
+  }
+
+  .ai-mood-card-{{ ai_gen_id }}:hover .ai-mood-card-color-{{ ai_gen_id }} {
+    transform: scale(1.05);
+  }
+
+  /* Premium gradient overlay — bottom focused for text */
+  .ai-mood-card-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(8, 4, 10, 1) 0%,
+      rgba(8, 4, 10, 0.85) 35%,
+      rgba(8, 4, 10, 0.4) 65%,
+      rgba(8, 4, 10, 0) 100%
+    );
+    z-index: 2;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  .ai-mood-card-{{ ai_gen_id }}:hover .ai-mood-card-overlay-{{ ai_gen_id }} {
+    background: linear-gradient(
+      to top,
+      rgba(8, 4, 10, 1) 0%,
+      rgba(8, 4, 10, 0.9) 45%,
+      rgba(8, 4, 10, 0.5) 70%,
+      rgba(8, 4, 10, 0.1) 100%
+    );
+  }
+
+  /* ── Premium Text Panel ── */
+  .ai-mood-card-content-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: {{ block.settings.card_padding }}px;
+    z-index: 10 !important;
+    transform: translateY(0);
+    transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    isolation: isolate;
+  }
+
+  .ai-mood-card-title-{{ ai_gen_id }} {
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+    font-size: {{ block.settings.card_title_size }}px;
+    font-weight: 700;
+    margin: 0 0 4px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1);
+    display: block;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .ai-mood-card-desc-{{ ai_gen_id }} {
+    color: #D4AF37 !important;
+    -webkit-text-fill-color: #D4AF37 !important;
+    font-size: {{ block.settings.card_desc_size }}px;
+    margin: 0;
+    line-height: 1.5;
+    font-weight: 500;
+    opacity: 1 !important;
+    transform: translateY(0);
+    letter-spacing: 0.01em;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
+    display: block;
+    visibility: visible !important;
+  }
+
+  /* ── Premium Arrow Indicator ── */
+  .ai-mood-card-arrow-{{ ai_gen_id }} {
+    position: absolute;
+    top: {{ block.settings.card_padding }}px;
+    right: {{ block.settings.card_padding }}px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    opacity: 0;
+    transform: translateX(-8px) scale(0.9);
+    transition: all 0.35s ease;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+  }
+
+  .ai-mood-card-{{ ai_gen_id }}:hover .ai-mood-card-arrow-{{ ai_gen_id }} {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+
+  .ai-mood-card-arrow-{{ ai_gen_id }}:hover {
+    background: rgba(231, 84, 128, 0.4);
+    border-color: rgba(231, 84, 128, 0.5);
+  }
+
+  .ai-mood-card-arrow-{{ ai_gen_id }} svg {
+    width: 16px;
+    height: 16px;
+    color: #D4AF37;
+    display: block;
+  }
+
+  /* ── Title/Subtitle Divider ── */
+  .ai-mood-card-divider-{{ ai_gen_id }} {
+    width: 28px;
+    height: 2px;
+    background: linear-gradient(90deg, #D4AF37, rgba(212, 175, 55, 0.3));
+    border-radius: 2px;
+    margin: 6px 0 8px;
+  }
+
+  /* ── Title Shimmer on Hover ── */
+  .ai-mood-card-{{ ai_gen_id }}:hover .ai-mood-card-title-{{ ai_gen_id }} {
+    background: linear-gradient(120deg, #F6EEF2, #D4AF37, #E75480, #F6EEF2);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent !important;
+    animation: ai-mood-shimmer-{{ ai_gen_id }} 2s ease infinite;
+  }
+
+  /* Keep subtitle gold and visible on hover — never inherit shimmer */
+  .ai-mood-card-{{ ai_gen_id }}:hover .ai-mood-card-desc-{{ ai_gen_id }} {
+    color: #D4AF37 !important;
+    -webkit-text-fill-color: #D4AF37 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  @keyframes ai-mood-shimmer-{{ ai_gen_id }} {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+
+  /* ── Scroll-triggered staggered fade-in ── */
+  @keyframes ai-mood-fadeUp-{{ ai_gen_id }} {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .ai-mood-card-{{ ai_gen_id }} {
+    opacity: 0;
+    animation: ai-mood-fadeUp-{{ ai_gen_id }} 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+  }
+
+  .ai-mood-card-{{ ai_gen_id }}:nth-child(1) { animation-delay: 0.05s; }
+  .ai-mood-card-{{ ai_gen_id }}:nth-child(2) { animation-delay: 0.12s; }
+  .ai-mood-card-{{ ai_gen_id }}:nth-child(3) { animation-delay: 0.19s; }
+  .ai-mood-card-{{ ai_gen_id }}:nth-child(4) { animation-delay: 0.26s; }
+  .ai-mood-card-{{ ai_gen_id }}:nth-child(5) { animation-delay: 0.33s; }
+  .ai-mood-card-{{ ai_gen_id }}:nth-child(6) { animation-delay: 0.40s; }
+
+  /* ── Navigation Arrows ── */
+  .ai-mood-nav-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(61, 37, 56, 0.9);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+  }
+
+  .ai-mood-nav-{{ ai_gen_id }}:hover {
+    background: rgba(231, 84, 128, 0.6);
+    border-color: rgba(212, 175, 55, 0.6);
+    opacity: 1;
+    transform: translateY(-50%) scale(1.05);
+  }
+
+  .ai-mood-nav-{{ ai_gen_id }} svg {
+    width: 20px;
+    height: 20px;
+    color: #D4AF37;
+  }
+
+  .ai-mood-nav-prev-{{ ai_gen_id }} {
+    left: 10px;
+  }
+
+  .ai-mood-nav-next-{{ ai_gen_id }} {
+    right: 10px;
+  }
+
+  /* ── Tablet ── */
+  @media screen and (max-width: 989px) {
+    .ai-mood-card-{{ ai_gen_id }} {
+      flex: 0 0 {{ block.settings.card_width_tablet }}px;
+    }
+
+    .ai-mood-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size_desktop | times: 0.8 }}px;
+    }
+
+    .ai-mood-subtitle-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subtitle_size_desktop | times: 0.9 }}px;
+    }
+
+    .ai-mood-card-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.card_title_size | times: 0.9 }}px;
+    }
+  }
+
+  /* ── Mobile ── */
+  @media screen and (max-width: 749px) {
+    .ai-mood-{{ ai_gen_id }} {
+      padding: {{ block.settings.section_padding_top | times: 0.7 }}px 0 {{ block.settings.section_padding_bottom | times: 0.7 }}px;
+    }
+
+    .ai-mood-wrap-{{ ai_gen_id }} {
+      padding: 0 16px;
+    }
+
+    .ai-mood-card-{{ ai_gen_id }} {
+      flex: 0 0 {{ block.settings.card_width_mobile }}px;
+    }
+
+    .ai-mood-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size_mobile }}px;
+    }
+
+    .ai-mood-subtitle-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subtitle_size_mobile }}px;
+    }
+
+    .ai-mood-card-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.card_title_size | times: 0.8 }}px;
+    }
+
+    .ai-mood-card-desc-{{ ai_gen_id }} {
+      font-size: {{ block.settings.card_desc_size | times: 0.9 }}px;
+    }
+
+    .ai-mood-card-content-{{ ai_gen_id }} {
+      padding: {{ block.settings.card_padding | times: 0.7 }}px;
+    }
+
+    .ai-mood-card-arrow-{{ ai_gen_id }} {
+      display: none;
+    }
+
+    .ai-mood-eyebrow-{{ ai_gen_id }} {
+      font-size: 10px;
+      letter-spacing: 3px;
+      padding: 4px 14px;
+    }
+
+    .ai-mood-accent-{{ ai_gen_id }} {
+      width: 45px;
+      height: 2px;
+    }
+
+    .ai-mood-nav-{{ ai_gen_id }} {
+      width: 36px;
+      height: 36px;
+      display: none;
+    }
+
+    .ai-mood-nav-{{ ai_gen_id }} svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .ai-mood-card-{{ ai_gen_id }} {
+      opacity: 1;
+      animation: none;
+    }
+    .ai-mood-card-{{ ai_gen_id }}:hover {
+      transform: translateY(-5px);
+    }
+    .ai-mood-card-desc-{{ ai_gen_id }} {
+      opacity: 1;
+      transform: none;
+    }
+    .ai-mood-card-{{ ai_gen_id }}:hover .ai-mood-card-title-{{ ai_gen_id }} {
+      animation: none;
+      background: none;
+      -webkit-text-fill-color: #FFFFFF;
+      color: #FFFFFF !important;
+    }
+  }
+{% endstyle %}
+
+<section class="ai-mood-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-mood-wrap-{{ ai_gen_id }}">
+
+    <div class="ai-mood-header-{{ ai_gen_id }}">
+      {% if block.settings.eyebrow != blank %}
+        <div class="ai-mood-eyebrow-{{ ai_gen_id }}">{{ block.settings.eyebrow }}</div>
+      {% endif %}
+
+      {% if block.settings.title != blank %}
+        <h2 class="ai-mood-title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+      {% endif %}
+
+      <div class="ai-mood-accent-{{ ai_gen_id }}"></div>
+
+      {% if block.settings.subtitle != blank %}
+        <p class="ai-mood-subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <div style="position: relative;">
+      <!-- Navigation Arrows -->
+      <button class="ai-mood-nav-{{ ai_gen_id }} ai-mood-nav-prev-{{ ai_gen_id }}" aria-label="Previous">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <button class="ai-mood-nav-{{ ai_gen_id }} ai-mood-nav-next-{{ ai_gen_id }}" aria-label="Next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+
+      <!-- Horizontal Scroll Container -->
+      <div class="ai-mood-scroll-container-{{ ai_gen_id }}" id="ai-mood-scroll-{{ ai_gen_id }}">
+        <div class="ai-mood-grid-{{ ai_gen_id }}">
+          {% for i in (1..6) %}
+            {% liquid
+              assign enabled_key    = 'mood_' | append: i | append: '_enabled'
+              assign title_key      = 'mood_' | append: i | append: '_title'
+              assign desc_key       = 'mood_' | append: i | append: '_description'
+              assign bg_image_key   = 'mood_' | append: i | append: '_bg_image'
+              assign bg_color_key   = 'mood_' | append: i | append: '_bg_color'
+              assign collection_key = 'mood_' | append: i | append: '_collection'
+              assign link_key       = 'mood_' | append: i | append: '_link'
+            %}
+
+            {% assign enabled    = block.settings[enabled_key] %}
+            {% assign mood_title = block.settings[title_key] %}
+            {% assign mood_desc  = block.settings[desc_key] %}
+            {% assign bg_image   = block.settings[bg_image_key] %}
+            {% assign bg_color   = block.settings[bg_color_key] %}
+            {% assign collection = block.settings[collection_key] %}
+            {% assign link       = block.settings[link_key] %}
+
+            {% if collection != blank %}
+              {% assign link = collection.url %}
+            {% endif %}
+
+            {% if enabled %}
+              <a href="{{ link | default: '#' }}" class="ai-mood-card-{{ ai_gen_id }}">
+                {% if bg_image != blank %}
+                  {% assign bg_img_url = bg_image | image_url: width: 800, height: 1000, crop: 'center' %}
+                  <div
+                    class="ai-mood-card-bg-{{ ai_gen_id }}"
+                    style="background-image: url('{{ bg_img_url }}'); background-size: cover; background-position: center center;"
+                  ></div>
+                {% else %}
+                  <div
+                    class="ai-mood-card-color-{{ ai_gen_id }}"
+                    style="background: {{ bg_color | default: '#3D2538' }};"
+                  ></div>
+                {% endif %}
+
+                <div class="ai-mood-card-overlay-{{ ai_gen_id }}"></div>
+
+                <div class="ai-mood-card-arrow-{{ ai_gen_id }}">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                    <polyline points="12 5 19 12 12 19"/>
+                  </svg>
+                </div>
+
+                <div class="ai-mood-card-content-{{ ai_gen_id }}">
+                  {% if mood_title != blank %}
+                    <h3 class="ai-mood-card-title-{{ ai_gen_id }}">{{ mood_title }}</h3>
+                  {% endif %}
+                  {% if mood_title != blank and mood_desc != blank %}
+                    <div class="ai-mood-card-divider-{{ ai_gen_id }}"></div>
+                  {% endif %}
+                  {% if mood_desc != blank %}
+                    <p class="ai-mood-card-desc-{{ ai_gen_id }}">{{ mood_desc }}</p>
+                  {% endif %}
+                </div>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  (function() {
+    const container = document.getElementById('ai-mood-scroll-{{ ai_gen_id }}');
+    const prevBtn = document.querySelector('.ai-mood-nav-prev-{{ ai_gen_id }}');
+    const nextBtn = document.querySelector('.ai-mood-nav-next-{{ ai_gen_id }}');
+    
+    if (!container) return;
+    
+    function scrollLeft() {
+      container.scrollBy({ left: -320, behavior: 'smooth' });
+    }
+    
+    function scrollRight() {
+      container.scrollBy({ left: 320, behavior: 'smooth' });
+    }
+    
+    function updateButtons() {
+      if (!prevBtn || !nextBtn) return;
+      const scrollLeft = container.scrollLeft;
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      
+      prevBtn.style.opacity = scrollLeft <= 10 ? '0.3' : '0.7';
+      nextBtn.style.opacity = maxScroll - scrollLeft <= 10 ? '0.3' : '0.7';
+    }
+    
+    if (prevBtn) prevBtn.addEventListener('click', scrollLeft);
+    if (nextBtn) nextBtn.addEventListener('click', scrollRight);
+    
+    container.addEventListener('scroll', updateButtons);
+    setTimeout(updateButtons, 100);
+    window.addEventListener('resize', updateButtons);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Shop by mood",
+  "settings": [
+    {
+      "type": "header",
+      "content": "✨ Section Header"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow badge",
+      "default": "SHOP BY MOOD"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "What's Your Vibe Tonight?"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Find the perfect touch for exactly how you feel."
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "min": 24,
+      "max": 72,
+      "step": 4,
+      "unit": "px",
+      "label": "Title size (desktop)",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 20,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Title size (mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_desktop",
+      "min": 14,
+      "max": 22,
+      "step": 2,
+      "unit": "px",
+      "label": "Subtitle size (desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_mobile",
+      "min": 12,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Subtitle size (mobile)",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "📐 Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Max width",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "min": 30,
+      "max": 70,
+      "step": 10,
+      "unit": "px",
+      "label": "Header bottom spacing",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "min": 12,
+      "max": 32,
+      "step": 4,
+      "unit": "px",
+      "label": "Card gap",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "🎴 Card Dimensions"
+    },
+    {
+      "type": "range",
+      "id": "card_width_desktop",
+      "min": 240,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Card width (desktop)",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "card_width_tablet",
+      "min": 220,
+      "max": 350,
+      "step": 10,
+      "unit": "px",
+      "label": "Card width (tablet)",
+      "default": 280
+    },
+    {
+      "type": "range",
+      "id": "card_width_mobile",
+      "min": 200,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Card width (mobile)",
+      "default": 260
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "Card corner radius",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "min": 14,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "Card content padding",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "📝 Card Typography"
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "min": 16,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "Card title size",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "card_desc_size",
+      "min": 11,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Card description size",
+      "default": 13
+    },
+    {
+      "type": "header",
+      "content": "🌙 Mood 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "mood_1_enabled",
+      "label": "Enable",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "mood_1_title",
+      "label": "Title",
+      "default": "Tease & Please"
+    },
+    {
+      "type": "text",
+      "id": "mood_1_description",
+      "label": "Description",
+      "default": "Nights full of giggles and tingles."
+    },
+    {
+      "type": "color",
+      "id": "mood_1_bg_color",
+      "label": "Fallback color",
+      "default": "#E75480"
+    },
+    {
+      "type": "image_picker",
+      "id": "mood_1_bg_image",
+      "label": "Background image",
+      "info": "Recommended size: 800x1000px"
+    },
+    {
+      "type": "collection",
+      "id": "mood_1_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "url",
+      "id": "mood_1_link",
+      "label": "Custom link"
+    },
+    {
+      "type": "header",
+      "content": "🌙 Mood 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "mood_2_enabled",
+      "label": "Enable",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "mood_2_title",
+      "label": "Title",
+      "default": "Slow Burn"
+    },
+    {
+      "type": "text",
+      "id": "mood_2_description",
+      "label": "Description",
+      "default": "Soft touches and deep connection."
+    },
+    {
+      "type": "color",
+      "id": "mood_2_bg_color",
+      "label": "Fallback color",
+      "default": "#7B1E3A"
+    },
+    {
+      "type": "image_picker",
+      "id": "mood_2_bg_image",
+      "label": "Background image",
+      "info": "Recommended size: 800x1000px"
+    },
+    {
+      "type": "collection",
+      "id": "mood_2_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "url",
+      "id": "mood_2_link",
+      "label": "Custom link"
+    },
+    {
+      "type": "header",
+      "content": "🌙 Mood 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "mood_3_enabled",
+      "label": "Enable",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "mood_3_title",
+      "label": "Title",
+      "default": "Wild Side"
+    },
+    {
+      "type": "text",
+      "id": "mood_3_description",
+      "label": "Description",
+      "default": "Take charge. Make it intense."
+    },
+    {
+      "type": "color",
+      "id": "mood_3_bg_color",
+      "label": "Fallback color",
+      "default": "#9B2D52"
+    },
+    {
+      "type": "image_picker",
+      "id": "mood_3_bg_image",
+      "label": "Background image",
+      "info": "Recommended size: 800x1000px"
+    },
+    {
+      "type": "collection",
+      "id": "mood_3_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "url",
+      "id": "mood_3_link",
+      "label": "Custom link"
+    },
+    {
+      "type": "header",
+      "content": "🌙 Mood 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "mood_4_enabled",
+      "label": "Enable",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "mood_4_title",
+      "label": "Title",
+      "default": "Own It"
+    },
+    {
+      "type": "text",
+      "id": "mood_4_description",
+      "label": "Description",
+      "default": "You know what you want. Go get it."
+    },
+    {
+      "type": "color",
+      "id": "mood_4_bg_color",
+      "label": "Fallback color",
+      "default": "#D4AF37"
+    },
+    {
+      "type": "image_picker",
+      "id": "mood_4_bg_image",
+      "label": "Background image",
+      "info": "Recommended size: 800x1000px"
+    },
+    {
+      "type": "collection",
+      "id": "mood_4_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "url",
+      "id": "mood_4_link",
+      "label": "Custom link"
+    },
+    {
+      "type": "header",
+      "content": "🌙 Mood 5"
+    },
+    {
+      "type": "checkbox",
+      "id": "mood_5_enabled",
+      "label": "Enable",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "mood_5_title",
+      "label": "Title",
+      "default": "New Thrills"
+    },
+    {
+      "type": "text",
+      "id": "mood_5_description",
+      "label": "Description",
+      "default": "Explore something you've never tried."
+    },
+    {
+      "type": "color",
+      "id": "mood_5_bg_color",
+      "label": "Fallback color",
+      "default": "#2D7D62"
+    },
+    {
+      "type": "image_picker",
+      "id": "mood_5_bg_image",
+      "label": "Background image",
+      "info": "Recommended size: 800x1000px"
+    },
+    {
+      "type": "collection",
+      "id": "mood_5_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "url",
+      "id": "mood_5_link",
+      "label": "Custom link"
+    },
+    {
+      "type": "header",
+      "content": "🌙 Mood 6"
+    },
+    {
+      "type": "checkbox",
+      "id": "mood_6_enabled",
+      "label": "Enable",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "mood_6_title",
+      "label": "Title",
+      "default": "Pure Bliss"
+    },
+    {
+      "type": "text",
+      "id": "mood_6_description",
+      "label": "Description",
+      "default": "Melt the stress. Feel the buzz."
+    },
+    {
+      "type": "color",
+      "id": "mood_6_bg_color",
+      "label": "Fallback color",
+      "default": "#C73E6A"
+    },
+    {
+      "type": "image_picker",
+      "id": "mood_6_bg_image",
+      "label": "Background image",
+      "info": "Recommended size: 800x1000px"
+    },
+    {
+      "type": "collection",
+      "id": "mood_6_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "url",
+      "id": "mood_6_link",
+      "label": "Custom link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop by mood"
+    }
+  ]
+}
+{% endschema %}

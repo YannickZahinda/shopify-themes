@@ -1,0 +1,802 @@
+{% liquid
+  assign has_desktop_image = false
+  assign has_mobile_image = false
+  
+  if section.settings.image_desktop != blank
+    assign has_desktop_image = true
+  endif
+  if section.settings.image_mobile != blank
+    assign has_mobile_image = true
+  endif
+
+  assign fetch_priority = 'auto'
+  if section.index == 1
+    assign fetch_priority = 'high'
+  endif
+%}
+
+<div
+  id="Hero-{{ section.id }}"
+  class="hero-figma color-{{ section.settings.color_scheme }}"
+>
+  <div class="hero-figma__container">
+    {%- if section.settings.link != blank -%}
+      <a
+        href="{{ section.settings.link }}"
+        class="hero-figma__link"
+        {% if section.settings.open_in_new_tab %}
+          target="_blank" rel="noopener"
+        {% endif %}
+      ></a>
+    {%- endif -%}
+    
+    <div class="hero-figma__media-wrapper">
+      {%- if has_desktop_image -%}
+        {{
+          section.settings.image_desktop
+          | image_url: width: 3840
+          | image_tag:
+            class: 'hero-figma__image hero-figma__image--desktop',
+            alt: section.settings.image_desktop.alt,
+            fetchpriority: fetch_priority
+        }}
+      {%- endif -%}
+      
+      {%- if has_mobile_image -%}
+        {{
+          section.settings.image_mobile
+          | image_url: width: 1200
+          | image_tag:
+            class: 'hero-figma__image hero-figma__image--mobile',
+            alt: section.settings.image_mobile.alt,
+            fetchpriority: fetch_priority
+        }}
+      {%- elsif has_desktop_image -%}
+        {{
+          section.settings.image_desktop
+          | image_url: width: 1200
+          | image_tag:
+            class: 'hero-figma__image hero-figma__image--mobile',
+            alt: section.settings.image_desktop.alt,
+            fetchpriority: fetch_priority
+        }}
+      {%- endif -%}
+      
+      {%- if has_desktop_image == false and has_mobile_image == false -%}
+        {{ 'hero-apparel-1' | placeholder_svg_tag: 'hero-figma__image' }}
+      {%- endif -%}
+    </div>
+    
+    <div class="hero-figma__content-wrapper position-{{ section.settings.content_position }}">
+      <div class="hero-figma__content align-{{ section.settings.content_alignment }}" style="max-width: {{ section.settings.content_max_width }}px;">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'heading' %}
+              <h1 
+                class="hero-figma__heading" 
+                {{ block.shopify_attributes }}
+                style="
+                  font-size: {{ block.settings.heading_size_mobile }}px;
+                  {% if block.settings.heading_color != blank %}color: {{ block.settings.heading_color }};{% endif %}
+                  {% if block.settings.heading_font != blank %}font-family: {{ block.settings.heading_font }};{% endif %}
+                  font-weight: {{ block.settings.heading_weight }};
+                  line-height: {{ block.settings.heading_line_height }};
+                  letter-spacing: {{ block.settings.heading_letter_spacing }}px;
+                "
+              >
+                {{ block.settings.heading }}
+              </h1>
+            
+            {% when 'subheading' %}
+              <p 
+                class="hero-figma__subheading" 
+                {{ block.shopify_attributes }}
+                style="
+                  font-size: {{ block.settings.subheading_size_mobile }}px;
+                  {% if block.settings.subheading_color != blank %}color: {{ block.settings.subheading_color }};{% endif %}
+                  {% if block.settings.subheading_font != blank %}font-family: {{ block.settings.subheading_font }};{% endif %}
+                  font-weight: {{ block.settings.subheading_weight }};
+                  line-height: {{ block.settings.subheading_line_height }};
+                  max-width: {{ block.settings.subheading_max_width }}px;
+                "
+              >
+                {{ block.settings.subheading }}
+              </p>
+            
+            {% when 'button' %}
+              <div class="hero-figma__button-wrapper" {{ block.shopify_attributes }}>
+                <a 
+                  href="{{ block.settings.button_link }}" 
+                  class="hero-figma__button"
+                  {% if block.settings.button_target %}target="_blank" rel="noopener"{% endif %}
+                  style="
+                    background-color: {{ block.settings.button_bg_color }};
+                    color: {{ block.settings.button_text_color }};
+                    font-size: {{ block.settings.button_size_mobile }}px;
+                    font-weight: {{ block.settings.button_weight }};
+                    padding: {{ block.settings.button_padding_y }}px {{ block.settings.button_padding_x }}px;
+                    border-radius: {{ block.settings.button_border_radius }}px;
+                    {% if block.settings.button_font != blank %}font-family: {{ block.settings.button_font }};{% endif %}
+                  "
+                >
+                  {{ block.settings.button_label }}
+                </a>
+              </div>
+          {% endcase %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .section-wrapper {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .hero-figma {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+  }
+
+  .hero-figma__container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .hero-figma__media-wrapper {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-figma__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .hero-figma__image--desktop {
+    display: none;
+  }
+
+  .hero-figma__image--mobile {
+    display: block;
+  }
+
+  @media screen and (min-width: 750px) {
+    .hero-figma__image--desktop {
+      display: block;
+    }
+    
+    .hero-figma__image--mobile {
+      display: none;
+    }
+  }
+
+  .hero-figma__link {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+  }
+
+  .hero-figma__content-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 40px 20px;
+  }
+  
+  .hero-figma__content-wrapper.position-top-left {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  
+  .hero-figma__content-wrapper.position-top-center {
+    align-items: flex-start;
+    justify-content: center;
+  }
+  
+  .hero-figma__content-wrapper.position-top-right {
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+  
+  .hero-figma__content-wrapper.position-center-left {
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  .hero-figma__content-wrapper.position-center-center {
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .hero-figma__content-wrapper.position-center-right {
+    align-items: center;
+    justify-content: flex-end;
+  }
+  
+  .hero-figma__content-wrapper.position-bottom-left {
+    align-items: flex-end;
+    justify-content: flex-start;
+  }
+  
+  .hero-figma__content-wrapper.position-bottom-center {
+    align-items: flex-end;
+    justify-content: center;
+  }
+  
+  .hero-figma__content-wrapper.position-bottom-right {
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+
+  @media screen and (min-width: 750px) {
+    .hero-figma__content-wrapper {
+      padding: 60px 40px;
+    }
+  }
+
+  .hero-figma__content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .hero-figma__content.align-left {
+    text-align: left;
+    align-items: flex-start;
+  }
+  
+  .hero-figma__content.align-center {
+    text-align: center;
+    align-items: center;
+  }
+  
+  .hero-figma__content.align-right {
+    text-align: right;
+    align-items: flex-end;
+  }
+
+  @media screen and (min-width: 750px) {
+    .hero-figma__content {
+      gap: 24px;
+    }
+  }
+
+  .hero-figma__heading {
+    margin: 0;
+    width: 100%;
+  }
+
+  @media screen and (min-width: 750px) {
+    .hero-figma__heading {
+      font-size: var(--heading-size-desktop, 56px) !important;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .hero-figma__heading {
+      font-size: var(--heading-size-desktop, 64px) !important;
+    }
+  }
+
+  .hero-figma__subheading {
+    margin: 0;
+    width: 100%;
+  }
+
+  @media screen and (min-width: 750px) {
+    .hero-figma__subheading {
+      font-size: var(--subheading-size-desktop, 20px) !important;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .hero-figma__subheading {
+      font-size: var(--subheading-size-desktop, 24px) !important;
+    }
+  }
+
+  .hero-figma__button-wrapper {
+    margin-top: 8px;
+  }
+
+  .hero-figma__button {
+    display: inline-block;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  @media screen and (min-width: 750px) {
+    .hero-figma__button {
+      font-size: var(--button-size-desktop, 18px) !important;
+    }
+  }
+
+  .hero-figma__button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .hero-figma__button:active {
+    transform: translateY(0);
+  }
+
+  .hero-figma__content-wrapper * {
+    pointer-events: auto;
+  }
+  .hero-figma {
+    position: relative;
+    width: 100vw;
+    height: 60vh;
+    height: 60svh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+  }
+
+  @media screen and (min-width: 750px) {
+    .hero-figma {
+      height: 100vh;
+      height: 100svh;
+    }
+  }
+{% endstylesheet %}
+
+<style>
+  :root {
+    --heading-size-desktop: {{ section.blocks | where: "type", "heading" | first | default: nil | map: "settings" | map: "heading_size_desktop" | first | default: 64 }}px;
+    --subheading-size-desktop: {{ section.blocks | where: "type", "subheading" | first | default: nil | map: "settings" | map: "subheading_size_desktop" | first | default: 24 }}px;
+    --button-size-desktop: {{ section.blocks | where: "type", "button" | first | default: nil | map: "settings" | map: "button_size_desktop" | first | default: 18 }}px;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hero Figma Design",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Desktop Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Desktop Image"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile Image",
+      "info": "Recommended: 750px wide. Leave empty to use desktop image on mobile."
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content Max Width",
+      "min": 600,
+      "max": 1400,
+      "step": 50,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content Position",
+      "info": "Position of content on the hero section",
+      "options": [
+        { "value": "top-left", "label": "Top Left" },
+        { "value": "top-center", "label": "Top Center" },
+        { "value": "top-right", "label": "Top Right" },
+        { "value": "center-left", "label": "Center Left" },
+        { "value": "center-center", "label": "Center Center" },
+        { "value": "center-right", "label": "Center Right" },
+        { "value": "bottom-left", "label": "Bottom Left" },
+        { "value": "bottom-center", "label": "Bottom Center" },
+        { "value": "bottom-right", "label": "Bottom Right" }
+      ],
+      "default": "center-center"
+    },
+    {
+      "type": "header",
+      "content": "Section Link"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link (optional)",
+      "info": "Makes entire section clickable"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_in_new_tab",
+      "label": "Open in new tab",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Celebrate You Unapologetically!"
+        },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "font_picker",
+          "id": "heading_font",
+          "label": "Font",
+          "default": "assistant_n4"
+        },
+        {
+          "type": "range",
+          "id": "heading_size_mobile",
+          "label": "Font Size (Mobile)",
+          "min": 20,
+          "max": 80,
+          "step": 2,
+          "unit": "px",
+          "default": 32
+        },
+        {
+          "type": "range",
+          "id": "heading_size_desktop",
+          "label": "Font Size (Desktop)",
+          "min": 30,
+          "max": 120,
+          "step": 2,
+          "unit": "px",
+          "default": 64
+        },
+        {
+          "type": "select",
+          "id": "heading_weight",
+          "label": "Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" },
+            { "value": "800", "label": "Extra Bold" }
+          ],
+          "default": "700"
+        },
+        {
+          "type": "range",
+          "id": "heading_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 2,
+          "step": 0.1,
+          "default": 1.2
+        },
+        {
+          "type": "range",
+          "id": "heading_letter_spacing",
+          "label": "Letter Spacing",
+          "min": -10,
+          "max": 50,
+          "step": 1,
+          "default": 0,
+          "unit": "px"
+        },
+        {
+          "type": "header",
+          "content": "Color"
+        },
+        {
+          "type": "color",
+          "id": "heading_color",
+          "label": "Text Color"
+        }
+      ]
+    },
+    {
+      "type": "subheading",
+      "name": "Subheading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Indulge in Self-Love — Up to 30% Off Select Massagers."
+        },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "font_picker",
+          "id": "subheading_font",
+          "label": "Font",
+          "default": "assistant_n4"
+        },
+        {
+          "type": "range",
+          "id": "subheading_size_mobile",
+          "label": "Font Size (Mobile)",
+          "min": 12,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "subheading_size_desktop",
+          "label": "Font Size (Desktop)",
+          "min": 16,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "default": 24
+        },
+        {
+          "type": "select",
+          "id": "subheading_weight",
+          "label": "Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "range",
+          "id": "subheading_line_height",
+          "label": "Line Height",
+          "min": 1,
+          "max": 2,
+          "step": 0.1,
+          "default": 1.5
+        },
+        {
+          "type": "range",
+          "id": "subheading_max_width",
+          "label": "Max Width",
+          "min": 400,
+          "max": 1000,
+          "step": 50,
+          "unit": "px",
+          "default": 600
+        },
+        {
+          "type": "header",
+          "content": "Color"
+        },
+        {
+          "type": "color",
+          "id": "subheading_color",
+          "label": "Text Color"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_target",
+          "label": "Open in new tab",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Button Style"
+        },
+        {
+          "type": "color",
+          "id": "button_bg_color",
+          "label": "Background Color",
+          "default": "#E83E8C"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Text Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "font_picker",
+          "id": "button_font",
+          "label": "Font",
+          "default": "assistant_n4"
+        },
+        {
+          "type": "range",
+          "id": "button_size_mobile",
+          "label": "Font Size (Mobile)",
+          "min": 12,
+          "max": 30,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "button_size_desktop",
+          "label": "Font Size (Desktop)",
+          "min": 14,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "default": 18
+        },
+        {
+          "type": "select",
+          "id": "button_weight",
+          "label": "Font Weight",
+          "options": [
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "header",
+          "content": "Sizing"
+        },
+        {
+          "type": "range",
+          "id": "button_padding_y",
+          "label": "Vertical Padding",
+          "min": 8,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "button_padding_x",
+          "label": "Horizontal Padding",
+          "min": 20,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "default": 48
+        },
+        {
+          "type": "range",
+          "id": "button_border_radius",
+          "label": "Border Radius",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "default": 50
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Figma Design",
+      "blocks": [
+        {
+          "type": "heading",
+          "settings": {
+            "heading": "Celebrate You Unapologetically!",
+            "heading_size_mobile": 32,
+            "heading_size_desktop": 64,
+            "heading_weight": "700"
+          }
+        },
+        {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Indulge in Self-Love — Up to 30% Off Select Massagers.",
+            "subheading_size_mobile": 16,
+            "subheading_size_desktop": 24,
+            "subheading_weight": "400"
+          }
+        },
+        {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop Now",
+            "button_bg_color": "#E83E8C",
+            "button_text_color": "#FFFFFF",
+            "button_size_mobile": 16,
+            "button_size_desktop": 18,
+            "button_padding_y": 16,
+            "button_padding_x": 48,
+            "button_border_radius": 50
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

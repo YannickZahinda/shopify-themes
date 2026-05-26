@@ -1,0 +1,450 @@
+{% stylesheet %}
+/* ===== AROUSIQUE PRODUCT PAGE — PREMIUM OVERHAUL =====
+   Paste this at the BOTTOM of your base.css
+   OR into the Product Information section's {% stylesheet %} block
+   ===================================================== */
+
+/* ── Product details panel ── */
+.product-details,
+.custom-product-details {
+  background: #ffffff !important;
+  border-radius: 24px !important;
+  padding: 36px 32px !important;
+  box-shadow: 0 12px 36px -8px rgba(123, 30, 58, 0.1) !important;
+  border: 1px solid rgba(212, 175, 55, 0.12) !important;
+  transition: box-shadow 0.3s ease !important;
+}
+
+@media screen and (max-width: 749px) {
+  .product-details,
+  .custom-product-details {
+    padding: 24px 20px !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 24px -6px rgba(123, 30, 58, 0.08) !important;
+  }
+}
+
+/* ── Product title — controlled size, not gradient ── */
+.product-details h1,
+.product-details .h1,
+.product-details .product-title,
+.custom-product-details .product-title,
+.product-details [class*="title"] h1 {
+  font-family: 'Tomato Grotesk', sans-serif !important;
+  font-weight: 600 !important;
+  color: #1A0D12 !important;
+  -webkit-text-fill-color: #1A0D12 !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  font-size: 24px !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.02em !important;
+  margin: 0 0 12px !important;
+  display: block !important;
+}
+
+@media screen and (min-width: 750px) {
+  .product-details h1,
+  .product-details .h1,
+  .product-details .product-title,
+  .custom-product-details .product-title {
+    font-size: 28px !important;
+  }
+}
+
+/* ── "CURATED FOR YOU" badge — refined ── */
+.product-details .product-badges,
+.product-details [class*="badge"] {
+  margin-bottom: 12px !important;
+}
+
+/* ── Price area ── */
+.product-details .price,
+.product-details product-price,
+.product-details [class*="price"],
+.custom-product-details .product-price {
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+  margin: 8px 0 16px !important;
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+}
+
+.product-details .price .price:not(.compare-at-price),
+.product-details product-price .price:not(.compare-at-price),
+.custom-product-details .price-current,
+.price-current {
+  font-size: 26px !important;
+  font-weight: 700 !important;
+  color: #7B1E3A !important;
+  -webkit-text-fill-color: #7B1E3A !important;
+  line-height: 1 !important;
+  border-bottom: none !important;
+}
+
+.product-details .compare-at-price,
+.custom-product-details .price-compare,
+.price-compare {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  color: #999 !important;
+  -webkit-text-fill-color: #999 !important;
+  text-decoration: line-through !important;
+  border-bottom: none !important;
+}
+
+.custom-product-details .tax-info {
+  font-size: 12px !important;
+  color: #888 !important;
+  margin: 0 !important;
+}
+
+@media screen and (max-width: 749px) {
+  .product-details .price .price:not(.compare-at-price),
+  .custom-product-details .price-current,
+  .price-current {
+    font-size: 22px !important;
+  }
+
+  .product-details .compare-at-price,
+  .custom-product-details .price-compare,
+  .price-compare {
+    font-size: 14px !important;
+  }
+}
+
+/* ── Sale badge ── */
+.price-badge {
+  background: linear-gradient(135deg, #D4AF37, #E0C55C) !important;
+  color: #1A0D12 !important;
+  padding: 4px 12px !important;
+  border-radius: 20px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.price-badge:before {
+  display: none !important;
+}
+
+/* ── Rating ── */
+.product-rating,
+.custom-product-details .product-rating {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin-bottom: 12px !important;
+}
+
+.product-rating .stars {
+  color: #D4AF37 !important;
+  font-size: 14px !important;
+  letter-spacing: 1px !important;
+}
+
+.product-rating .rating-count {
+  color: #888 !important;
+  font-size: 13px !important;
+}
+
+/* ── Add to Cart button ── */
+.product-details .button--primary,
+.product-details .add-to-cart-button,
+.product-details .product-form__submit,
+.custom-product-details .add-to-cart-btn,
+.add-to-cart-btn {
+  background: linear-gradient(135deg, #7B1E3A, #E75480) !important;
+  border: none !important;
+  border-radius: 60px !important;
+  padding: 16px 32px !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  letter-spacing: 0.5px !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  box-shadow: 0 6px 20px rgba(231, 84, 128, 0.3) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+  width: auto !important;
+  min-height: 52px !important;
+}
+
+.product-details .button--primary:hover,
+.product-details .add-to-cart-button:hover,
+.custom-product-details .add-to-cart-btn:hover,
+.add-to-cart-btn:hover:not(:disabled) {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 28px rgba(231, 84, 128, 0.4) !important;
+  background: linear-gradient(135deg, #E75480, #7B1E3A) !important;
+}
+
+/* ── Wishlist button ── */
+.wishlist-btn {
+  background: transparent !important;
+  border: 2px solid rgba(231, 84, 128, 0.3) !important;
+  border-radius: 50% !important;
+  width: 52px !important;
+  height: 52px !important;
+  min-width: 52px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+.wishlist-btn:hover {
+  background: rgba(231, 84, 128, 0.08) !important;
+  border-color: #E75480 !important;
+  transform: scale(1.08) !important;
+}
+
+.wishlist-btn .heart-icon,
+.wishlist-btn .heart-icon-filled {
+  width: 22px !important;
+  height: 22px !important;
+  color: #E75480 !important;
+}
+
+/* ── Quantity selector ── */
+.product-details .quantity-selector,
+.custom-product-details .quantity-selector {
+  border-radius: 60px !important;
+  border: 1px solid rgba(212, 175, 55, 0.2) !important;
+  background: #fff !important;
+  min-height: 52px !important;
+}
+
+/* ── Product features / specifications ── */
+.product-features,
+.custom-product-details .product-features {
+  margin: 24px 0 !important;
+  padding: 20px !important;
+  background: #FFF8F4 !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(123, 30, 58, 0.06) !important;
+}
+
+.features-title {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #1A0D12 !important;
+  margin-bottom: 14px !important;
+  padding-bottom: 10px !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15) !important;
+}
+
+.features-list li {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  color: #444 !important;
+  padding: 6px 0 6px 20px !important;
+}
+
+.features-list li:before {
+  color: #D4AF37 !important;
+  font-size: 14px !important;
+}
+
+.view-more-btn {
+  color: #E75480 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  margin-top: 8px !important;
+}
+
+/* ── Delivery info box ── */
+.delivery-info {
+  background: linear-gradient(135deg, #FFF8F4, #F6EEF2) !important;
+  border: 1px solid rgba(212, 175, 55, 0.15) !important;
+  border-radius: 16px !important;
+  padding: 18px 20px !important;
+  margin: 20px 0 !important;
+}
+
+.delivery-title {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #1A0D12 !important;
+  margin: 0 0 4px !important;
+}
+
+.delivery-subtitle {
+  font-size: 12px !important;
+  color: #666 !important;
+  margin: 0 !important;
+  line-height: 1.4 !important;
+}
+
+.delivery-link {
+  color: #E75480 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+.delivery-icon svg,
+.delivery-icon-image {
+  width: 40px !important;
+  height: 40px !important;
+  color: #7B1E3A !important;
+}
+
+/* ── How to Use ── */
+.how-to-title {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #1A0D12 !important;
+  border-bottom-color: rgba(212, 175, 55, 0.15) !important;
+}
+
+.how-to-instructions {
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  color: #444 !important;
+}
+
+/* ── Return policy ── */
+.return-policy summary {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #1A0D12 !important;
+}
+
+.return-content {
+  font-size: 13px !important;
+  color: #666 !important;
+}
+
+/* ── Uses label ── */
+.product-uses {
+  border-color: rgba(212, 175, 55, 0.12) !important;
+}
+
+.uses-label {
+  font-size: 13px !important;
+  color: #666 !important;
+}
+
+/* ── Thumbnail gallery ── */
+.thumbnail-item {
+  border-radius: 12px !important;
+  border: 2px solid transparent !important;
+  transition: border-color 0.25s ease, transform 0.25s ease !important;
+  background: #fff !important;
+  padding: 6px !important;
+}
+
+.thumbnail-item:hover,
+.thumbnail-item.active {
+  border-color: #E75480 !important;
+  transform: scale(1.05) !important;
+}
+
+/* ── Main image wrapper ── */
+.main-image-wrapper,
+.custom-product-media .main-image-wrapper {
+  background: #fff !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(123, 30, 58, 0.06) !important;
+  padding: 24px !important;
+  min-height: 400px !important;
+}
+
+/* ── Product actions row ── */
+.product-actions {
+  display: flex !important;
+  gap: 12px !important;
+  align-items: stretch !important;
+  margin-top: 4px !important;
+}
+
+/* ── Section background ── */
+.product-information,
+.custom-product-section {
+  background: #FFF8F4 !important;
+}
+
+/* ── Remove the overly aggressive product-details hover lift ── */
+.product-details:hover {
+  transform: none !important;
+  box-shadow: 0 12px 36px -8px rgba(123, 30, 58, 0.1) !important;
+}
+
+/* ── Marquee bar — tighter ── */
+.product-marquee {
+  padding: 10px 0 !important;
+  margin: 16px 0 !important;
+  border-radius: 50px !important;
+}
+
+.product-marquee__item {
+  font-size: 0.8rem !important;
+  padding: 5px 14px !important;
+  letter-spacing: 1px !important;
+}
+
+/* ── Variant picker / swatches in theme section ── */
+.product-details .variant-option--buttons label {
+  border-radius: 12px !important;
+  border: 1px solid rgba(212, 175, 55, 0.2) !important;
+  padding: 8px 16px !important;
+  font-size: 13px !important;
+  transition: all 0.2s ease !important;
+}
+
+.product-details .variant-option--buttons input:checked + label {
+  background: linear-gradient(135deg, #E75480, #7B1E3A) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 12px rgba(231, 84, 128, 0.3) !important;
+}
+
+/* ── Product swatches (custom section) ── */
+.product-swatch {
+  width: 26px !important;
+  height: 26px !important;
+  border: 2px solid #ddd !important;
+  transition: transform 0.2s ease, border-color 0.2s ease !important;
+}
+
+.product-swatch:hover {
+  transform: scale(1.15) !important;
+  border-color: #999 !important;
+}
+
+.product-swatch.active {
+  border-color: #7B1E3A !important;
+  border-width: 3px !important;
+  box-shadow: 0 0 0 2px rgba(123, 30, 58, 0.15) !important;
+}
+
+/* ── Collapsible sections (accordion style) ── */
+.product-details details summary,
+.product-details .accordion-toggle {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #1A0D12 !important;
+  padding: 14px 0 !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.12) !important;
+}
+
+.product-details details[open] summary {
+  border-bottom-color: rgba(231, 84, 128, 0.2) !important;
+}
+
+/* ── Accelerated checkout buttons ── */
+.product-details shopify-accelerated-checkout .button,
+.express-checkout-btn {
+  border-radius: 60px !important;
+  font-weight: 600 !important;
+  min-height: 52px !important;
+}
+
+{% endstylesheet %}

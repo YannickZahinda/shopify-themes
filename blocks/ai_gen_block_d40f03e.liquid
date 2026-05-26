@@ -1,0 +1,919 @@
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-category-nav-{{ ai_gen_id }} {
+    padding: {{ block.settings.section_padding_top }}px 0 {{ block.settings.section_padding_bottom }}px;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-category-nav-container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-category-nav-list-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: {{ block.settings.alignment }};
+    align-items: flex-start;
+    gap: {{ block.settings.spacing }}px;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ai-category-nav-item-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .ai-category-nav-link-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-category-nav-link-{{ ai_gen_id }}:hover {
+    transform: {{ block.settings.hover_effect }};
+  }
+
+  /* =========================================
+     3D GLOSSY ROUNDED ICON CONTAINER
+     Force 50% border-radius to stay round
+  ========================================= */
+  .ai-category-nav-circle-{{ ai_gen_id }} {
+    width: {{ block.settings.circle_size }}px;
+    height: {{ block.settings.circle_size }}px;
+    border-radius: 50% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: {{ block.settings.label_spacing }}px;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    
+    /* 3D Glossy Effect - Multiple shadows for depth */
+    box-shadow: 
+      0 12px 24px -8px rgba(0, 0, 0, 0.25),
+      0 4px 8px -4px rgba(0, 0, 0, 0.15),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.1),
+      inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  }
+
+  /* Top glossy highlight overlay */
+  .ai-category-nav-circle-{{ ai_gen_id }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50% !important;
+    background: radial-gradient(
+      ellipse at 30% 28%,
+      rgba(255, 255, 255, 0.65) 0%,
+      rgba(255, 255, 255, 0.2) 40%,
+      transparent 80%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Bottom shadow that extends outside (for floating effect) */
+  .ai-category-nav-circle-{{ ai_gen_id }}::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 15%;
+    width: 70%;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.25);
+    filter: blur(8px);
+    pointer-events: none;
+    z-index: -1;
+    transition: opacity 0.3s ease, filter 0.3s ease;
+  }
+
+  /* Hover state - lift and enhance shadows */
+  .ai-category-nav-link-{{ ai_gen_id }}:hover .ai-category-nav-circle-{{ ai_gen_id }} {
+    box-shadow: 
+      {{ block.settings.hover_shadow }},
+      0 4px 8px -4px rgba(0, 0, 0, 0.2),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.08),
+      inset 0 2px 4px rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+  }
+
+  .ai-category-nav-link-{{ ai_gen_id }}:hover .ai-category-nav-circle-{{ ai_gen_id }}::after {
+    opacity: 0.5;
+    filter: blur(10px);
+    transform: scale(1.05);
+  }
+
+  /* SVG icon inside circle - ensure crisp rendering */
+  .ai-category-nav-circle-{{ ai_gen_id }} svg {
+    width: 48%;
+    height: 48%;
+    flex-shrink: 0;
+    display: block;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+  }
+
+  /* Optional uploaded image (overrides SVG if set) */
+  .ai-category-nav-icon-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: 50% !important;
+  }
+
+  .ai-category-nav-label-{{ ai_gen_id }} {
+    font-size: {{ block.settings.label_size }}px;
+    color: {{ block.settings.label_color }};
+    font-weight: {{ block.settings.label_weight }};
+    max-width: {{ block.settings.circle_size | plus: 20 }}px;
+    word-wrap: break-word;
+    line-height: 1.3;
+    margin: 0;
+    text-align: center;
+  }
+
+  /* Inner ring for premium 3D look */
+  .ai-category-nav-circle-{{ ai_gen_id }} .inner-ring {
+    position: absolute;
+    top: 8%;
+    left: 8%;
+    width: 84%;
+    height: 84%;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-category-nav-{{ ai_gen_id }} {
+      padding: {{ block.settings.section_padding_top | times: 0.7 }}px 0 {{ block.settings.section_padding_bottom | times: 0.7 }}px;
+    }
+
+    .ai-category-nav-container-{{ ai_gen_id }} {
+      padding: 0 10px;
+    }
+
+    .ai-category-nav-list-{{ ai_gen_id }} {
+      gap: {{ block.settings.spacing | times: 0.6 }}px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      justify-content: flex-start;
+      padding-bottom: 4px;
+    }
+
+    .ai-category-nav-list-{{ ai_gen_id }}::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ai-category-nav-item-{{ ai_gen_id }} {
+      flex-shrink: 0;
+    }
+
+    .ai-category-nav-circle-{{ ai_gen_id }} {
+      width: {{ block.settings.circle_size | times: 0.7 }}px;
+      height: {{ block.settings.circle_size | times: 0.7 }}px;
+      margin-bottom: {{ block.settings.label_spacing | times: 0.7 }}px;
+    }
+
+    .ai-category-nav-label-{{ ai_gen_id }} {
+      font-size: {{ block.settings.label_size | times: 0.85 }}px;
+      max-width: {{ block.settings.circle_size | times: 0.7 | plus: 10 }}px;
+    }
+  }
+{% endstyle %}
+
+{% comment %} SVG icon library — mapped by icon_type setting {% endcomment %}
+{% capture svg_couples %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+</svg>
+{% endcapture %}
+
+{% capture svg_for_her %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="8" r="5"/>
+  <line x1="12" y1="13" x2="12" y2="21"/>
+  <line x1="9" y1="18" x2="15" y2="18"/>
+</svg>
+{% endcapture %}
+
+{% capture svg_for_him %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="10" cy="14" r="5"/>
+  <line x1="21" y1="3" x2="15" y2="9"/>
+  <polyline points="16 3 21 3 21 8"/>
+</svg>
+{% endcapture %}
+
+{% capture svg_gift %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="20 12 20 22 4 22 4 12"/>
+  <rect x="2" y="7" width="20" height="5"/>
+  <line x1="12" y1="22" x2="12" y2="7"/>
+  <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+  <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+</svg>
+{% endcapture %}
+
+{% capture svg_learn %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+</svg>
+{% endcapture %}
+
+{% capture svg_wellness %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+</svg>
+{% endcapture %}
+
+{% capture svg_massage %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 12H3v9h6v-9z"/>
+  <path d="M15 3h-6v18h6V3z"/>
+  <path d="M21 8h-6v13h6V8z"/>
+</svg>
+{% endcapture %}
+
+{% capture svg_intimate %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+  <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+  <line x1="9" y1="9" x2="9.01" y2="9"/>
+  <line x1="15" y1="9" x2="15.01" y2="9"/>
+</svg>
+{% endcapture %}
+
+{% capture svg_bundle %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3" y="3" width="7" height="7"/>
+  <rect x="14" y="3" width="7" height="7"/>
+  <rect x="14" y="14" width="7" height="7"/>
+  <rect x="3" y="14" width="7" height="7"/>
+</svg>
+{% endcapture %}
+
+{% capture svg_new %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+</svg>
+{% endcapture %}
+
+{% capture svg_sale %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="19" y1="5" x2="5" y2="19"/>
+  <circle cx="6.5" cy="6.5" r="2.5"/>
+  <circle cx="17.5" cy="17.5" r="2.5"/>
+</svg>
+{% endcapture %}
+
+{% capture svg_discreet %}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="1" y="3" width="15" height="13" rx="2"/>
+  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+  <circle cx="5.5" cy="18.5" r="2.5"/>
+  <circle cx="18.5" cy="18.5" r="2.5"/>
+</svg>
+{% endcapture %}
+
+<div class="ai-category-nav-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-category-nav-container-{{ ai_gen_id }}">
+    <ul class="ai-category-nav-list-{{ ai_gen_id }}">
+      {% for i in (1..6) %}
+        {% assign label_key      = 'category_' | append: i | append: '_label' %}
+        {% assign icon_key       = 'category_' | append: i | append: '_icon' %}
+        {% assign icon_type_key  = 'category_' | append: i | append: '_icon_type' %}
+        {% assign icon_color_key = 'category_' | append: i | append: '_icon_color' %}
+        {% assign circle_bg_key  = 'category_' | append: i | append: '_circle_bg' %}
+        {% assign collection_key = 'category_' | append: i | append: '_collection' %}
+        {% assign link_key       = 'category_' | append: i | append: '_link' %}
+        {% assign alt_key        = 'category_' | append: i | append: '_alt' %}
+
+        {% assign category_label      = block.settings[label_key] %}
+        {% assign category_icon       = block.settings[icon_key] %}
+        {% assign category_icon_type  = block.settings[icon_type_key] %}
+        {% assign category_icon_color = block.settings[icon_color_key] %}
+        {% assign category_circle_bg  = block.settings[circle_bg_key] %}
+        {% assign category_collection = block.settings[collection_key] %}
+        {% assign category_link       = block.settings[link_key] %}
+        {% assign category_alt        = block.settings[alt_key] %}
+
+        {% assign category_url = '' %}
+        {% if category_collection != blank %}
+          {% assign category_url = collections[category_collection].url %}
+        {% elsif category_link != blank %}
+          {% assign category_url = category_link %}
+        {% endif %}
+
+        {% if category_label != blank or category_icon %}
+          <li class="ai-category-nav-item-{{ ai_gen_id }}">
+            <a
+              href="{{ category_url }}"
+              class="ai-category-nav-link-{{ ai_gen_id }}"
+              {% if category_url == blank %}aria-disabled="true"{% endif %}
+            >
+              <div
+                class="ai-category-nav-circle-{{ ai_gen_id }}"
+                style="background: {{ category_circle_bg | default: block.settings.circle_background }}; color: {{ category_icon_color | default: block.settings.icon_color }};"
+              >
+                <div class="inner-ring"></div>
+                {% if category_icon != blank %}
+                  {% comment %} Uploaded image takes priority over SVG icon {% endcomment %}
+                  <img
+                    src="{{ category_icon | image_url: width: 200 }}"
+                    alt="{{ category_alt | escape }}"
+                    class="ai-category-nav-icon-{{ ai_gen_id }}"
+                    loading="lazy"
+                    width="200"
+                    height="200"
+                  >
+                {% else %}
+                  {% comment %} Render SVG icon by type {% endcomment %}
+                  {% case category_icon_type %}
+                    {% when 'couples'  %}{{ svg_couples }}
+                    {% when 'for_her'  %}{{ svg_for_her }}
+                    {% when 'for_him'  %}{{ svg_for_him }}
+                    {% when 'gift'     %}{{ svg_gift }}
+                    {% when 'learn'    %}{{ svg_learn }}
+                    {% when 'wellness' %}{{ svg_wellness }}
+                    {% when 'massage'  %}{{ svg_massage }}
+                    {% when 'intimate' %}{{ svg_intimate }}
+                    {% when 'bundle'   %}{{ svg_bundle }}
+                    {% when 'new'      %}{{ svg_new }}
+                    {% when 'sale'     %}{{ svg_sale }}
+                    {% when 'discreet' %}{{ svg_discreet }}
+                    {% else %}{{ svg_wellness }}
+                  {% endcase %}
+                {% endif %}
+              </div>
+
+              {% if category_label != blank %}
+                <span class="ai-category-nav-label-{{ ai_gen_id }}">{{ category_label }}</span>
+              {% endif %}
+            </a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Category navigation",
+  "tag": null,
+  "class": "category-navigation-block",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "flex-start",   "label": "Left" },
+        { "value": "center",       "label": "Center" },
+        { "value": "flex-end",     "label": "Right" },
+        { "value": "space-between","label": "Space between" },
+        { "value": "space-around", "label": "Space around" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "spacing",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Spacing between items",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#F6EEF2"
+    },
+    {
+      "type": "header",
+      "content": "Default circle style"
+    },
+    {
+      "type": "range",
+      "id": "circle_size",
+      "min": 60,
+      "max": 160,
+      "step": 10,
+      "unit": "px",
+      "label": "Circle size",
+      "default": 90
+    },
+    {
+      "type": "color",
+      "id": "circle_background",
+      "label": "Default circle background",
+      "default": "#7B1E3A"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Default icon color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Label style"
+    },
+    {
+      "type": "range",
+      "id": "label_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Label size",
+      "default": 13
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label color",
+      "default": "#1A0D12"
+    },
+    {
+      "type": "select",
+      "id": "label_weight",
+      "label": "Label weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "label_spacing",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Space below circle",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Hover effects"
+    },
+    {
+      "type": "select",
+      "id": "hover_effect",
+      "label": "Hover transform",
+      "options": [
+        { "value": "none",              "label": "None" },
+        { "value": "scale(1.08)",       "label": "Scale up" },
+        { "value": "translateY(-5px)",  "label": "Lift up" }
+      ],
+      "default": "translateY(-5px)"
+    },
+    {
+      "type": "select",
+      "id": "hover_shadow",
+      "label": "Hover shadow",
+      "options": [
+        { "value": "none",                                      "label": "None" },
+        { "value": "0 4px 12px rgba(0,0,0,0.12)",              "label": "Subtle" },
+        { "value": "0 6px 20px rgba(0,0,0,0.18)",              "label": "Medium" },
+        { "value": "0 8px 24px rgba(123,30,58,0.35)",          "label": "Brand burgundy" },
+        { "value": "0 8px 24px rgba(231,84,128,0.35)",         "label": "Brand rose" }
+      ],
+      "default": "0 8px 24px rgba(123,30,58,0.35)"
+    },
+    {
+      "type": "header",
+      "content": "Category 1"
+    },
+    {
+      "type": "text",
+      "id": "category_1_label",
+      "label": "Label",
+      "default": "Couples"
+    },
+    {
+      "type": "select",
+      "id": "category_1_icon_type",
+      "label": "Icon",
+      "options": [
+        { "value": "couples",  "label": "❤ Couples (heart)" },
+        { "value": "for_her",  "label": "♀ For Her (venus)" },
+        { "value": "for_him",  "label": "♂ For Him (mars)" },
+        { "value": "gift",     "label": "🎁 Gift Box" },
+        { "value": "learn",    "label": "📖 Learn / Guide" },
+        { "value": "wellness", "label": "🛡 Wellness / Shield" },
+        { "value": "massage",  "label": "📊 Massage / Bars" },
+        { "value": "intimate", "label": "😊 Intimate / Smile" },
+        { "value": "bundle",   "label": "⊞ Bundle / Grid" },
+        { "value": "new",      "label": "⭐ New / Star" },
+        { "value": "sale",     "label": "% Sale" },
+        { "value": "discreet", "label": "🚚 Discreet Delivery" }
+      ],
+      "default": "couples"
+    },
+    {
+      "type": "color",
+      "id": "category_1_circle_bg",
+      "label": "Circle color",
+      "default": "#E75480"
+    },
+    {
+      "type": "color",
+      "id": "category_1_icon_color",
+      "label": "Icon color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "image_picker",
+      "id": "category_1_icon",
+      "label": "Custom image (overrides icon)"
+    },
+    {
+      "type": "text",
+      "id": "category_1_alt",
+      "label": "Alt text"
+    },
+    {
+      "type": "collection",
+      "id": "category_1_collection",
+      "label": "Link to collection"
+    },
+    {
+      "type": "url",
+      "id": "category_1_link",
+      "label": "Or custom link"
+    },
+    {
+      "type": "header",
+      "content": "Category 2"
+    },
+    {
+      "type": "text",
+      "id": "category_2_label",
+      "label": "Label",
+      "default": "For Her"
+    },
+    {
+      "type": "select",
+      "id": "category_2_icon_type",
+      "label": "Icon",
+      "options": [
+        { "value": "couples",  "label": "❤ Couples (heart)" },
+        { "value": "for_her",  "label": "♀ For Her (venus)" },
+        { "value": "for_him",  "label": "♂ For Him (mars)" },
+        { "value": "gift",     "label": "🎁 Gift Box" },
+        { "value": "learn",    "label": "📖 Learn / Guide" },
+        { "value": "wellness", "label": "🛡 Wellness / Shield" },
+        { "value": "massage",  "label": "📊 Massage / Bars" },
+        { "value": "intimate", "label": "😊 Intimate / Smile" },
+        { "value": "bundle",   "label": "⊞ Bundle / Grid" },
+        { "value": "new",      "label": "⭐ New / Star" },
+        { "value": "sale",     "label": "% Sale" },
+        { "value": "discreet", "label": "🚚 Discreet Delivery" }
+      ],
+      "default": "for_her"
+    },
+    {
+      "type": "color",
+      "id": "category_2_circle_bg",
+      "label": "Circle color",
+      "default": "#FF5A8F"
+    },
+    {
+      "type": "color",
+      "id": "category_2_icon_color",
+      "label": "Icon color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "image_picker",
+      "id": "category_2_icon",
+      "label": "Custom image (overrides icon)"
+    },
+    {
+      "type": "text",
+      "id": "category_2_alt",
+      "label": "Alt text"
+    },
+    {
+      "type": "collection",
+      "id": "category_2_collection",
+      "label": "Link to collection"
+    },
+    {
+      "type": "url",
+      "id": "category_2_link",
+      "label": "Or custom link"
+    },
+    {
+      "type": "header",
+      "content": "Category 3"
+    },
+    {
+      "type": "text",
+      "id": "category_3_label",
+      "label": "Label",
+      "default": "For Him"
+    },
+    {
+      "type": "select",
+      "id": "category_3_icon_type",
+      "label": "Icon",
+      "options": [
+        { "value": "couples",  "label": "❤ Couples (heart)" },
+        { "value": "for_her",  "label": "♀ For Her (venus)" },
+        { "value": "for_him",  "label": "♂ For Him (mars)" },
+        { "value": "gift",     "label": "🎁 Gift Box" },
+        { "value": "learn",    "label": "📖 Learn / Guide" },
+        { "value": "wellness", "label": "🛡 Wellness / Shield" },
+        { "value": "massage",  "label": "📊 Massage / Bars" },
+        { "value": "intimate", "label": "😊 Intimate / Smile" },
+        { "value": "bundle",   "label": "⊞ Bundle / Grid" },
+        { "value": "new",      "label": "⭐ New / Star" },
+        { "value": "sale",     "label": "% Sale" },
+        { "value": "discreet", "label": "🚚 Discreet Delivery" }
+      ],
+      "default": "for_him"
+    },
+    {
+      "type": "color",
+      "id": "category_3_circle_bg",
+      "label": "Circle color",
+      "default": "#7B1E3A"
+    },
+    {
+      "type": "color",
+      "id": "category_3_icon_color",
+      "label": "Icon color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "image_picker",
+      "id": "category_3_icon",
+      "label": "Custom image (overrides icon)"
+    },
+    {
+      "type": "text",
+      "id": "category_3_alt",
+      "label": "Alt text"
+    },
+    {
+      "type": "collection",
+      "id": "category_3_collection",
+      "label": "Link to collection"
+    },
+    {
+      "type": "url",
+      "id": "category_3_link",
+      "label": "Or custom link"
+    },
+    {
+      "type": "header",
+      "content": "Category 4"
+    },
+    {
+      "type": "text",
+      "id": "category_4_label",
+      "label": "Label",
+      "default": "Gift Box"
+    },
+    {
+      "type": "select",
+      "id": "category_4_icon_type",
+      "label": "Icon",
+      "options": [
+        { "value": "couples",  "label": "❤ Couples (heart)" },
+        { "value": "for_her",  "label": "♀ For Her (venus)" },
+        { "value": "for_him",  "label": "♂ For Him (mars)" },
+        { "value": "gift",     "label": "🎁 Gift Box" },
+        { "value": "learn",    "label": "📖 Learn / Guide" },
+        { "value": "wellness", "label": "🛡 Wellness / Shield" },
+        { "value": "massage",  "label": "📊 Massage / Bars" },
+        { "value": "intimate", "label": "😊 Intimate / Smile" },
+        { "value": "bundle",   "label": "⊞ Bundle / Grid" },
+        { "value": "new",      "label": "⭐ New / Star" },
+        { "value": "sale",     "label": "% Sale" },
+        { "value": "discreet", "label": "🚚 Discreet Delivery" }
+      ],
+      "default": "gift"
+    },
+    {
+      "type": "color",
+      "id": "category_4_circle_bg",
+      "label": "Circle color",
+      "default": "#D4AF37"
+    },
+    {
+      "type": "color",
+      "id": "category_4_icon_color",
+      "label": "Icon color",
+      "default": "#1A0D12"
+    },
+    {
+      "type": "image_picker",
+      "id": "category_4_icon",
+      "label": "Custom image (overrides icon)"
+    },
+    {
+      "type": "text",
+      "id": "category_4_alt",
+      "label": "Alt text"
+    },
+    {
+      "type": "collection",
+      "id": "category_4_collection",
+      "label": "Link to collection"
+    },
+    {
+      "type": "url",
+      "id": "category_4_link",
+      "label": "Or custom link"
+    },
+    {
+      "type": "header",
+      "content": "Category 5"
+    },
+    {
+      "type": "text",
+      "id": "category_5_label",
+      "label": "Label",
+      "default": "Learn"
+    },
+    {
+      "type": "select",
+      "id": "category_5_icon_type",
+      "label": "Icon",
+      "options": [
+        { "value": "couples",  "label": "❤ Couples (heart)" },
+        { "value": "for_her",  "label": "♀ For Her (venus)" },
+        { "value": "for_him",  "label": "♂ For Him (mars)" },
+        { "value": "gift",     "label": "🎁 Gift Box" },
+        { "value": "learn",    "label": "📖 Learn / Guide" },
+        { "value": "wellness", "label": "🛡 Wellness / Shield" },
+        { "value": "massage",  "label": "📊 Massage / Bars" },
+        { "value": "intimate", "label": "😊 Intimate / Smile" },
+        { "value": "bundle",   "label": "⊞ Bundle / Grid" },
+        { "value": "new",      "label": "⭐ New / Star" },
+        { "value": "sale",     "label": "% Sale" },
+        { "value": "discreet", "label": "🚚 Discreet Delivery" }
+      ],
+      "default": "learn"
+    },
+    {
+      "type": "color",
+      "id": "category_5_circle_bg",
+      "label": "Circle color",
+      "default": "#4A2B66"
+    },
+    {
+      "type": "color",
+      "id": "category_5_icon_color",
+      "label": "Icon color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "image_picker",
+      "id": "category_5_icon",
+      "label": "Custom image (overrides icon)"
+    },
+    {
+      "type": "text",
+      "id": "category_5_alt",
+      "label": "Alt text"
+    },
+    {
+      "type": "collection",
+      "id": "category_5_collection",
+      "label": "Link to collection"
+    },
+    {
+      "type": "url",
+      "id": "category_5_link",
+      "label": "Or custom link"
+    },
+    {
+      "type": "header",
+      "content": "Category 6"
+    },
+    {
+      "type": "text",
+      "id": "category_6_label",
+      "label": "Label",
+      "default": "Discreet"
+    },
+    {
+      "type": "select",
+      "id": "category_6_icon_type",
+      "label": "Icon",
+      "options": [
+        { "value": "couples",  "label": "❤ Couples (heart)" },
+        { "value": "for_her",  "label": "♀ For Her (venus)" },
+        { "value": "for_him",  "label": "♂ For Him (mars)" },
+        { "value": "gift",     "label": "🎁 Gift Box" },
+        { "value": "learn",    "label": "📖 Learn / Guide" },
+        { "value": "wellness", "label": "🛡 Wellness / Shield" },
+        { "value": "massage",  "label": "📊 Massage / Bars" },
+        { "value": "intimate", "label": "😊 Intimate / Smile" },
+        { "value": "bundle",   "label": "⊞ Bundle / Grid" },
+        { "value": "new",      "label": "⭐ New / Star" },
+        { "value": "sale",     "label": "% Sale" },
+        { "value": "discreet", "label": "🚚 Discreet Delivery" }
+      ],
+      "default": "discreet"
+    },
+    {
+      "type": "color",
+      "id": "category_6_circle_bg",
+      "label": "Circle color",
+      "default": "#2D7D62"
+    },
+    {
+      "type": "color",
+      "id": "category_6_icon_color",
+      "label": "Icon color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "image_picker",
+      "id": "category_6_icon",
+      "label": "Custom image (overrides icon)"
+    },
+    {
+      "type": "text",
+      "id": "category_6_alt",
+      "label": "Alt text"
+    },
+    {
+      "type": "collection",
+      "id": "category_6_collection",
+      "label": "Link to collection"
+    },
+    {
+      "type": "url",
+      "id": "category_6_link",
+      "label": "Or custom link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category navigation"
+    }
+  ]
+}
+{% endschema %}

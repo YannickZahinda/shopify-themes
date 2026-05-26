@@ -1,0 +1,120 @@
+{% comment %} AI Generated Banner Block {% endcomment %}
+
+<style>
+  .ai-banner-{{ block.id }} {
+    position: relative;
+    min-height: {{ block.settings.banner_height }}px;
+    display: flex;
+    align-items: {{ block.settings.text_alignment }};
+    justify-content: center;
+    text-align: {{ block.settings.text_alignment }};
+    padding: {{ block.settings.padding_top }}px {{ block.settings.padding_horizontal }}px {{ block.settings.padding_bottom }}px;
+    background-image: url({{ block.settings.background_image | img_url: 'master' }});
+    background-size: cover;
+    background-position: center;
+  }
+
+  .ai-banner-{{ block.id }}::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: {{ block.settings.overlay_color }};
+    opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+  }
+
+  .ai-banner-{{ block.id }} .banner-content {
+    position: relative;
+    z-index: 1;
+    max-width: {{ block.settings.content_width }}px;
+  }
+
+  .ai-banner-{{ block.id }} .banner-heading {
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.heading_color }};
+    margin-bottom: 10px;
+  }
+
+  .ai-banner-{{ block.id }} .banner-subheading {
+    font-size: {{ block.settings.subheading_size }}px;
+    color: {{ block.settings.subheading_color }};
+    margin-bottom: 20px;
+  }
+
+  .ai-banner-{{ block.id }} .banner-btn {
+    display: inline-block;
+    font-size: {{ block.settings.button_font_size }}px;
+    padding: {{ block.settings.button_padding_vertical }}px {{ block.settings.button_padding_horizontal }}px;
+    background-color: {{ block.settings.button_background_color }};
+    color: {{ block.settings.button_text_color }};
+    border-radius: {{ block.settings.button_border_radius }}px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-banner-{{ block.id }} .banner-btn:hover {
+    background-color: {{ block.settings.button_hover_background }};
+  }
+
+  @media (max-width: 768px) {
+    .ai-banner-{{ block.id }} {
+      min-height: {{ block.settings.mobile_banner_height }}px;
+      background-image: url({{ block.settings.mobile_background_image | img_url: 'master' }});
+    }
+    .ai-banner-{{ block.id }} .banner-content {
+      max-width: {{ block.settings.mobile_content_width }}%;
+    }
+  }
+</style>
+
+<div class="ai-banner-{{ block.id }}" {{ block.shopify_attributes }}>
+  <div class="banner-content">
+    {% if block.settings.heading != blank %}
+      <h2 class="banner-heading">{{ block.settings.heading }}</h2>
+    {% endif %}
+
+    {% if block.settings.subheading != blank %}
+      <p class="banner-subheading">{{ block.settings.subheading }}</p>
+    {% endif %}
+
+    {% if block.settings.button_text != blank %}
+      <a href="{{ block.settings.button_link }}" class="banner-btn">
+        {{ block.settings.button_text }}
+      </a>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "AI Banner Block",
+  "settings": [
+    { "type": "image_picker", "id": "background_image", "label": "Background Image" },
+    { "type": "range", "id": "banner_height", "label": "Banner Height (px)", "min": 50, "max": 800, "step": 10, "default": 200 },
+    { "type": "image_picker", "id": "mobile_background_image", "label": "Mobile Background Image" },
+    { "type": "range", "id": "mobile_banner_height", "min": 50, "max": 800, "step": 10, "default": 200, "label": "Mobile Banner Height" },
+    { "type": "color", "id": "overlay_color", "label": "Overlay Color", "default": "#000000" },
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay Opacity", "min": 0, "max": 100, "step": 5, "default": 0 },
+    { "type": "select", "id": "text_alignment", "label": "Text Alignment", "options": [{"value": "left", "label": "Left"}, {"value": "center", "label": "Center"}, {"value": "right", "label": "Right"}], "default": "center" },
+    { "type": "range", "id": "content_width", "label": "Content Width (px)", "min": 200, "max": 1200, "step": 10, "default": 550 },
+    { "type": "range", "id": "mobile_content_width", "label": "Mobile Content Width (%)", "min": 10, "max": 100, "step": 5, "default": 70 },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 0, "max": 200, "step": 5, "default": 60 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 0, "max": 200, "step": 5, "default": 60 },
+    { "type": "range", "id": "padding_horizontal", "label": "Padding Horizontal", "min": 0, "max": 200, "step": 5, "default": 30 },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
+    { "type": "range", "id": "heading_size", "label": "Heading Size (px)", "min": 12, "max": 80, "step": 1, "default": 36 },
+    { "type": "color", "id": "heading_color", "label": "Heading Color", "default": "#000000" },
+    { "type": "text", "id": "subheading", "label": "Subheading" },
+    { "type": "range", "id": "subheading_size", "label": "Subheading Size (px)", "min": 10, "max": 40, "step": 1, "default": 14 },
+    { "type": "color", "id": "subheading_color", "label": "Subheading Color", "default": "#000000" },
+    { "type": "text", "id": "button_text", "label": "Button Text" },
+    { "type": "url", "id": "button_link", "label": "Button Link" },
+    { "type": "range", "id": "button_font_size", "label": "Button Font Size (px)", "min": 10, "max": 30, "step": 1, "default": 14 },
+    { "type": "range", "id": "button_padding_vertical", "label": "Button Padding Vertical", "min": 0, "max": 50, "step": 1, "default": 10 },
+    { "type": "range", "id": "button_padding_horizontal", "label": "Button Padding Horizontal", "min": 0, "max": 100, "step": 1, "default": 25 },
+    { "type": "color", "id": "button_background_color", "label": "Button Background", "default": "#e7596b" },
+    { "type": "color", "id": "button_hover_background", "label": "Button Hover Background", "default": "#333333" },
+    { "type": "color", "id": "button_text_color", "label": "Button Text Color", "default": "#ffffff" },
+    { "type": "range", "id": "button_border_radius", "label": "Button Border Radius", "min": 0, "max": 100, "step": 1, "default": 50 }
+  ]
+}
+{% endschema %}

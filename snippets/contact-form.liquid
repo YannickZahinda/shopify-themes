@@ -1,0 +1,256 @@
+{%- liquid
+  assign form_id = block.id | default: section.id | prepend: 'ContactForm-'
+-%}
+
+<div class="contact-form-section" {{ block.shopify_attributes }}>
+  {%- form 'contact', id: form_id, class: 'contact-form' -%}
+
+    {%- if form.errors -%}
+      <div class="contact-form__alert contact-form__alert--error" tabindex="-1" autofocus>
+        {{- 'icon-error.svg' | inline_asset_content -}}
+        <span>{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</span>
+      </div>
+    {%- endif -%}
+
+    {%- if form.posted_successfully? -%}
+      <div class="contact-form__alert contact-form__alert--success" tabindex="-1" autofocus>
+        {{- 'icon-checkmark.svg' | inline_asset_content -}}
+        <span>{{ 'blocks.contact_form.post_success' | t }}</span>
+      </div>
+    {%- endif -%}
+
+    <h2 class="contact-form__heading">Get in Touch</h2>
+
+    <div class="contact-form__fields-wrapper">
+      <div class="contact-form__row-two">
+        <div class="contact-form__field-box">
+          <label class="contact-form__label">First Name</label>
+          <input type="text" name="contact[first_name]" placeholder="Type here" class="contact-form__input">
+        </div>
+        <div class="contact-form__field-box">
+          <label class="contact-form__label">Last Name</label>
+          <input type="text" name="contact[last_name]" placeholder="Type here" class="contact-form__input">
+        </div>
+      </div>
+
+      <div class="contact-form__row-two">
+        <div class="contact-form__field-box">
+          <label class="contact-form__label">Email</label>
+          <input type="email" name="contact[email]" placeholder="Type here" class="contact-form__input" required>
+        </div>
+        <div class="contact-form__field-box">
+          <label class="contact-form__label">Phone No</label>
+          <input type="tel" name="contact[phone]" placeholder="Type here" class="contact-form__input">
+        </div>
+      </div>
+
+      <div class="contact-form__field-box contact-form__field-full">
+        <label class="contact-form__label">Your Message</label>
+        <textarea name="contact[body]" placeholder="Type here" rows="5" class="contact-form__input contact-form__textarea"></textarea>
+      </div>
+    </div>
+
+    <div class="contact-form__button-wrapper">
+      <button type="submit" class="contact-form__button">Send Message</button>
+    </div>
+
+  {%- endform -%}
+</div>
+
+{% stylesheet %}
+* {
+  box-sizing: border-box;
+}
+
+.contact-form-section {
+   padding: 4rem 2rem;
+  min-height: 90vh;
+  min-width: 90vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-form {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.contact-form__heading {
+  text-align: center;
+  margin: 0 0 2.5rem;
+  font-weight: 600;
+  font-size: 2.5rem;
+  color: #6b4c9a;
+  letter-spacing: -0.02em;
+}
+
+.contact-form__fields-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.contact-form__row-two {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  width: 100%;
+  align-items: flex-end;
+}
+
+.contact-form__field-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex: 1;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 2rem 3rem;
+}
+
+.contact-form__field-full {
+  width: 100%;
+  flex: none;
+}
+
+.contact-form__label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  padding-left: 0;
+  min-height: auto;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+.contact-form__input {
+  width: 100%;
+  padding: 0.75rem 0;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  color: #333;
+  text-align: left;
+}
+
+.contact-form__input::placeholder {
+  color: #999;
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+.contact-form__input:focus {
+  outline: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.contact-form__field-box:focus-within {
+  box-shadow: 0 0 0 2px rgba(107, 76, 154, 0.3);
+}
+
+.contact-form__textarea {
+  resize: vertical;
+  min-height: 60px;
+  max-height: 60px;
+  font-family: inherit;
+}
+
+.contact-form__button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.contact-form__button {
+  padding: 1rem 3.5rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #ff7eb3 0%, #ff657a 100%);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 126, 179, 0.4);
+  font-family: inherit;
+}
+
+.contact-form__button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 126, 179, 0.5);
+}
+
+.contact-form__button:active {
+  transform: translateY(0);
+}
+
+.contact-form__alert {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.25rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.contact-form__alert svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.contact-form__alert--error {
+  background: #ffe5e5;
+  color: #c00;
+}
+
+.contact-form__alert--success {
+  background: #e5f9e5;
+  color: #2a7d2a;
+}
+
+@media (max-width: 768px) {
+  .contact-form-section {
+    padding: 3rem 1.5rem;
+    min-height: auto;
+  }
+
+  .contact-form__row-two {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .contact-form__heading {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-form__button {
+    width: 100%;
+    padding: 1rem 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-form-section {
+    padding: 2rem 1rem;
+  }
+
+  .contact-form__fields-wrapper {
+    gap: 1.25rem;
+  }
+
+  .contact-form__heading {
+    font-size: 1.5rem;
+  }
+}
+{% endstylesheet %}

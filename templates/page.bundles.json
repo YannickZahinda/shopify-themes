@@ -1,0 +1,503 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "customised_learn_hero_QkKCUM": {
+      "type": "customised-learn-hero",
+      "name": "Customised Learn Hero",
+      "settings": {
+        "bg_image": "shopify://shop_images/herobackground_30a9c1a5-1a71-4d3c-a06d-5ec1f37e84ea.jpg",
+        "bg_size": "cover",
+        "bg_position": "center center",
+        "bg_repeat": "no-repeat",
+        "bg_attachment": "scroll",
+        "gradient_bg": "linear-gradient(135deg, #F6EEF2 0%, #F7C7D4 45%, #E75480 100%)",
+        "bg_color_fallback": "#fae0e4",
+        "image_overlay_color": "#000000",
+        "image_overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "overlay_opacity": 0,
+        "image_desktop": "shopify://shop_images/Frame_104_1.png",
+        "asset_image": "hero-couple-transparent.png",
+        "super_meta": "INTIMATE WELLNESS · INDIA",
+        "heading": "Discover the Ultimate Adult Fun Bundle!",
+        "text": "Three exciting toys. One unbeatable price. Endless fun.",
+        "btn_text": "Shop now",
+        "btn_link": "shopify://collections/all",
+        "badge_1": "Discreet Packaging",
+        "badge_2": "All India Delivery",
+        "text_color": "#f6eef2",
+        "btn_bg_color": "#7b1e3a",
+        "btn_text_color": "#ffffff",
+        "btn_radius": 44,
+        "d_hero_height": 70,
+        "d_heading_size": 38,
+        "d_heading_mb": 15,
+        "d_text_size": 20,
+        "d_text_mb": 25,
+        "d_btn_font_size": 16,
+        "d_btn_v": 12,
+        "d_btn_h": 30,
+        "m_hero_height": 75,
+        "m_heading_size": 32,
+        "m_heading_mb": 10,
+        "m_text_size": 16,
+        "m_text_mb": 20,
+        "m_btn_font_size": 14,
+        "m_btn_v": 10,
+        "m_btn_h": 25
+      }
+    },
+    "custom_article_blogs_rifAm9": {
+      "type": "custom-article-blogs",
+      "blocks": {
+        "article_j3LGQL": {
+          "type": "article",
+          "settings": {
+            "image": "shopify://shop_images/close-up-sex-toys_2.png",
+            "title": "Why Self-Love Isn't Selfish, It's Sacred",
+            "meta": "arousique | June 13, 2025 | 2 min read",
+            "excerpt": "We've all been told to give, care, support. But when...",
+            "button_text": "Read More",
+            "button_link": ""
+          }
+        },
+        "article_8cParm": {
+          "type": "article",
+          "settings": {
+            "image": "shopify://shop_images/close-up-sex-toys_2.png",
+            "title": "Pleasure Is Self-Care: Here's Why It Matters",
+            "meta": "arousique | June 13, 2025 | 2 min read",
+            "excerpt": "In a world that constantly tells us to hustle, care...",
+            "button_text": "Read More",
+            "button_link": ""
+          }
+        },
+        "article_c4Gfbr": {
+          "type": "article",
+          "settings": {
+            "image": "shopify://shop_images/close-up-sex-toys_2.png",
+            "title": "Let's Talk Foreplay: Because It's More Than Just a Warm-Up",
+            "meta": "digitaltalesdata | May 20, 2025 | 4:09 pm",
+            "excerpt": "Foreplay isn't just about getting from A to B. It's about slowing down, tuning...",
+            "button_text": "Read More",
+            "button_link": ""
+          }
+        },
+        "article_DV7MqJ": {
+          "type": "article",
+          "settings": {
+            "image": "shopify://shop_images/close-up-sex-toys_2.png",
+            "title": "Let's Talk Foreplay: Because It's More Than Just a Warm-Up",
+            "meta": "digitaltalesdata | May 20, 2025 | 4:09 pm",
+            "excerpt": "Foreplay isn't just about getting from A to B. It's about slowing down, tuning...",
+            "button_text": "Read More",
+            "button_link": ""
+          }
+        },
+        "article_GWA3zX": {
+          "type": "article",
+          "settings": {
+            "image": "shopify://shop_images/close-up-sex-toys_2.png",
+            "title": "Let's Talk Foreplay: Because It's More Than Just a Warm-Up",
+            "meta": "digitaltalesdata | May 20, 2025 | 4:09 pm",
+            "excerpt": "Foreplay isn't just about getting from A to B. It's about slowing down, tuning...",
+            "button_text": "Read More",
+            "button_link": ""
+          }
+        },
+        "article_9Vdxet": {
+          "type": "article",
+          "settings": {
+            "image": "shopify://shop_images/close-up-sex-toys_2.png",
+            "title": "Let's Talk Foreplay: Because It's More Than Just a Warm-Up",
+            "meta": "digitaltalesdata | May 20, 2025 | 4:09 pm",
+            "excerpt": "Foreplay isn't just about getting from A to B. It's about slowing down, tuning...",
+            "button_text": "Read More",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "article_j3LGQL",
+        "article_8cParm",
+        "article_c4Gfbr",
+        "article_DV7MqJ",
+        "article_GWA3zX",
+        "article_9Vdxet"
+      ],
+      "disabled": true,
+      "name": "Article Grid",
+      "settings": {
+        "container_width": 1400,
+        "grid_gap": 30,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "background_color": "#ffffff",
+        "card_background": "#ffffff",
+        "card_radius": 12,
+        "image_height": 300,
+        "content_padding": 25,
+        "title_size": 22,
+        "title_weight": "600",
+        "title_color": "#000000",
+        "meta_size": 13,
+        "meta_color": "#666666",
+        "excerpt_size": 15,
+        "excerpt_color": "#333333",
+        "button_size": 15,
+        "button_weight": "600",
+        "button_padding_v": 12,
+        "button_padding_h": 30,
+        "button_radius": 24,
+        "button_background": "#ff6b8a",
+        "button_text_color": "#ffffff",
+        "button_hover_background": "#ff4d73",
+        "button_hover_text_color": "#ffffff"
+      }
+    },
+    "blocks_Pzxmw9": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_b4fb24d_VUffQD": {
+          "type": "ai_gen_block_b4fb24d",
+          "settings": {
+            "message_1": "COD AVAILABLE",
+            "message_2": "FREE, DISCREET & 1-3 DAY EXPRESS DELIVERY",
+            "message_3": "COD AVAILABLE",
+            "message_4": "FREE, DISCREET & 1-3 DAY EXPRESS DELIVERY",
+            "separator": "•",
+            "use_gradient": true,
+            "background_color": "#7b1e3a",
+            "gradient_color_1": "#7b1e3a",
+            "gradient_color_2": "#e75480",
+            "gradient_angle": "90",
+            "text_color": "#ffffff",
+            "font_size": 14,
+            "font_weight": "700",
+            "letter_spacing": 1,
+            "vertical_padding": 12,
+            "separator_spacing": 20,
+            "item_spacing": 40,
+            "scroll_speed": 30
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_b4fb24d_VUffQD"
+      ],
+      "name": "Scrolling marquee bar",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "blocks_7bXJdV": {
+      "type": "_blocks",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "faq_custom_VgPnie": {
+      "type": "faq-custom",
+      "blocks": {
+        "faq_item_DaNdwi": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Are Arousique products safe to use?",
+            "answer": "<p>Yes, all our products are made with body-safe materials and thoroughly tested.</p>"
+          }
+        },
+        "faq_item_f6LBzw": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I use the products both internally and externally?",
+            "answer": "<p>Please refer to individual product guidelines for specific usage instructions.</p>"
+          }
+        },
+        "faq_item_PbTAXf": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What payment options do you offer?",
+            "answer": "<p>We accept all major credit cards, PayPal, and other secure payment methods.</p>"
+          }
+        },
+        "faq_item_XiDmc4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How quickly will my order arrive?",
+            "answer": "<p>Standard shipping takes 5-7 business days. Express shipping options are available at checkout.</p>"
+          }
+        },
+        "faq_item_cMV4bN": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>We offer a 30-day return policy on unopened products. Please contact our support team for assistance.</p>"
+          }
+        },
+        "faq_item_BbdArN": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I track my order?",
+            "answer": "<p>Yes! You'll receive a tracking number via email once your order ships.</p>"
+          }
+        },
+        "faq_item_Q6HW3g": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>Yes, we ship to most countries worldwide. Shipping costs and times vary by location.</p>"
+          }
+        },
+        "faq_item_M9mwbW": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Are your products discreetly packaged?",
+            "answer": "<p>Absolutely! All orders are shipped in plain, unmarked packaging for your privacy.</p>"
+          }
+        },
+        "faq_item_9aWfXb": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you offer gift wrapping?",
+            "answer": "<p>Yes, gift wrapping is available at checkout for a small additional fee.</p>"
+          }
+        },
+        "faq_item_J33cRY": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I care for my products?",
+            "answer": "<p>Clean with mild soap and warm water. Store in a cool, dry place away from direct sunlight.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_DaNdwi",
+        "faq_item_f6LBzw",
+        "faq_item_PbTAXf",
+        "faq_item_XiDmc4",
+        "faq_item_cMV4bN",
+        "faq_item_BbdArN",
+        "faq_item_Q6HW3g",
+        "faq_item_M9mwbW",
+        "faq_item_9aWfXb",
+        "faq_item_J33cRY"
+      ],
+      "name": "Custom FAQ",
+      "settings": {
+        "heading": "FAQs",
+        "heading_color": "#4a3f7a",
+        "border_color": "#f85f73",
+        "initial_visible": 8,
+        "see_more_text": "See More",
+        "see_less_text": "See Less"
+      }
+    },
+    "blocks_G3AnVG": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_ea2e480_FeULb3": {
+          "type": "ai_gen_block_ea2e480",
+          "settings": {
+            "heading": "The Arousique Promise",
+            "subheading": "Your satisfaction and privacy are our top priorities",
+            "heading_size": 40,
+            "subheading_size": 16,
+            "heading_color": "#000000",
+            "subheading_color": "#666666",
+            "spacing_between_headings": 12,
+            "spacing_below_header": 48,
+            "background_color": "#f4f4eb",
+            "padding_top": 72,
+            "padding_bottom": 72,
+            "columns_desktop": 6,
+            "columns_tablet": 3,
+            "columns_mobile": 3,
+            "grid_gap": 32,
+            "circle_size": 100,
+            "icon_size": 48,
+            "spacing_below_icon": 16,
+            "enable_hover_effect": true,
+            "label_size": 14,
+            "label_color": "#7b1e3a",
+            "label_weight": 500,
+            "feature_1_enabled": true,
+            "feature_1_icon": "shopify://shop_images/arousikcube.jpg",
+            "feature_1_label": "Discreet Delivery",
+            "feature_1_color": "#ffd147",
+            "feature_1_icon_color": "#ffffff",
+            "feature_2_enabled": true,
+            "feature_2_icon": "shopify://shop_images/medicalarousik.jpg",
+            "feature_2_label": "Doctor-Backed",
+            "feature_2_color": "#ff5a8f",
+            "feature_2_icon_color": "#ffffff",
+            "feature_3_enabled": true,
+            "feature_3_icon": "shopify://shop_images/arousiktruck.jpg",
+            "feature_3_label": "COD Available",
+            "feature_3_color": "#4a2b66",
+            "feature_3_icon_color": "#ffffff",
+            "feature_4_enabled": true,
+            "feature_4_icon": "shopify://shop_images/payment.jpg",
+            "feature_4_label": "Secure Payments",
+            "feature_4_color": "#ffd147",
+            "feature_4_icon_color": "#ffffff",
+            "feature_5_enabled": true,
+            "feature_5_icon": "shopify://shop_images/pleasure.jpg",
+            "feature_5_label": "Pleasure",
+            "feature_5_color": "#ff5a8f",
+            "feature_5_icon_color": "#ffffff",
+            "feature_6_enabled": true,
+            "feature_6_icon": "shopify://shop_images/clockarousic.jpg",
+            "feature_6_label": "100% Privacy",
+            "feature_6_color": "#4a2b66",
+            "feature_6_icon_color": "#ffffff"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_ea2e480_FeULb3"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 20,
+        "padding-block-end": 20
+      }
+    }
+  },
+  "order": [
+    "main",
+    "customised_learn_hero_QkKCUM",
+    "custom_article_blogs_rifAm9",
+    "blocks_Pzxmw9",
+    "blocks_7bXJdV",
+    "faq_custom_VgPnie",
+    "blocks_G3AnVG"
+  ]
+}

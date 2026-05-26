@@ -1,0 +1,587 @@
+{% comment %}
+  Video Reviews Section with Swipe/Scroll and Customizable Settings
+{% endcomment %}
+
+{{ 'section-video-reviews.css' | asset_url | stylesheet_tag }}
+
+<div class="video-reviews-section" style="
+  --desktop-video-width: {{ section.settings.desktop_video_width }}px;
+  --desktop-video-height: {{ section.settings.desktop_video_height }}px;
+  --mobile-video-width: {{ section.settings.mobile_video_width }}px;
+  --mobile-video-height: {{ section.settings.mobile_video_height }}px;
+  --desktop-gap: {{ section.settings.desktop_gap }}px;
+  --mobile-gap: {{ section.settings.mobile_gap }}px;
+  --desktop-columns: {{ section.settings.desktop_columns }};
+  --mobile-columns: {{ section.settings.mobile_columns }};
+">
+  <div class="video-reviews-container page-width">
+    {% if section.settings.section_title != blank %}
+      <h2 class="video-reviews-title">{{ section.settings.section_title }}</h2>
+    {% endif %}
+    
+    {% if section.settings.section_subtitle != blank %}
+      <p class="video-reviews-subtitle">{{ section.settings.section_subtitle }}</p>
+    {% endif %}
+
+    <div class="video-reviews-wrapper">
+      {% if section.settings.enable_navigation %}
+        <button class="video-nav video-nav-prev" aria-label="Previous videos">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      {% endif %}
+
+      <div class="video-reviews-scroll">
+        <div class="video-reviews-grid">
+          {% for block in section.blocks %}
+            <div class="video-card" {{ block.shopify_attributes }}>
+              <div class="video-container">
+                {% if block.settings.video_url != blank %}
+                  {% assign video_id = block.settings.video_url | split: 'v=' | last | split: '&' | first %}
+                  {% if block.settings.video_url contains 'youtube.com' or block.settings.video_url contains 'youtu.be' %}
+                    <iframe
+                      src="https://www.youtube.com/embed/{{ video_id }}"
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen
+                      loading="lazy"
+                    ></iframe>
+                  {% elsif block.settings.video_url contains 'vimeo.com' %}
+                    {% assign vimeo_id = block.settings.video_url | split: 'vimeo.com/' | last | split: '/' | first %}
+                    <iframe
+                      src="https://player.vimeo.com/video/{{ vimeo_id }}"
+                      frameborder="0"
+                      allow="autoplay; fullscreen; picture-in-picture"
+                      allowfullscreen
+                      loading="lazy"
+                    ></iframe>
+                  {% endif %}
+                {% else %}
+                  <div class="video-placeholder">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                      <circle cx="32" cy="32" r="24" fill="white"/>
+                      <path d="M27 22L42 32L27 42V22Z" fill="#333"/>
+                    </svg>
+                    <p>Add video URL</p>
+                  </div>
+                {% endif %}
+              </div>
+              {% if block.settings.video_title != blank %}
+                <h3 class="video-title">{{ block.settings.video_title }}</h3>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      {% if section.settings.enable_navigation %}
+        <button class="video-nav video-nav-next" aria-label="Next videos">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const wrapper = document.querySelector('.video-reviews-wrapper');
+    const scrollContainer = wrapper.querySelector('.video-reviews-scroll');
+    const prevBtn = wrapper.querySelector('.video-nav-prev');
+    const nextBtn = wrapper.querySelector('.video-nav-next');
+    
+    if (prevBtn && nextBtn) {
+      const scrollAmount = () => {
+        const cardWidth = scrollContainer.querySelector('.video-card')?.offsetWidth || 300;
+        const gap = parseInt(getComputedStyle(scrollContainer.querySelector('.video-reviews-grid')).gap) || 20;
+        return cardWidth + gap;
+      };
+
+      prevBtn.addEventListener('click', () => {
+        scrollContainer.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+      });
+
+      nextBtn.addEventListener('click', () => {
+        scrollContainer.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+      });
+
+      // Update button states
+      const updateButtons = () => {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollContainer;
+        prevBtn.disabled = scrollLeft <= 0;
+        nextBtn.disabled = scrollLeft + clientWidth >= scrollWidth - 1;
+      };
+
+      scrollContainer.addEventListener('scroll', updateButtons);
+      updateButtons();
+    }
+  });
+</script>
+
+<style>
+  .video-reviews-section {
+    padding: 60px 0;
+    background: {{ section.settings.background_color }};
+  }
+
+  .video-reviews-container {
+    max-width: 1400px;
+    margin: 0 ;
+    padding: 0 20px;
+  }
+
+  .video-reviews-title {
+    text-align: center;
+    font-size: {{ section.settings.title_size }}px;
+   
+    color: {{ section.settings.title_color }};
+  }
+
+  .video-reviews-subtitle {
+    text-align: center;
+    font-size: {{ section.settings.subtitle_size }}px;
+    margin-bottom: 40px;
+    color: {{ section.settings.subtitle_color }};
+  }
+
+  .video-reviews-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .video-reviews-scroll {
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,0,0,0.3) transparent;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .video-reviews-scroll::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .video-reviews-scroll::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.1);
+    border-radius: 4px;
+  }
+
+  .video-reviews-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.3);
+    border-radius: 4px;
+  }
+
+  .video-reviews-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: var(--desktop-video-width);
+    gap: var(--desktop-gap);
+    padding: 4px;
+  }
+
+  .video-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .video-container {
+    position: relative;
+    width: 100%;
+    height: var(--desktop-video-height);
+    background: #000;
+    border-radius: {{ section.settings.border_radius }}px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .video-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #666;
+    gap: 8px;
+  }
+
+  .video-title {
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    margin: 0;
+    color: {{ section.settings.video_title_color }};
+  }
+
+  .video-nav {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: {{ section.settings.nav_button_bg }};
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: {{ section.settings.nav_button_color }};
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+  }
+
+  .video-nav:hover:not(:disabled) {
+    background: {{ section.settings.nav_button_hover_bg }};
+    transform: scale(1.05);
+  }
+
+  .video-nav:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  {% unless section.settings.enable_navigation %}
+  .video-nav {
+    display: none;
+  }
+  {% endunless %}
+
+  @media screen and (max-width: 768px) {
+    .video-reviews-section {
+      padding: 40px 0;
+    }
+
+    .video-reviews-grid {
+      grid-auto-columns: var(--mobile-video-width);
+      gap: var(--mobile-gap);
+    }
+
+    .video-container {
+      height: var(--mobile-video-height);
+    }
+
+    .video-reviews-title {
+      font-size: calc({{ section.settings.title_size }}px * 0.8);
+    }
+
+    .video-reviews-subtitle {
+      font-size: calc({{ section.settings.subtitle_size }}px * 0.9);
+    }
+
+    .video-nav {
+      width: 40px;
+      height: 40px;
+    }
+
+    .video-nav svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .video-reviews-section {
+      padding: 40px 0;
+    }
+
+    .video-reviews-wrapper {
+      gap: 0;
+    }
+
+    .video-reviews-scroll {
+      margin: 0 -20px;
+      padding: 0 20px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .video-reviews-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .video-reviews-grid {
+      grid-auto-columns: calc(100vw - 80px);
+      gap: 16px;
+    }
+
+    .video-card {
+      scroll-snap-align: center;
+    }
+
+    .video-container {
+      height: 450px;
+    }
+
+    .video-reviews-title {
+      font-size: calc({{ section.settings.title_size }}px * 0.8);
+    }
+
+    .video-reviews-subtitle {
+      font-size: calc({{ section.settings.subtitle_size }}px * 0.9);
+    }
+
+    .video-nav {
+      display: none !important;
+    }
+  }
+.video-reviews-title {
+  text-align: center;
+  font-size: {{ section.settings.title_size }}px;
+  margin-bottom: 0;  /* Add this line */
+  color: {{ section.settings.title_color }};
+}
+
+.video-reviews-subtitle {
+  text-align: center;
+  font-size: {{ section.settings.subtitle_size }}px;
+  margin-top: 8px;  /* Add this line - controls gap between title and subtitle */
+  margin-bottom: 40px;
+  color: {{ section.settings.subtitle_color }};
+}
+  
+</style>
+
+{% schema %}
+{
+  "name": "Video Reviews",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Watch Our Videos"
+    },
+    {
+      "type": "text",
+      "id": "section_subtitle",
+      "label": "Section Subtitle",
+      "default": "Discover our latest content"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Settings"
+    },
+    {
+      "type": "range",
+      "id": "desktop_video_width",
+      "label": "Video Width (Desktop)",
+      "min": 200,
+      "max": 800,
+      "step": 20,
+      "default": 400,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "desktop_video_height",
+      "label": "Video Height (Desktop)",
+      "min": 200,
+      "max": 800,
+      "step": 20,
+      "default": 500,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "desktop_gap",
+      "label": "Gap Between Videos (Desktop)",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 25,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "label": "Videos Visible at Once (Desktop)",
+      "info": "This is for reference only. Actual visible videos depend on screen size.",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Mobile Settings"
+    },
+    {
+      "type": "range",
+      "id": "mobile_video_width",
+      "label": "Video Width (Mobile)",
+      "min": 200,
+      "max": 400,
+      "step": 10,
+      "default": 280,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_video_height",
+      "label": "Video Height (Mobile)",
+      "min": 200,
+      "max": 600,
+      "step": 20,
+      "default": 400,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap",
+      "label": "Gap Between Videos (Mobile)",
+      "min": 8,
+      "max": 40,
+      "step": 4,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_columns",
+      "label": "Videos Visible at Once (Mobile)",
+      "info": "This is for reference only. Actual visible videos depend on screen size.",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_navigation",
+      "label": "Enable Navigation Arrows",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "nav_button_bg",
+      "label": "Navigation Button Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "nav_button_hover_bg",
+      "label": "Navigation Button Hover Background",
+      "default": "#f0f0f0"
+    },
+    {
+      "type": "color",
+      "id": "nav_button_color",
+      "label": "Navigation Button Icon Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Styling"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Video Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Font Size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle Font Size",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "video_title_color",
+      "label": "Video Title Color",
+      "default": "#333333"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "Video URL",
+          "info": "YouTube or Vimeo URL"
+        },
+        {
+          "type": "text",
+          "id": "video_title",
+          "label": "Video Title"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video Reviews",
+      "blocks": [
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

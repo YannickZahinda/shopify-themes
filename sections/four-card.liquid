@@ -1,0 +1,774 @@
+{% assign fc_id = section.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .four-card-section-{{ fc_id }} {
+    padding: {{ section.settings.section_padding_top }}px 0 {{ section.settings.section_padding_bottom }}px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,0,0,0.3) rgba(0,0,0,0.1);
+  }
+
+  .four-card-section-{{ fc_id }}::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .four-card-section-{{ fc_id }}::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.1);
+    border-radius: 4px;
+  }
+
+  .four-card-section-{{ fc_id }}::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.3);
+    border-radius: 4px;
+  }
+
+  .four-card-section-{{ fc_id }}::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.5);
+  }
+
+  .promo-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: {{ section.settings.card_gap_desktop }}px;
+    max-width: none;
+    margin: 0 auto;
+    padding: 0 20px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+
+  .promo-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .four-card-item-{{ fc_id }} {
+    position: relative;
+    border-radius: {{ section.settings.card_border_radius }}px;
+    overflow: hidden;
+    min-height: {{ section.settings.card_min_height_desktop }}px;
+    display: flex;
+    align-items: flex-end;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    flex: 0 0 auto;
+    width: calc((100% - {{ section.settings.card_gap_desktop }}px) / 2);
+    max-width: 500px;
+    scroll-snap-align: start;
+    /* Defeat theme <a> and body color cascade */
+    color: inherit;
+    -webkit-text-fill-color: inherit;
+  }
+
+  @media screen and (min-width: 768px) and (max-width: 1023px) {
+    .four-card-item-{{ fc_id }} {
+      width: calc((100% - {{ section.settings.card_gap_desktop }}px) / 2);
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    .four-card-item-{{ fc_id }} {
+      width: calc((100% - {{ section.settings.card_gap_desktop | times: 3 }}px) / 4);
+    }
+  }
+
+  .four-card-item-{{ fc_id }}:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+  }
+
+  .four-card-bg-{{ fc_id }} {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+    transition: transform 0.5s ease;
+  }
+
+  .four-card-item-{{ fc_id }}:hover .four-card-bg-{{ fc_id }} {
+    transform: scale(1.04);
+  }
+
+  .four-card-overlay-{{ fc_id }} {
+    position: absolute;
+    inset: 0;
+    background-color: {{ section.settings.overlay_color }};
+    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    z-index: 1;
+  }
+
+  .four-card-corner-{{ fc_id }} {
+    position: absolute;
+    top: -{{ section.settings.corner_cover_size | divided_by: 4 }}px;
+    right: -{{ section.settings.corner_cover_size | divided_by: 4 }}px;
+    width: {{ section.settings.corner_cover_size }}px;
+    height: {{ section.settings.corner_cover_size }}px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, {{ section.settings.corner_cover_opacity | divided_by: 100.0 }});
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .four-card-content-{{ fc_id }} {
+    position: relative;
+    z-index: 3;
+    padding: {{ section.settings.card_padding }}px;
+    width: 100%;
+    /* Defeat theme var(--color) cascade on h3/p */
+    --color: currentColor;
+    --font-h3-color: currentColor;
+    --color-foreground: currentColor;
+    --button-color: currentColor;
+  }
+
+  .four-card-heading-{{ fc_id }} {
+    font-size: {{ section.settings.heading_size_desktop }}px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    line-height: 1.2;
+    color: inherit !important;
+    -webkit-text-fill-color: inherit !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1);
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .four-card-subheading-{{ fc_id }} {
+    font-size: {{ section.settings.text_size_desktop }}px;
+    margin: 0 0 14px;
+    line-height: 1.4;
+    color: inherit !important;
+    -webkit-text-fill-color: inherit !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1);
+    visibility: visible !important;
+    opacity: 0.9;
+  }
+
+  .four-card-coupon-{{ fc_id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    background: rgba(10, 5, 12, 0.72) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1.5px dashed #F0CC55 !important;
+    color: #F0CC55 !important;
+    -webkit-text-fill-color: #F0CC55 !important;
+    /* Defeat theme --color cascade */
+    --color: #F0CC55;
+    --button-color: #F0CC55;
+    padding: 6px 14px;
+    border-radius: 6px;
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+    cursor: default;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 1), 0 1px 3px rgba(0, 0, 0, 1);
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .four-card-btn-{{ fc_id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    min-height: 44px;
+  }
+
+  .four-card-btn-{{ fc_id }}:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+  }
+
+  /* Scroll indicators */
+  .scroll-indicator-container-{{ fc_id }} {
+    position: relative;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .scroll-indicator-{{ fc_id }} {
+    display: inline-flex;
+    gap: 8px;
+    background: rgba(0,0,0,0.05);
+    padding: 8px 16px;
+    border-radius: 40px;
+    font-size: 14px;
+    color: #666;
+  }
+
+  .scroll-arrow-{{ fc_id }} {
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 50%;
+    transition: background 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .scroll-arrow-{{ fc_id }}:hover {
+    background: rgba(0,0,0,0.1);
+  }
+
+  /* Modal */
+  .four-card-modal-{{ fc_id }} {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .four-card-modal-{{ fc_id }}.active { display: flex; }
+
+  .four-card-modal-inner-{{ fc_id }} {
+    background: #fff;
+    border-radius: 16px;
+    max-width: 500px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    animation: fcModalIn 0.25s ease;
+  }
+
+  @keyframes fcModalIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .four-card-modal-close-{{ fc_id }} {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    transition: background 0.2s ease;
+  }
+
+  .four-card-modal-close-{{ fc_id }}:hover { background: rgba(0, 0, 0, 0.75); }
+
+  .four-card-modal-img-{{ fc_id }} {
+    width: 100%;
+    display: block;
+  }
+
+  .four-card-modal-body-{{ fc_id }} {
+    padding: 16px 20px 20px;
+  }
+
+  .four-card-modal-body-{{ fc_id }} h4 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1A0D12;
+  }
+
+  .four-card-modal-body-{{ fc_id }} p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  @media screen and (max-width: 749px) {
+    .promo-grid {
+      gap: {{ section.settings.card_gap_mobile }}px;
+      padding: 0 16px;
+    }
+
+    .four-card-item-{{ fc_id }} {
+      min-height: {{ section.settings.card_min_height_mobile }}px;
+      width: calc(100vw - 100px);
+      max-width: 320px;
+    }
+
+    .four-card-heading-{{ fc_id }} {
+      font-size: {{ section.settings.heading_size_mobile }}px;
+    }
+
+    .four-card-subheading-{{ fc_id }} {
+      font-size: {{ section.settings.text_size_mobile }}px;
+    }
+
+    .four-card-content-{{ fc_id }} {
+      padding: {{ section.settings.card_padding | times: 0.65 | round }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="four-card-section-{{ fc_id }}" {{ section.shopify_attributes }}>
+  <div class="promo-grid" id="promo-grid-{{ fc_id }}">
+    {% for block in section.blocks %}
+      <div class="four-card-item-{{ fc_id }}"
+           style="color: {{ block.settings.text_color }};"
+           {{ block.shopify_attributes }}>
+
+        {% if block.settings.background_image %}
+          <div class="four-card-bg-{{ fc_id }}"
+               style="background-image: url('{{ block.settings.background_image | image_url: width: 800 }}');"></div>
+        {% endif %}
+
+        <div class="four-card-overlay-{{ fc_id }}"></div>
+        <div class="four-card-corner-{{ fc_id }}"></div>
+
+        <div class="four-card-content-{{ fc_id }}">
+          {% if block.settings.heading != blank %}
+            <h3 class="four-card-heading-{{ fc_id }}"
+                style="color: {{ block.settings.text_color }};">
+              {{ block.settings.heading }}
+            </h3>
+          {% endif %}
+
+          {% if block.settings.subheading != blank %}
+            <p class="four-card-subheading-{{ fc_id }}"
+               style="color: {{ block.settings.text_color }};">
+              {{ block.settings.subheading }}
+            </p>
+          {% endif %}
+
+          {% if block.settings.show_coupon and block.settings.coupon_text != blank %}
+            <div class="four-card-coupon-{{ fc_id }}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+              </svg>
+              {{ block.settings.coupon_text }}
+            </div>
+          {% endif %}
+
+          {% if block.settings.button_label != blank %}
+            {% if block.settings.modal_image != blank %}
+              <button class="four-card-btn-{{ fc_id }}"
+                      style="color: {{ block.settings.text_color }};"
+                      data-fc-modal="fc-modal-{{ fc_id }}-{{ forloop.index }}">
+                {{ block.settings.button_label }}
+              </button>
+            {% elsif block.settings.button_link != blank %}
+              <a href="{{ block.settings.button_link }}"
+                 class="four-card-btn-{{ fc_id }}"
+                 style="color: {{ block.settings.text_color }};">
+                {{ block.settings.button_label }}
+              </a>
+            {% else %}
+              <span class="four-card-btn-{{ fc_id }}"
+                    style="color: {{ block.settings.text_color }};">
+                {{ block.settings.button_label }}
+              </span>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+
+      {% if block.settings.modal_image != blank %}
+        <div class="four-card-modal-{{ fc_id }}"
+             id="fc-modal-{{ fc_id }}-{{ forloop.index }}"
+             role="dialog"
+             aria-modal="true">
+          <div class="four-card-modal-inner-{{ fc_id }}">
+            <button class="four-card-modal-close-{{ fc_id }}"
+                    aria-label="Close"
+                    data-fc-close>✕</button>
+            <img src="{{ block.settings.modal_image | image_url: width: 800 }}"
+                 alt="{{ block.settings.heading }}"
+                 class="four-card-modal-img-{{ fc_id }}"
+                 loading="lazy">
+            {% if block.settings.modal_heading != blank or block.settings.modal_description != blank %}
+              <div class="four-card-modal-body-{{ fc_id }}">
+                {% if block.settings.modal_heading != blank %}
+                  <h4>{{ block.settings.modal_heading }}</h4>
+                {% endif %}
+                {% if block.settings.modal_description != blank %}
+                  <p>{{ block.settings.modal_description }}</p>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  
+  {% if section.blocks.size > 4 %}
+    <div class="scroll-indicator-container-{{ fc_id }}">
+      <div class="scroll-indicator-{{ fc_id }}">
+        <span class="scroll-arrow-{{ fc_id }}" data-scroll-left="{{ fc_id }}">←</span>
+        <span>Swipe to see more</span>
+        <span class="scroll-arrow-{{ fc_id }}" data-scroll-right="{{ fc_id }}">→</span>
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+<script>
+  (function() {
+    // Modal functionality
+    document.querySelectorAll('[data-fc-modal]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id = btn.getAttribute('data-fc-modal');
+        var modal = document.getElementById(id);
+        if (modal) {
+          modal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+
+    function closeModal(modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('[data-fc-close]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        closeModal(btn.closest('.four-card-modal-{{ fc_id }}'));
+      });
+    });
+
+    document.querySelectorAll('.four-card-modal-{{ fc_id }}').forEach(function(modal) {
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal(modal);
+      });
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.four-card-modal-{{ fc_id }}.active').forEach(closeModal);
+      }
+    });
+
+    // Scroll functionality
+    var grid = document.getElementById('promo-grid-{{ fc_id }}');
+    
+    if (grid) {
+      // Scroll left button
+      var leftBtn = document.querySelector('[data-scroll-left="{{ fc_id }}"]');
+      if (leftBtn) {
+        leftBtn.addEventListener('click', function() {
+          grid.scrollBy({ left: -300, behavior: 'smooth' });
+        });
+      }
+      
+      // Scroll right button
+      var rightBtn = document.querySelector('[data-scroll-right="{{ fc_id }}"]');
+      if (rightBtn) {
+        rightBtn.addEventListener('click', function() {
+          grid.scrollBy({ left: 300, behavior: 'smooth' });
+        });
+      }
+      
+      // Hide/show scroll indicators based on scroll position
+      var container = document.querySelector('.four-card-section-{{ fc_id }}');
+      if (container) {
+        function updateScrollButtons() {
+          if (leftBtn && rightBtn) {
+            var atStart = grid.scrollLeft <= 10;
+            var atEnd = grid.scrollLeft + grid.clientWidth >= grid.scrollWidth - 10;
+            
+            leftBtn.style.opacity = atStart ? '0.3' : '1';
+            leftBtn.style.pointerEvents = atStart ? 'none' : 'auto';
+            rightBtn.style.opacity = atEnd ? '0.3' : '1';
+            rightBtn.style.pointerEvents = atEnd ? 'none' : 'auto';
+          }
+        }
+        
+        grid.addEventListener('scroll', updateScrollButtons);
+        window.addEventListener('resize', updateScrollButtons);
+        updateScrollButtons();
+      }
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Promotional Grid",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "card_gap_desktop",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Card gap (desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_gap_mobile",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Card gap (mobile)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Card content padding",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Card border radius",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "card_min_height_desktop",
+      "min": 200,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Min card height (desktop)",
+      "default": 270
+    },
+    {
+      "type": "range",
+      "id": "card_min_height_mobile",
+      "min": 200,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Min card height (mobile)",
+      "default": 280
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay opacity",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "corner_cover_size",
+      "min": 100,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Corner decoration size",
+      "default": 220
+    },
+    {
+      "type": "range",
+      "id": "corner_cover_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Corner decoration opacity",
+      "default": 85
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size (desktop)",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size (mobile)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "text_size_desktop",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size (desktop)",
+      "default": 21
+    },
+    {
+      "type": "range",
+      "id": "text_size_mobile",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size (mobile)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 16,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "label": "Icon size",
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "promo_card",
+      "name": "Promo Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Background image"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Show icon",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "textarea",
+          "id": "subheading",
+          "label": "Subheading"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_coupon",
+          "label": "Show coupon / badge",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "coupon_text",
+          "label": "Coupon / badge text"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "image_picker",
+          "id": "modal_image",
+          "label": "Modal image (opens on button click)"
+        },
+        {
+          "type": "text",
+          "id": "modal_heading",
+          "label": "Modal heading"
+        },
+        {
+          "type": "textarea",
+          "id": "modal_description",
+          "label": "Modal description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promotional Grid"
+    }
+  ]
+}
+{% endschema %}

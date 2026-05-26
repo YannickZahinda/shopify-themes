@@ -1,0 +1,425 @@
+{{ 'section-footer.css' | asset_url | stylesheet_tag }}
+
+<footer class="arousique-footer">
+  <div class="footer-main">
+    <div class="page-width footer-content">
+      
+      {%- comment -%} Brand Column {%- endcomment -%}
+      <div class="footer-col footer-brand">
+        {%- if section.settings.logo != blank -%}
+          <img src="{{ section.settings.logo | img_url: '250x' }}" alt="{{ shop.name }}" class="footer-logo-img">
+        {%- else -%}
+          <h2 class="footer-brand-name">AROUSIQUE</h2>
+        {%- endif -%}
+        
+        <h3 class="footer-headline">Celebrate You Unapologetically!</h3>
+        
+        <p class="footer-text">Arousique is your go-to destination for elegant, mood-based adult wellness. From playful to relaxed, our curated massagers are designed to match your vibe. With discreet delivery and complete privacy, we make pleasure personal, empowering you to explore confidently.</p>
+        
+        <div class="footer-social-icons">
+          {%- if settings.social_instagram_link != blank -%}
+            <a href="{{ settings.social_instagram_link }}" class="social-icon" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="6" r="1" fill="currentColor"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if settings.social_facebook_link != blank -%}
+            <a href="{{ settings.social_facebook_link }}" class="social-icon" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/><path d="M15.5 8.5h-2c-.5 0-1 .5-1 1v2h3l-.5 3h-2.5v7h-3v-7h-2v-3h2v-2c0-2 1.5-3.5 3.5-3.5h2v3z" fill="currentColor"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if settings.social_youtube_link != blank -%}
+            <a href="{{ settings.social_youtube_link }}" class="social-icon" target="_blank" rel="noopener" aria-label="YouTube">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="5" width="20" height="14" rx="3" stroke="currentColor" stroke-width="2" fill="none"/><path d="M10 8.5l6 3.5-6 3.5v-7z" fill="currentColor"/></svg>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- comment -%} Quick Links Columns {%- endcomment -%}
+      <div class="footer-col footer-links-wrapper">
+        <h4 class="footer-links-title">Quick Links</h4>
+        <div class="footer-links-grid">
+          <ul class="footer-links-col">
+            <li><a href="/">Home</a></li>
+            <li><a href="/pages/shop">Shop</a></li>
+            <li><a href="/pages/quiz">Quiz</a></li>
+            <li><a href="/pages/learn">Learn</a></li>
+          </ul>
+          <ul class="footer-links-col">
+            <li><a href="/pages/support">Support</a></li>
+            <li><a href="/account">Account/Cart</a></li>
+            <li><a href="/pages/bundles">Bundles</a></li>
+            <li><a href="/blogs/news">Blogs</a></li>
+          </ul>
+          <ul class="footer-links-col">
+            <li><a href="/pages/about">About Arousique</a></li>
+            <li><a href="/pages/delivery-returns">Delivery & Returns</a></li>
+            <li><a href="/pages/careers">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+
+      {%- comment -%} Newsletter Column {%- endcomment -%}
+      <div class="footer-col footer-newsletter">
+        <h4 class="footer-newsletter-title">Share email and get discount</h4>
+        <p class="footer-newsletter-desc">Get access to special offers, hot promotions, & exciting new releases straight to your inbox.</p>
+        
+        {%- form 'customer', class: 'newsletter-form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="newsletter-form-wrapper">
+            <input
+              type="email"
+              name="contact[email]"
+              class="newsletter-input"
+              placeholder="Type your Email ID"
+              aria-label="Email address"
+              required
+            >
+            <button type="submit" class="newsletter-btn">
+              Subscribe
+            </button>
+          </div>
+        {%- endform -%}
+      </div>
+
+    </div>
+  </div>
+
+  {%- comment -%} Bottom Bar {%- endcomment -%}
+  <div class="footer-bottom">
+    <div class="page-width footer-bottom-content">
+      <div class="footer-legal-links">
+        {%- if shop.privacy_policy -%}
+          <a href="{{ shop.privacy_policy.url }}">Privacy Policy</a>
+        {%- endif -%}
+        <span class="divider">|</span>
+        {%- if shop.terms_of_service -%}
+          <a href="{{ shop.terms_of_service.url }}">Terms of Use</a>
+        {%- endif -%}
+      </div>
+      <p class="footer-copyright">AROUSIQUE@2025 All Rights Reserved</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .arousique-footer {
+    width: 100%;
+  }
+
+  .footer-main {
+    background: linear-gradient(135deg, #4a3a8c 0%, #5b4da2 50%, #6b5ab8 100%);
+    padding: 70px 0 50px;
+    color: #ffffff;
+  }
+
+  .page-width {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .footer-content {
+    display: grid;
+    grid-template-columns: 1.8fr 1.2fr 1.5fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  /* Brand Column */
+  .footer-brand {
+    max-width: 480px;
+  }
+
+  .footer-logo-img {
+    max-width: 220px;
+    height: auto;
+    margin-bottom: 25px;
+  }
+
+  .footer-brand-name {
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    margin: 0 0 25px;
+    color: #ffffff;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  .footer-headline {
+    font-size: 24px;
+    font-weight: 400;
+    margin: 0 0 20px;
+    line-height: 1.4;
+    color: #ffffff;
+  }
+
+  .footer-text {
+    font-size: 15px;
+    line-height: 1.7;
+    margin: 0 0 30px;
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .footer-social-icons {
+    display: flex;
+    gap: 15px;
+  }
+
+  .social-icon {
+    width: 46px;
+    height: 46px;
+    background: rgba(255, 215, 77, 0.95);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4a3a8c;
+    transition: all 0.25s ease;
+  }
+
+  .social-icon:hover {
+    background: #ffd74d;
+    transform: translateY(-3px);
+  }
+
+  /* Quick Links Column */
+  .footer-links-wrapper {
+    padding-left: 20px;
+  }
+
+  .footer-links-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 25px;
+    color: #ffffff;
+  }
+
+  .footer-links-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+
+  .footer-links-col {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-links-col li {
+    margin-bottom: 14px;
+  }
+
+  .footer-links-col a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 15px;
+    line-height: 1.5;
+    transition: opacity 0.2s ease;
+    display: block;
+  }
+
+  .footer-links-col a:hover {
+    opacity: 0.75;
+  }
+
+  /* Newsletter Column */
+  .footer-newsletter {
+    max-width: 450px;
+  }
+
+  .footer-newsletter-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 18px;
+    color: #ffffff;
+  }
+
+  .footer-newsletter-desc {
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0 0 25px;
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .newsletter-form-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .newsletter-input {
+    width: 100%;
+    padding: 16px 24px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 30px;
+    background: transparent;
+    color: #ffffff;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  .newsletter-input::placeholder {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .newsletter-input:focus {
+    border-color: rgba(255, 255, 255, 0.7);
+  }
+
+  .newsletter-btn {
+    width: 100%;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, #ffd74d 0%, #ffe066 100%);
+    color: #2d2154;
+    border: none;
+    border-radius: 30px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .newsletter-btn:hover {
+    background: linear-gradient(135deg, #ffe066 0%, #ffed99 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Bottom Bar */
+  .footer-bottom {
+    background: linear-gradient(135deg, #e67ba5 0%, #f289b5 100%);
+    padding: 22px 0;
+    color: #ffffff;
+  }
+
+  .footer-bottom-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-legal-links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .footer-legal-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: opacity 0.2s ease;
+  }
+
+  .footer-legal-links a:hover {
+    opacity: 0.8;
+  }
+
+  .footer-legal-links .divider {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .footer-copyright {
+    margin: 0;
+    font-size: 14px;
+    color: #ffffff;
+  }
+
+  /* Responsive */
+  @media (max-width: 1200px) {
+    .footer-content {
+      gap: 50px;
+    }
+
+    .footer-links-grid {
+      gap: 20px;
+    }
+  }
+
+  @media (max-width: 990px) {
+    .footer-content {
+      grid-template-columns: 1fr;
+      gap: 50px;
+    }
+
+    .footer-brand,
+    .footer-newsletter {
+      max-width: 100%;
+    }
+
+    .footer-links-wrapper {
+      padding-left: 0;
+    }
+
+    .footer-links-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 749px) {
+    .page-width {
+      padding: 0 20px;
+    }
+
+    .footer-main {
+      padding: 50px 0 40px;
+    }
+
+    .footer-content {
+      gap: 40px;
+    }
+
+    .footer-brand-name {
+      font-size: 32px;
+    }
+
+    .footer-headline {
+      font-size: 20px;
+    }
+
+    .footer-links-grid {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    .footer-bottom-content {
+      flex-direction: column;
+      gap: 15px;
+      text-align: center;
+    }
+
+    .footer-legal-links {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Arousique Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Footer Logo",
+      "info": "Leave empty to show 'AROUSIQUE' text"
+    },
+    {
+      "type": "header",
+      "content": "Social Media"
+    },
+    {
+      "type": "paragraph",
+      "content": "Social media links are managed in Theme Settings > Social Media"
+    }
+  ]
+}
+{% endschema %}
