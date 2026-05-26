@@ -4,16 +4,6 @@
   assign block_settings = block.settings
   assign use_inverse_logo = false
 
-  if block.settings.logo != blank
-    assign active_logo = block.settings.logo
-    assign active_logo_height = block.settings.logo_height
-    assign active_logo_height_mobile = block.settings.logo_height_mobile
-  else
-    assign active_logo = settings.logo
-    assign active_logo_height = settings.logo_height
-    assign active_logo_height_mobile = settings.logo_height_mobile
-  endif
-
   if section.settings.enable_transparent_header_home and template.name == 'index' and section.settings.home_color_scheme == 'inverse'
     assign use_inverse_logo = true
   elsif section.settings.enable_transparent_header_product and template.name == 'product' and section.settings.product_color_scheme == 'inverse'
@@ -23,12 +13,10 @@
   endif
 
   if use_inverse_logo
-    if block.settings.logo_inverse != blank
-      assign inverse_logo = block.settings.logo_inverse
-    elsif settings.logo_inverse != blank
+    if settings.logo_inverse != blank
       assign inverse_logo = settings.logo_inverse
     else
-      assign inverse_logo = active_logo
+      assign inverse_logo = settings.logo
     endif
   endif
 %}
@@ -53,25 +41,20 @@
   {{ block.shopify_attributes }}
 >
   {% liquid
-    assign logo_width = active_logo_height | times: active_logo.aspect_ratio | ceil
-    assign logo_width_mobile = active_logo_height_mobile | times: active_logo.aspect_ratio | ceil
-    assign inverse_logo_width = active_logo_height | times: inverse_logo.aspect_ratio | ceil
-    assign inverse_logo_width_mobile = active_logo_height_mobile | times: inverse_logo.aspect_ratio | ceil
-    assign logo_style = '--header-logo-image-width: ' | append: logo_width | append: 'px;' | append: '--header-logo-image-width-mobile: ' | append: logo_width_mobile | append: 'px; --header-logo-image-height: ' | append: active_logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: active_logo_height_mobile | append: 'px;'
-    assign inverse_logo_style = '--header-logo-image-width: ' | append: inverse_logo_width | append: 'px;' | append: '--header-logo-image-width-mobile: ' | append: inverse_logo_width_mobile | append: 'px; --header-logo-image-height: ' | append: active_logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: active_logo_height_mobile | append: 'px;'
+    assign logo_style = '--header-logo-image-height: ' | append: settings.logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: settings.logo_height_mobile | append: 'px;'
   %}
 
   <span
     class="header-logo__image-container header-logo__image-container--original"
     data-testid="header-logo"
   >
-    {% render 'image',
-      image: active_logo,
-      class: 'header-logo__image',
-      height: active_logo_height,
-      text_fallback: shop.name,
-      style: logo_style
-    %}
+    <img
+      src="{{ 'new-logo-nobg.PNG' | file_img_url: '400x' }}"
+      alt="{{ shop.name }}"
+      class="header-logo__image"
+      style="{{ logo_style }}"
+      loading="eager"
+    >
   </span>
 
   {% if use_inverse_logo %}
@@ -79,13 +62,13 @@
       class="header-logo__image-container header-logo__image-container--inverse"
       data-testid="header-logo-inverse"
     >
-      {% render 'image',
-        image: inverse_logo,
-        class: 'header-logo__image',
-        height: active_logo_height,
-        text_fallback: shop.name,
-        style: inverse_logo_style
-      %}
+      <img
+        src="{{ 'new-logo-nobg.PNG' | file_img_url: '400x' }}"
+        alt="{{ shop.name }}"
+        class="header-logo__image"
+        style="{{ logo_style }}"
+        loading="eager"
+      >
     </span>
   {% endif %}
 </a>
@@ -134,11 +117,11 @@
   .header-logo__image {
     object-fit: contain;
     height: var(--header-logo-image-height-mobile);
-    width: var(--header-logo-image-width-mobile);
+    width: auto;
 
     @media screen and (min-width: 750px) {
       height: var(--header-logo-image-height);
-      width: var(--header-logo-image-width);
+      width: auto;
     }
   }
 
@@ -158,38 +141,8 @@
   "class": "header-logo",
   "settings": [
     {
-      "type": "header",
-      "content": "Logo"
-    },
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo image"
-    },
-    {
-      "type": "image_picker",
-      "id": "logo_inverse",
-      "label": "Logo image (light version, for transparent header)"
-    },
-    {
-      "type": "range",
-      "id": "logo_height",
-      "label": "Logo height (desktop)",
-      "min": 20,
-      "max": 120,
-      "step": 2,
-      "unit": "px",
-      "default": 40
-    },
-    {
-      "type": "range",
-      "id": "logo_height_mobile",
-      "label": "Logo height (mobile)",
-      "min": 16,
-      "max": 80,
-      "step": 2,
-      "unit": "px",
-      "default": 32
+      "type": "paragraph",
+      "content": "t:content.edit_logo_in_theme_settings"
     },
     {
       "type": "header",
