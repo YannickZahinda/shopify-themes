@@ -1118,13 +1118,13 @@
         "subheading_color": "#f6eef2",
         "button_text": "FIND MY VIBE",
         "button_link": "shopify://pages/contact",
-        "button_font_size": 13,
-        "button_padding_vertical": 14,
-        "button_padding_horizontal": 35,
-        "button_background_color": "#f85f73",
-        "button_hover_background": "#f3586e",
+        "button_font_size": 12,
+        "button_padding_vertical": 8,
+        "button_padding_horizontal": 20,
+        "button_background_color": "#E75480",
+        "button_hover_background": "#7b1e3a",
         "button_text_color": "#ffffff",
-        "button_border_radius": 38
+        "button_border_radius": 25
       }
     },
     "176184531159c336ac": {
@@ -1189,15 +1189,15 @@
             "description_color": "#e75480",
             "description_size": 13,
             "description_margin_bottom": 20,
-            "button_text": "START THE FUN",
-            "button_link": "shopify://collections/all",
-            "button_background": "#7b1e3a",
+            "button_text": "FIND MY VIBE",
+            "button_link": "shopify://pages/contact",
+            "button_background": "#E75480",
             "button_text_color": "#ffffff",
-            "button_hover_background": "#f85f73",
+            "button_hover_background": "#7b1e3a",
             "button_hover_text_color": "#ffffff",
-            "button_font_size": 13,
-            "button_padding_vertical": 12,
-            "button_padding_horizontal": 28,
+            "button_font_size": 12,
+            "button_padding_vertical": 8,
+            "button_padding_horizontal": 20,
             "button_border_radius": 25
           },
           "blocks": {}

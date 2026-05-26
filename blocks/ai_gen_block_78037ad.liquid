@@ -98,6 +98,7 @@
 
   .ai-hero-arousique-card-button-{{ ai_gen_id }} {
     display: inline-block;
+    width: fit-content;
     background: {{ block.settings.button_background }};
     color: {{ block.settings.button_text_color }};
     padding: {{ block.settings.button_padding_vertical }}px {{ block.settings.button_padding_horizontal }}px;
@@ -108,6 +109,7 @@
     transition: all 0.3s ease;
     border: none;
     cursor: pointer;
+    margin: 0 auto {{ block.settings.description_margin_bottom | divided_by: 2 }}px;
   }
 
   .ai-hero-arousique-card-button-{{ ai_gen_id }}:hover {
@@ -161,12 +163,6 @@
         </div>
       {% endif %}
 
-      {% if block.settings.card_description != blank %}
-        <div class="ai-hero-arousique-card-description-{{ ai_gen_id }}">
-          {{ block.settings.card_description }}
-        </div>
-      {% endif %}
-
       {% if block.settings.button_text != blank %}
         <a
           href="{{ block.settings.button_link }}"
@@ -174,6 +170,12 @@
         >
           {{ block.settings.button_text }}
         </a>
+      {% endif %}
+
+      {% if block.settings.card_description != blank %}
+        <div class="ai-hero-arousique-card-description-{{ ai_gen_id }}">
+          {{ block.settings.card_description }}
+        </div>
       {% endif %}
     </div>
   </div>
