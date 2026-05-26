@@ -41,20 +41,26 @@
   {{ block.shopify_attributes }}
 >
   {% liquid
-    assign logo_style = '--header-logo-image-height: ' | append: settings.logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: settings.logo_height_mobile | append: 'px;'
+    assign active_logo = block.settings.logo
+    if active_logo == blank
+      assign active_logo = settings.logo
+    endif
+    assign logo_width = settings.logo_height | times: active_logo.aspect_ratio | ceil
+    assign logo_width_mobile = settings.logo_height_mobile | times: active_logo.aspect_ratio | ceil
+    assign logo_style = '--header-logo-image-width: ' | append: logo_width | append: 'px; --header-logo-image-width-mobile: ' | append: logo_width_mobile | append: 'px; --header-logo-image-height: ' | append: settings.logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: settings.logo_height_mobile | append: 'px;'
   %}
 
   <span
     class="header-logo__image-container header-logo__image-container--original"
     data-testid="header-logo"
   >
-    <img
-      src="{{ 'new-logo-nobg.PNG' | file_img_url: '400x' }}"
-      alt="{{ shop.name }}"
-      class="header-logo__image"
-      style="{{ logo_style }}"
-      loading="eager"
-    >
+    {% render 'image',
+      image: active_logo,
+      class: 'header-logo__image',
+      height: settings.logo_height,
+      text_fallback: shop.name,
+      style: logo_style
+    %}
   </span>
 
   {% if use_inverse_logo %}
@@ -62,13 +68,13 @@
       class="header-logo__image-container header-logo__image-container--inverse"
       data-testid="header-logo-inverse"
     >
-      <img
-        src="{{ 'new-logo-nobg.PNG' | file_img_url: '400x' }}"
-        alt="{{ shop.name }}"
-        class="header-logo__image"
-        style="{{ logo_style }}"
-        loading="eager"
-      >
+      {% render 'image',
+        image: inverse_logo,
+        class: 'header-logo__image',
+        height: settings.logo_height,
+        text_fallback: shop.name,
+        style: logo_style
+      %}
     </span>
   {% endif %}
 </a>
@@ -141,8 +147,9 @@
   "class": "header-logo",
   "settings": [
     {
-      "type": "paragraph",
-      "content": "t:content.edit_logo_in_theme_settings"
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
     },
     {
       "type": "header",
