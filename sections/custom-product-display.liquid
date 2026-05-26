@@ -6,6 +6,7 @@
   UPDATED: Horizontal scrollable variant images on mobile
   FIXED: Card containment - overrides base.css conflicts
   FIXED: Stronger grid overrides for theme conflicts
+  UPDATED: Add to Cart button matches footer subscribe button - SOLID COLOR, NO GRADIENT
 {% endcomment %}
 
 {% liquid
@@ -136,7 +137,7 @@
     max-width: 1360px;
     width: 100%;
     margin: 0 auto;
-    min-width: 0 !important; /* Prevent grid blowout */
+    min-width: 0 !important;
   }
 
   /* ===== LEFT — PRODUCT MEDIA ===== */
@@ -152,7 +153,7 @@
       0 4px 6px rgba(45, 27, 46, 0.04),
       0 12px 32px rgba(45, 27, 46, 0.08),
       inset 0 1px 0 rgba(255,255,255,0.8);
-    min-width: 0 !important; /* Prevent grid blowout */
+    min-width: 0 !important;
   }
 
   .main-image-wrapper {
@@ -236,7 +237,7 @@
       inset 0 1px 0 rgba(255,255,255,0.8);
     overflow-x: hidden;
     word-wrap: break-word;
-    min-width: 0 !important; /* Prevent grid blowout */
+    min-width: 0 !important;
   }
 
   /* ── Badge ── */
@@ -400,7 +401,12 @@
     line-height: 1.5;
   }
 
-  /* ── Add to Cart ── */
+  /* ── Add to Cart ── 
+     EXACTLY MATCHES FOOTER SUBSCRIBE BUTTON - SOLID COLOR, NO GRADIENT
+     Background: #E75480 (Solid Rose Pink)
+     Border: 2px solid #D4AF37 (Gold)
+     Hover: #7B1E3A (Solid Burgundy)
+  */
   .product-form-wrapper {
     margin-bottom: 28px;
   }
@@ -413,29 +419,42 @@
 
   .add-to-cart-btn {
     flex: 1;
-    background: linear-gradient(135deg, #7B1E3A 0%, #A02848 100%);
-    color: #FFFFFF;
-    border: none;
-    padding: 16px 28px;
-    border-radius: 50px;
-    font-size: 15px;
-    font-weight: 700;
+    background: #E75480 !important;
+    background-color: #E75480 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    border: 2px solid #D4AF37 !important;
+    padding: 13px 24px !important;
+    border-radius: 24px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
     cursor: pointer;
-    transition: all 0.3s ease;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    box-shadow: 0 4px 16px rgba(123, 30, 58, 0.3);
+    transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+    box-shadow: 0 4px 14px rgba(231, 84, 128, 0.35);
     white-space: nowrap;
   }
 
   .add-to-cart-btn:hover:not(:disabled) {
-    background: linear-gradient(135deg, #E75480 0%, #C73E6A 100%);
+    background: #7B1E3A !important;
+    background-color: #7B1E3A !important;
+    background-image: none !important;
+    border-color: #D4AF37 !important;
+    box-shadow: 0 6px 20px rgba(123, 30, 58, 0.4);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(231, 84, 128, 0.35);
+  }
+
+  .add-to-cart-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(123, 30, 58, 0.3);
   }
 
   .add-to-cart-btn:disabled {
-    background: #C0A8B2;
+    background: #C0A8B2 !important;
+    background-color: #C0A8B2 !important;
+    background-image: none !important;
+    border-color: rgba(212, 175, 55, 0.3) !important;
     cursor: not-allowed;
     box-shadow: none;
   }
@@ -753,7 +772,6 @@
       gap: 16px !important;
     }
 
-    /* Media card */
     .custom-product-media {
       padding: 12px;
       border-radius: 18px;
@@ -768,7 +786,6 @@
       padding: 8px;
     }
 
-    /* Thumbnails — HORIZONTAL SCROLL */
     .product-thumbnails {
       margin-top: 12px;
       overflow-x: auto;
@@ -793,7 +810,6 @@
       border-radius: 10px !important;
     }
 
-    /* Details card - CONTAINMENT FIX */
     .custom-product-details {
       padding: 18px 14px !important;
       border-radius: 18px !important;
@@ -825,14 +841,13 @@
       padding-bottom: 12px;
     }
 
-    /* ATC button */
     .product-actions {
       gap: 10px;
     }
 
     .add-to-cart-btn {
-      font-size: 13px;
-      padding: 14px 16px;
+      font-size: 13px !important;
+      padding: 12px 16px !important;
       white-space: normal;
       line-height: 1.2;
     }
@@ -847,7 +862,6 @@
       margin-bottom: 18px;
     }
 
-    /* Features — single column */
     .features-list {
       grid-template-columns: 1fr !important;
     }
@@ -861,7 +875,6 @@
       margin-bottom: 18px;
     }
 
-    /* Delivery info */
     .delivery-info {
       padding: 14px 14px;
       margin-bottom: 18px;
@@ -877,12 +890,10 @@
       text-align: center;
     }
 
-    /* How to use */
     .how-to-use {
       margin-bottom: 18px;
     }
 
-    /* Swatches */
     .product-swatch {
       width: 40px;
       height: 40px;
@@ -918,8 +929,8 @@
     }
 
     .add-to-cart-btn {
-      font-size: 12px;
-      padding: 12px 10px;
+      font-size: 12px !important;
+      padding: 10px 12px !important;
     }
 
     .wishlist-btn {
@@ -973,8 +984,8 @@
     }
 
     .add-to-cart-btn {
-      font-size: 11px;
-      padding: 10px 8px;
+      font-size: 11px !important;
+      padding: 8px 10px !important;
     }
 
     .wishlist-btn {
