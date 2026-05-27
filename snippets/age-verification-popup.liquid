@@ -4,9 +4,9 @@
   .ai-age-verify-overlay-{{ ai_gen_id }} {
     position: fixed;
     inset: 0;
-    background-color: rgba(12, 9, 6, 0.58);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     z-index: 9998;
     opacity: 0;
     visibility: hidden;
@@ -24,35 +24,19 @@
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -46%) scale(0.96);
-    background: #FDFAF6;
-    border: 1px solid rgba(212, 175, 55, 0.22);
-    border-radius: 24px;
-    padding: 52px 40px 36px;
-    max-width: 420px;
+    transform: translate(-50%, -46%) scale(0.95);
+    background: linear-gradient(145deg, #FFB3C0 0%, #FF6FA3 45%, #FF3D85 100%);
+    border-radius: 28px;
+    padding: 48px 36px 36px;
+    max-width: 400px;
     width: 90%;
     z-index: 9999;
     text-align: center;
-    box-shadow:
-      0 2px 6px rgba(0, 0, 0, 0.04),
-      0 16px 48px rgba(180, 140, 30, 0.12),
-      0 32px 64px rgba(0, 0, 0, 0.06);
-    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(255, 70, 130, 0.35), 0 8px 24px rgba(0, 0, 0, 0.15);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.38s ease, transform 0.42s cubic-bezier(0.34, 1.4, 0.64, 1), visibility 0.38s ease;
-  }
-
-  /* Gold top accent bar */
-  .ai-age-verify-popup-{{ ai_gen_id }}::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #F0D060 0%, #D4AF37 45%, #B8903A 100%);
+    transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.34, 1.4, 0.64, 1), visibility 0.4s ease;
   }
 
   .ai-age-verify-popup-{{ ai_gen_id }}.active {
@@ -62,138 +46,108 @@
     transform: translate(-50%, -50%) scale(1);
   }
 
+  /* Brand icon at top */
   .ai-age-verify-icon-{{ ai_gen_id }} {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 56px;
-    height: 56px;
-    background: #FBF5E0;
-    border: 1px solid rgba(212, 175, 55, 0.4);
-    border-radius: 50%;
+    margin: 0 auto 20px;
+    width: 54px;
+    height: 54px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 14px rgba(212, 175, 55, 0.18);
   }
 
   .ai-age-verify-icon-{{ ai_gen_id }} svg {
-    width: 24px;
-    height: 24px;
-    stroke: #C9A030;
+    width: 54px;
+    height: 54px;
     fill: none;
+    stroke: #fff;
     stroke-width: 1.5;
     stroke-linecap: round;
     stroke-linejoin: round;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
   }
 
-  .ai-age-verify-brand-{{ ai_gen_id }} {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: #B8903A;
-    background: #FBF5E0;
-    border: 0.5px solid rgba(212, 175, 55, 0.35);
-    border-radius: 20px;
-    padding: 4px 14px;
-    margin-bottom: 18px;
-  }
-
+  /* Heading */
   .ai-age-verify-heading-{{ ai_gen_id }} {
-    font-size: 22px;
-    font-weight: 600;
-    color: #1C1C1E;
-    margin: 0 0 10px;
-    line-height: 1.3;
+    font-family: 'Tomato Grotesk', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 28px;
+    line-height: 1.25;
     letter-spacing: -0.01em;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.1);
   }
 
-  .ai-age-verify-text-{{ ai_gen_id }} {
-    font-size: 14px;
-    color: #6B6B6B;
-    line-height: 1.65;
-    margin: 0;
-  }
-
-  .ai-age-verify-divider-{{ ai_gen_id }} {
-    width: 40px;
-    height: 1.5px;
-    background: linear-gradient(90deg, #F0D060, #D4AF37, #B8903A);
-    border-radius: 2px;
-    margin: 20px auto;
-  }
-
+  /* Buttons */
   .ai-age-verify-buttons-{{ ai_gen_id }} {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 14px;
+    align-items: center;
   }
 
-  .ai-age-verify-button-{{ ai_gen_id }} {
+  /* Primary — white pill */
+  .ai-age-verify-button-yes-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding: 16px 32px;
+    background: #ffffff;
+    color: #FF3D85;
+    border: none;
     border-radius: 50px;
-    padding: 14px 0;
-    font-size: 15px;
+    font-family: 'Tomato Grotesk', sans-serif;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    width: 100%;
-    letter-spacing: 0.02em;
-    transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
-  }
-
-  /* Primary — gold gradient */
-  .ai-age-verify-button-yes-{{ ai_gen_id }} {
-    background: linear-gradient(135deg, #D4AF37 0%, #B8903A 100%);
-    color: #fff;
-    border: none;
-    box-shadow: 0 4px 18px rgba(212, 175, 55, 0.4);
+    letter-spacing: 0.1px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   }
 
   .ai-age-verify-button-yes-{{ ai_gen_id }}:hover {
-    background: linear-gradient(135deg, #C9A030 0%, #A07828 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 8px 24px rgba(212, 175, 55, 0.48);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+    background: #fff5f8;
   }
 
-  /* Secondary — white ghost */
+  /* Secondary — text link only */
   .ai-age-verify-button-no-{{ ai_gen_id }} {
-    background: #fff;
-    color: #777;
-    border: 1px solid #E8E0CC;
-    font-size: 14px;
+    display: inline-block;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.95);
+    font-family: 'Tomato Grotesk', sans-serif;
+    font-size: 15px;
     font-weight: 500;
+    cursor: pointer;
+    padding: 4px 0;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity 0.2s ease;
   }
 
   .ai-age-verify-button-no-{{ ai_gen_id }}:hover {
-    background: #FDFAF0;
-    border-color: #D4AF37;
-    color: #444;
-    transform: translateY(-1px);
+    opacity: 0.75;
   }
 
+  /* Footer */
   .ai-age-verify-footer-{{ ai_gen_id }} {
+    margin-top: 24px;
+    color: rgba(255, 255, 255, 0.7);
     font-size: 11px;
-    color: #ABABAB;
-    margin-top: 20px;
-    padding-top: 16px;
-    border-top: 1px solid rgba(212, 175, 55, 0.14);
-    line-height: 1.5;
+    line-height: 1.6;
+    letter-spacing: 0.1px;
   }
 
   @media (max-width: 749px) {
     .ai-age-verify-popup-{{ ai_gen_id }} {
-      padding: 52px 24px 28px;
+      padding: 40px 24px 28px;
+      max-width: 340px;
     }
 
     .ai-age-verify-heading-{{ ai_gen_id }} {
-      font-size: 18px;
-    }
-
-    .ai-age-verify-text-{{ ai_gen_id }} {
-      font-size: 13px;
+      font-size: 22px;
     }
   }
 {% endstyle %}
@@ -204,33 +158,31 @@
   <div class="ai-age-verify-popup-{{ ai_gen_id }}">
 
     <div class="ai-age-verify-icon-{{ ai_gen_id }}">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        <path d="m9 12 2 2 4-4"/>
+      <svg viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
+        <path d="M27 48 C27 48 8 36 8 22 C8 15 13.5 10 20 10 C23.5 10 26.5 11.8 27 13 C27.5 11.8 30.5 10 34 10 C40.5 10 46 15 46 22 C46 36 27 48 27 48Z" stroke="white" stroke-width="2" fill="rgba(255,255,255,0.15)"/>
+        <path d="M22 28 C20 24 21 18 25 17" stroke="white" stroke-width="1.8" fill="none"/>
       </svg>
     </div>
 
-    <div class="ai-age-verify-brand-{{ ai_gen_id }}">AROUSIQUE</div>
-
-    <h2 class="ai-age-verify-heading-{{ ai_gen_id }}">Age verification</h2>
-
-    <p class="ai-age-verify-text-{{ ai_gen_id }}">
-      This website contains content for adults only. Please confirm you are 21 or older to continue.
-    </p>
-
-    <div class="ai-age-verify-divider-{{ ai_gen_id }}"></div>
+    <h2 class="ai-age-verify-heading-{{ ai_gen_id }}">Are you over 21?</h2>
 
     <div class="ai-age-verify-buttons-{{ ai_gen_id }}">
-      <button class="ai-age-verify-button-{{ ai_gen_id }} ai-age-verify-button-yes-{{ ai_gen_id }}" data-action="yes">
-        I am 21 or older — enter
+      <button
+        class="ai-age-verify-button-yes-{{ ai_gen_id }}"
+        data-action="yes"
+      >
+        Yes I'm 21+ years old
       </button>
-      <button class="ai-age-verify-button-{{ ai_gen_id }} ai-age-verify-button-no-{{ ai_gen_id }}" data-action="no">
-        I am under 21
+      <button
+        class="ai-age-verify-button-no-{{ ai_gen_id }}"
+        data-action="no"
+      >
+        Exit
       </button>
     </div>
 
     <p class="ai-age-verify-footer-{{ ai_gen_id }}">
-      By entering, you agree to our terms and conditions.
+      By entering the website, you are agreeing to the Terms of Use and Privacy Policy.
     </p>
 
   </div>
@@ -259,7 +211,6 @@
       });
 
       this.no.addEventListener('click', () => {
-        sessionStorage.setItem('ai_age_blocked', 'true');
         window.location.href = 'https://www.google.com';
       });
     }
