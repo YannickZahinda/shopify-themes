@@ -36,6 +36,7 @@
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
+    overflow: hidden;
     transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.34, 1.4, 0.64, 1), visibility 0.4s ease;
   }
 
@@ -46,6 +47,15 @@
     transform: translate(-50%, -50%) scale(1);
   }
 
+  .ai-age-verify-bg-svg-{{ ai_gen_id }} {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
   /* Brand icon at top */
   .ai-age-verify-icon-{{ ai_gen_id }} {
     margin: 0 auto 20px;
@@ -54,6 +64,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    z-index: 1;
   }
 
   .ai-age-verify-icon-{{ ai_gen_id }} svg {
@@ -76,7 +88,9 @@
     margin: 0 0 28px;
     line-height: 1.25;
     letter-spacing: -0.01em;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    position: relative;
+    z-index: 1;
   }
 
   /* Buttons */
@@ -85,6 +99,8 @@
     flex-direction: column;
     gap: 14px;
     align-items: center;
+    position: relative;
+    z-index: 1;
   }
 
   /* Primary — white pill */
@@ -134,10 +150,12 @@
   /* Footer */
   .ai-age-verify-footer-{{ ai_gen_id }} {
     margin-top: 24px;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.75);
     font-size: 11px;
     line-height: 1.6;
     letter-spacing: 0.1px;
+    position: relative;
+    z-index: 1;
   }
 
   @media (max-width: 749px) {
@@ -155,9 +173,74 @@
 <age-verification-{{ ai_gen_id }}>
   <div class="ai-age-verify-overlay-{{ ai_gen_id }}"></div>
 
-  <div class="ai-age-verify-popup-{{ ai_gen_id }}"
-    {% if settings.age_popup_bg != blank %}style="background-image: url('{{ settings.age_popup_bg | image_url: width: 800 }}'); background-size: cover; background-position: center center; background-repeat: no-repeat;"{% endif %}
-  >
+  <div class="ai-age-verify-popup-{{ ai_gen_id }}">
+
+    <!-- Abstract gradient background — inline SVG, no external files needed -->
+    <svg class="ai-age-verify-bg-svg-{{ ai_gen_id }}"
+         xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 400 520"
+         preserveAspectRatio="xMidYMid slice"
+         aria-hidden="true"
+         focusable="false">
+      <defs>
+        <filter id="bb-xl-{{ ai_gen_id }}" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="68"/>
+        </filter>
+        <filter id="bb-lg-{{ ai_gen_id }}" x="-70%" y="-70%" width="240%" height="240%">
+          <feGaussianBlur stdDeviation="50"/>
+        </filter>
+        <filter id="bb-md-{{ ai_gen_id }}" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="38"/>
+        </filter>
+      </defs>
+
+      <!-- Base: warm pink -->
+      <rect width="400" height="520" fill="#FF6FA3"/>
+
+      <!-- Large peach/apricot blob — top right corner -->
+      <ellipse cx="440" cy="-40"
+               rx="320" ry="280"
+               fill="#FFD4A0" opacity="0.75"
+               filter="url(#bb-xl-{{ ai_gen_id }})"/>
+
+      <!-- Large warm peach blob — bottom left corner -->
+      <ellipse cx="-40" cy="565"
+               rx="300" ry="265"
+               fill="#FFC07A" opacity="0.68"
+               filter="url(#bb-xl-{{ ai_gen_id }})"/>
+
+      <!-- Soft rose accent — upper left -->
+      <ellipse cx="50" cy="95"
+               rx="215" ry="195"
+               fill="#FFB8D0" opacity="0.50"
+               filter="url(#bb-lg-{{ ai_gen_id }})"/>
+
+      <!-- Light beige diagonal ribbon — flows bottom-left to top-right -->
+      <ellipse cx="195" cy="258"
+               rx="320" ry="118"
+               fill="#FFE8D2" opacity="0.38"
+               transform="rotate(-37 195 258)"
+               filter="url(#bb-lg-{{ ai_gen_id }})"/>
+
+      <!-- Coral accent — mid right -->
+      <ellipse cx="400" cy="335"
+               rx="210" ry="180"
+               fill="#FF7080" opacity="0.36"
+               filter="url(#bb-md-{{ ai_gen_id }})"/>
+
+      <!-- Deep rose — bottom right depth anchor -->
+      <ellipse cx="415" cy="530"
+               rx="245" ry="215"
+               fill="#FF3E6E" opacity="0.30"
+               filter="url(#bb-xl-{{ ai_gen_id }})"/>
+
+      <!-- Warm cream highlight — center softener -->
+      <ellipse cx="200" cy="240"
+               rx="180" ry="155"
+               fill="#FFECD8" opacity="0.22"
+               filter="url(#bb-lg-{{ ai_gen_id }})"/>
+
+    </svg>
 
     <div class="ai-age-verify-icon-{{ ai_gen_id }}">
       <svg viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
