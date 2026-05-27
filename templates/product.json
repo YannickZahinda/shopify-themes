@@ -52,7 +52,7 @@
         "delivery_link_text": "See the box",
         "show_how_to_use": true,
         "how_to_title": "",
-        "how_to_video": "{{ product.metafields.custom.how_to_use.value }}",
+        "how_to_video": "https://www.youtube.com/watch?v=pJxeyK7it0o",
         "video_poster": "shopify://shop_images/Group_1000001767.png",
         "instructions": "{{ product.metafields.custom.instructions_fallback | metafield_tag }}",
         "show_return_policy": true,

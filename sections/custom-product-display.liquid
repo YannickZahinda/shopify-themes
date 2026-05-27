@@ -628,27 +628,48 @@
   /* ── How To Use ── */
   .how-to-use {
     margin-bottom: 28px;
+    background: linear-gradient(135deg, #FFF8F4 0%, #F6EEF2 100%);
+    border-radius: 18px;
+    border: 1px solid rgba(212, 175, 55, 0.12);
+    overflow: hidden;
   }
 
   .how-to-title {
     font-size: 15px;
     font-weight: 700;
     color: #2D1B2E;
-    margin: 0 0 14px 0;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+    margin: 0;
+    padding: 16px 22px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+  }
+
+  .how-to-body {
+    padding: 18px 22px 20px;
   }
 
   .how-to-video {
     margin-bottom: 14px;
-    border-radius: 14px;
+    border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 16px rgba(45, 27, 46, 0.1);
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+  }
+
+  .how-to-video iframe,
+  .how-to-video video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
   }
 
   .instruction-video {
     width: 100%;
-    border-radius: 14px;
     display: block;
   }
 
@@ -1309,27 +1330,49 @@
             {% endif %}
             <h3 class="how-to-title">{{ how_to_title }}</h3>
 
-            {% liquid
-              assign how_to_video = product.metafields.custom.how_to_video | default: section.settings.how_to_video
-              assign video_poster = product.metafields.custom.video_poster | default: section.settings.video_poster
-            %}
-            {% if how_to_video != blank %}
-              <div class="how-to-video">
-                <video controls class="instruction-video" {% if video_poster %}poster="{{ video_poster | image_url: width: 800 }}"{% endif %}>
-                  <source src="{{ how_to_video }}" type="video/mp4">
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-            {% endif %}
+            <div class="how-to-body">
+              {% liquid
+                assign how_to_video = product.metafields.custom.how_to_video | default: section.settings.how_to_video
+                assign video_poster = product.metafields.custom.video_poster | default: section.settings.video_poster
+              %}
+              {% if how_to_video != blank %}
+                {% liquid
+                  assign is_youtube = false
+                  assign youtube_id = ''
+                  if how_to_video contains 'youtube.com'
+                    assign is_youtube = true
+                    assign youtube_id = how_to_video | split: 'v=' | last | split: '&' | first
+                  elsif how_to_video contains 'youtu.be/'
+                    assign is_youtube = true
+                    assign youtube_id = how_to_video | split: 'youtu.be/' | last | split: '?' | first
+                  endif
+                %}
+                <div class="how-to-video">
+                  {% if is_youtube %}
+                    <iframe
+                      src="https://www.youtube.com/embed/{{ youtube_id }}?rel=0&modestbranding=1"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen
+                      loading="lazy"
+                      title="{{ how_to_title }}">
+                    </iframe>
+                  {% else %}
+                    <video controls class="instruction-video" {% if video_poster %}poster="{{ video_poster | image_url: width: 800 }}"{% endif %}>
+                      <source src="{{ how_to_video }}" type="video/mp4">
+                    </video>
+                  {% endif %}
+                </div>
+              {% endif %}
 
-            {% liquid
-              assign instructions = product.metafields.custom.instructions | default: section.settings.instructions
-            %}
-            {% if instructions != blank %}
-              <div class="how-to-instructions">
-                {{ instructions }}
-              </div>
-            {% endif %}
+              {% liquid
+                assign instructions = product.metafields.custom.instructions | default: section.settings.instructions
+              %}
+              {% if instructions != blank %}
+                <div class="how-to-instructions">
+                  {{ instructions }}
+                </div>
+              {% endif %}
+            </div>
           </div>
         {% endif %}
 
