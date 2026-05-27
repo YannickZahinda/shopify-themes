@@ -1542,6 +1542,38 @@
     setVH();
     window.addEventListener('resize', setVH);
   });
+
+  // Force Judge.me "Write a review" button to match brand color
+  (function() {
+    const BRAND = '#7b1e3a';
+    const BRAND_HOVER = '#5a1428';
+    const sel = '[class*="jdgm-write-rev"]';
+
+    function styleBtn(btn) {
+      btn.style.setProperty('background', BRAND, 'important');
+      btn.style.setProperty('background-color', BRAND, 'important');
+      btn.style.setProperty('color', '#ffffff', 'important');
+      btn.style.setProperty('border-radius', '50px', 'important');
+      btn.style.setProperty('border', 'none', 'important');
+      btn.style.setProperty('box-shadow', '0 4px 16px rgba(123,30,58,0.35)', 'important');
+      btn.addEventListener('mouseenter', function() {
+        this.style.setProperty('background', BRAND_HOVER, 'important');
+        this.style.setProperty('background-color', BRAND_HOVER, 'important');
+      });
+      btn.addEventListener('mouseleave', function() {
+        this.style.setProperty('background', BRAND, 'important');
+        this.style.setProperty('background-color', BRAND, 'important');
+      });
+    }
+
+    function applyAll() {
+      document.querySelectorAll(sel).forEach(styleBtn);
+    }
+
+    applyAll();
+    const observer = new MutationObserver(applyAll);
+    observer.observe(document.body, { childList: true, subtree: true });
+  })();
 </script>
 
 {% schema %}
