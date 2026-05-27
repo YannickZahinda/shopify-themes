@@ -25,7 +25,11 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -46%) scale(0.95);
-    background: linear-gradient(145deg, #FFB3C0 0%, #FF6FA3 45%, #FF3D85 100%);
+    background-image: url('{{ "popup-background.jpeg" | file_img_url: "800x" }}');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #FF6FA3;
     border-radius: 28px;
     padding: 48px 36px 36px;
     max-width: 400px;
