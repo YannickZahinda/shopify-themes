@@ -25,14 +25,14 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -46%) scale(0.95);
-    background-color: #FF6FA3;
+    background-color: #D97080;
     border-radius: 28px;
     padding: 48px 36px 36px;
     max-width: 400px;
     width: 90%;
     z-index: 9999;
     text-align: center;
-    box-shadow: 0 20px 60px rgba(255, 70, 130, 0.35), 0 8px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 20px 60px rgba(200, 60, 100, 0.30), 0 8px 24px rgba(0, 0, 0, 0.15);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -76,7 +76,7 @@
     stroke-width: 1.5;
     stroke-linecap: round;
     stroke-linejoin: round;
-    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.12));
   }
 
   /* Heading */
@@ -88,7 +88,7 @@
     margin: 0 0 28px;
     line-height: 1.25;
     letter-spacing: -0.01em;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    text-shadow: 0 1px 6px rgba(0,0,0,0.12);
     position: relative;
     z-index: 1;
   }
@@ -109,7 +109,7 @@
     width: 100%;
     padding: 16px 32px;
     background: #ffffff;
-    color: #FF3D85;
+    color: #D9426E;
     border: none;
     border-radius: 50px;
     font-family: 'Tomato Grotesk', sans-serif;
@@ -117,14 +117,14 @@
     font-weight: 600;
     cursor: pointer;
     letter-spacing: 0.1px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.10);
     transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   }
 
   .ai-age-verify-button-yes-{{ ai_gen_id }}:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(0,0,0,0.18);
-    background: #fff5f8;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.16);
+    background: #fff5f7;
   }
 
   /* Secondary — text link only */
@@ -175,70 +175,85 @@
 
   <div class="ai-age-verify-popup-{{ ai_gen_id }}">
 
-    <!-- Abstract gradient background — inline SVG, no external files needed -->
+    <!--
+      Abstract gradient background — 3 organic blob shapes:
+        1. Warm salmon-pink base
+        2. Large soft blush/peach blob  — top-left
+        3. Vibrant hot-pink blob        — right side, S-curve boundary
+        4. Small blush teardrop accent  — bottom-right corner
+    -->
     <svg class="ai-age-verify-bg-svg-{{ ai_gen_id }}"
          xmlns="http://www.w3.org/2000/svg"
-         viewBox="0 0 400 520"
-         preserveAspectRatio="xMidYMid slice"
+         viewBox="0 0 400 500"
+         preserveAspectRatio="none"
          aria-hidden="true"
          focusable="false">
       <defs>
-        <filter id="bb-xl-{{ ai_gen_id }}" x="-80%" y="-80%" width="260%" height="260%">
-          <feGaussianBlur stdDeviation="68"/>
+
+        <!-- Blush blob gradient: very light peachy-cream at corner, warming outward -->
+        <radialGradient id="rg-blush-{{ ai_gen_id }}"
+                        cx="30" cy="28" r="315"
+                        gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stop-color="#F8CAB8"/>
+          <stop offset="55%"  stop-color="#F1B0A0"/>
+          <stop offset="100%" stop-color="#EAAA98"/>
+        </radialGradient>
+
+        <!-- Pink blob gradient: bright hot-pink at top-right, deepening toward center -->
+        <radialGradient id="rg-pink-{{ ai_gen_id }}"
+                        cx="392" cy="18" r="390"
+                        gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stop-color="#F84888"/>
+          <stop offset="40%"  stop-color="#EE3878"/>
+          <stop offset="100%" stop-color="#D42870"/>
+        </radialGradient>
+
+        <!-- Soft edge feathering for all blobs -->
+        <filter id="feather-{{ ai_gen_id }}" x="-12%" y="-10%" width="124%" height="120%">
+          <feGaussianBlur stdDeviation="15"/>
         </filter>
-        <filter id="bb-lg-{{ ai_gen_id }}" x="-70%" y="-70%" width="240%" height="240%">
-          <feGaussianBlur stdDeviation="50"/>
-        </filter>
-        <filter id="bb-md-{{ ai_gen_id }}" x="-60%" y="-60%" width="220%" height="220%">
-          <feGaussianBlur stdDeviation="38"/>
-        </filter>
+
       </defs>
 
-      <!-- Base: warm pink -->
-      <rect width="400" height="520" fill="#FF6FA3"/>
+      <!-- Base: warm salmon-pink -->
+      <rect width="400" height="500" fill="#D97080"/>
 
-      <!-- Large peach/apricot blob — top right corner -->
-      <ellipse cx="440" cy="-40"
-               rx="320" ry="280"
-               fill="#FFD4A0" opacity="0.75"
-               filter="url(#bb-xl-{{ ai_gen_id }})"/>
+      <!--
+        Top-left blush blob.
+        Starts at top-left corner, sweeps across top to ~x 290,
+        then curves down and left back to the left edge at ~y 340.
+      -->
+      <path d="
+        M -18 -18
+        C 172 -18 302 28 290 128
+        C 278 228 152 288 82 348
+        C 30 392 -18 376 -18 336
+        Z"
+        fill="url(#rg-blush-{{ ai_gen_id }})"
+        filter="url(#feather-{{ ai_gen_id }})"/>
 
-      <!-- Large warm peach blob — bottom left corner -->
-      <ellipse cx="-40" cy="565"
-               rx="300" ry="265"
-               fill="#FFC07A" opacity="0.68"
-               filter="url(#bb-xl-{{ ai_gen_id }})"/>
+      <!--
+        Right hot-pink blob with S-curve left boundary.
+        Top: pink begins at x≈205.
+        Curves left to x≈135 at y≈90  (blush expands in upper-middle).
+        Swings right to x≈350 at y≈385 (pink expands in lower-middle).
+        Returns slightly left to x≈305 at the bottom.
+      -->
+      <path d="
+        M 418 -18
+        L 205 -18
+        C 184 24 135 88 160 174
+        C 185 260 342 294 357 383
+        C 367 438 320 508 303 518
+        L 418 518
+        Z"
+        fill="url(#rg-pink-{{ ai_gen_id }})"
+        filter="url(#feather-{{ ai_gen_id }})"/>
 
-      <!-- Soft rose accent — upper left -->
-      <ellipse cx="50" cy="95"
-               rx="215" ry="195"
-               fill="#FFB8D0" opacity="0.50"
-               filter="url(#bb-lg-{{ ai_gen_id }})"/>
-
-      <!-- Light beige diagonal ribbon — flows bottom-left to top-right -->
-      <ellipse cx="195" cy="258"
-               rx="320" ry="118"
-               fill="#FFE8D2" opacity="0.38"
-               transform="rotate(-37 195 258)"
-               filter="url(#bb-lg-{{ ai_gen_id }})"/>
-
-      <!-- Coral accent — mid right -->
-      <ellipse cx="400" cy="335"
-               rx="210" ry="180"
-               fill="#FF7080" opacity="0.36"
-               filter="url(#bb-md-{{ ai_gen_id }})"/>
-
-      <!-- Deep rose — bottom right depth anchor -->
-      <ellipse cx="415" cy="530"
-               rx="245" ry="215"
-               fill="#FF3E6E" opacity="0.30"
-               filter="url(#bb-xl-{{ ai_gen_id }})"/>
-
-      <!-- Warm cream highlight — center softener -->
-      <ellipse cx="200" cy="240"
-               rx="180" ry="155"
-               fill="#FFECD8" opacity="0.22"
-               filter="url(#bb-lg-{{ ai_gen_id }})"/>
+      <!-- Small blush teardrop — bottom-right corner accent -->
+      <ellipse cx="390" cy="478" rx="110" ry="86"
+               fill="#F6C6B4" opacity="0.90"
+               filter="url(#feather-{{ ai_gen_id }})"/>
 
     </svg>
 
