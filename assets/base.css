@@ -5121,11 +5121,16 @@ button.header__icon--menu,
   fill: #F6EEF2 !important;
   stroke: #F6EEF2 !important;
 }
-/* ── Judge.me "Write a review" button — global override ── */
-.jdgm-write-rev-link,
-.jdgm-write-rev-btn,
-a.jdgm-write-rev-link {
+/* ── Judge.me "Write a review" button — high-specificity override ── */
+body .jdgm-write-rev-link,
+body .jdgm-write-rev-btn,
+body a.jdgm-write-rev-link,
+body .jdgm-widget .jdgm-write-rev-link,
+body .jdgm-rev-widg .jdgm-write-rev-link,
+body .jdgm-rev-widg__header .jdgm-write-rev-link,
+body [class*="jdgm-write-rev"] {
   background: #7b1e3a !important;
+  background-color: #7b1e3a !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border: none !important;
@@ -5140,10 +5145,13 @@ a.jdgm-write-rev-link {
   display: inline-block !important;
 }
 
-.jdgm-write-rev-link:hover,
-.jdgm-write-rev-btn:hover,
-a.jdgm-write-rev-link:hover {
+body .jdgm-write-rev-link:hover,
+body .jdgm-write-rev-btn:hover,
+body a.jdgm-write-rev-link:hover,
+body .jdgm-widget .jdgm-write-rev-link:hover,
+body [class*="jdgm-write-rev"]:hover {
   background: #5a1428 !important;
+  background-color: #5a1428 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   transform: translateY(-2px) !important;
