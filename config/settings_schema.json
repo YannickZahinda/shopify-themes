@@ -2284,5 +2284,15 @@
         "default": "equal-width-buttons"
       }
     ]
+  },
+  {
+    "name": "Age verification popup",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "age_popup_bg",
+        "label": "Popup background image"
+      }
+    ]
   }
 ]
