@@ -546,7 +546,7 @@ class WishlistDrawer {
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: ${isError ? '#e74c3c' : '#2ecc71'};
+      background: ${isError ? '#e74c3c' : '#7b1e3a'};
       color: #fff;
       padding: 12px 24px;
       border-radius: 8px;
