@@ -51,7 +51,7 @@
           "type": "_header-logo",
           "static": true,
           "settings": {
-            "logo": "shopify://shop_images/new-logo-nobg.PNG",
+            "logo": "shopify://shop_images/new-logo-nobg.png",
             "hide_logo_on_home_page": false,
             "padding-block-start": 0,
             "padding-block-end": 0,
