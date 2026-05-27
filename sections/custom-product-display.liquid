@@ -660,21 +660,24 @@
 
   /* ── Return Policy ── */
   .return-policy {
-    border-top: 1px solid rgba(212, 175, 55, 0.12);
-    padding-top: 14px;
+    background: linear-gradient(135deg, #FFF8F4 0%, #F6EEF2 100%);
+    border-radius: 18px;
+    border: 1px solid rgba(212, 175, 55, 0.12);
     margin-top: 6px;
+    overflow: hidden;
   }
 
   .return-policy summary {
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 700;
     color: #2D1B2E;
     cursor: pointer;
     list-style: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0;
+    padding: 16px 22px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.18);
   }
 
   .return-policy summary::-webkit-details-marker {
@@ -686,6 +689,7 @@
     font-size: 10px;
     color: #D4AF37;
     transition: transform 0.3s ease;
+    flex-shrink: 0;
   }
 
   .return-policy[open] summary::after {
@@ -693,10 +697,14 @@
   }
 
   .return-content {
-    padding: 10px 0 14px;
+    padding: 14px 22px 18px;
     font-size: 13px;
-    line-height: 1.55;
-    color: #8B6B7A;
+    line-height: 1.65;
+    color: #4A3A4A;
+  }
+
+  .return-content p {
+    margin: 0;
   }
 
   /* ── Modal ── */
