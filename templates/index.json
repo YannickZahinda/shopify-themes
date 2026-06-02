@@ -302,8 +302,8 @@
             "mood_2_enabled": true,
             "mood_2_title": "",
             "mood_2_description": "",
-            "mood_2_bg_color": "#f9b8d4",
-            "mood_2_bg_image": "shopify://shop_images/new-w-s.jpg",
+            "mood_2_bg_color": "#4a1225",
+            "mood_2_bg_image": "",
             "mood_2_collection": "all-products",
             "mood_2_link": "",
             "mood_3_enabled": true,
@@ -545,6 +545,7 @@
     },
     "four_card_JngAXm": {
       "type": "four-card",
+      "disabled": true,
       "blocks": {
         "promo_card_q8FHL7": {
           "type": "promo_card",
@@ -1121,8 +1122,8 @@
         "button_font_size": 12,
         "button_padding_vertical": 8,
         "button_padding_horizontal": 20,
-        "button_background_color": "#e75480",
-        "button_hover_background": "#7b1e3a",
+        "button_background_color": "#7b1e3a",
+        "button_hover_background": "#5a1428",
         "button_text_color": "#ffffff",
         "button_border_radius": 24
       }

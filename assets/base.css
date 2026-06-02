@@ -5149,3 +5149,91 @@ a.jdgm-write-rev-link:hover {
   transform: translateY(-2px) !important;
   box-shadow: 0 8px 22px rgba(123, 30, 58, 0.45) !important;
 }
+
+/* ── Hero: mobile background position fix (#13) ── */
+@media (max-width: 749px) {
+  [id^="clh-"] {
+    background-position: top center !important;
+  }
+}
+
+/* ── Judge.me review form — full override (#20, #21) ── */
+/* Rating bar graphs → brand colours */
+body .jdgm-histogram__bar-fill,
+body [class*="jdgm-histogram"] [class*="fill"],
+body [class*="jdgm"] [class*="bar-fill"] {
+  background: #7b1e3a !important;
+}
+
+body .jdgm-histogram__bar,
+body [class*="jdgm-histogram"] [class*="bar"] {
+  background: rgba(123, 30, 58, 0.15) !important;
+}
+
+/* Review form input fields — white text on dark bg */
+body .jdgm-rev-form input,
+body .jdgm-rev-form textarea,
+body .jdgm-rev-form select,
+body [class*="jdgm-rev-form"] input,
+body [class*="jdgm-rev-form"] textarea,
+body [class*="jdgm"] input[type="text"],
+body [class*="jdgm"] input[type="email"],
+body [class*="jdgm"] textarea {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+body [class*="jdgm"] input::placeholder,
+body [class*="jdgm"] textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Form labels and text */
+body .jdgm-rev-form label,
+body [class*="jdgm-rev-form"] label,
+body [class*="jdgm"] .jdgm-form__field-label {
+  color: #f6eef2 !important;
+  -webkit-text-fill-color: #f6eef2 !important;
+}
+
+/* Disclaimer text */
+body [class*="jdgm"] .jdgm-form__disclaimer,
+body [class*="jdgm"] [class*="disclaimer"] {
+  color: rgba(246, 238, 242, 0.7) !important;
+  -webkit-text-fill-color: rgba(246, 238, 242, 0.7) !important;
+}
+
+/* Star rating in form */
+body [class*="jdgm"] .jdgm-star,
+body [class*="jdgm"] [class*="star"] {
+  color: #d4af37 !important;
+}
+
+/* Form submit button */
+body [class*="jdgm"] [type="submit"],
+body [class*="jdgm"] .jdgm-submit-btn,
+body [class*="jdgm"] [class*="submit"] {
+  background: #7b1e3a !important;
+  color: #ffffff !important;
+  border-radius: 50px !important;
+  border: none !important;
+}
+
+/* Account popup — override Shop Pay blue/gold (#22) */
+body .shopify-identity-button,
+body shop-login-button button,
+body [data-shopify-buttonize] {
+  background: #7b1e3a !important;
+  color: #ffffff !important;
+  border-color: #7b1e3a !important;
+}
+
+body .shopify-identity-button--secondary,
+body shop-login-button button:last-child {
+  background: transparent !important;
+  color: #7b1e3a !important;
+  border: 2px solid #7b1e3a !important;
+}

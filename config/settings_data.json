@@ -11,8 +11,8 @@
   "current": {
     "age_popup_bg": "shopify://shop_images/popup-background.jpeg",
     "logo": "shopify://shop_images/logo-redesign-arousique-removebg-preview.png",
-    "logo_height": 28,
-    "logo_height_mobile": 20,
+    "logo_height": 52,
+    "logo_height_mobile": 40,
     "favicon": "shopify://shop_images/Arousique_Logo-24.png",
     "type_body_font": "inter_n4",
     "type_subheading_font": "inter_n5",

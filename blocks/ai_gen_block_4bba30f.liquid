@@ -212,37 +212,37 @@
     inset: 0;
     background: linear-gradient(
       to top,
-      rgba(8, 4, 10, 1) 0%,
-      rgba(8, 4, 10, 0.85) 35%,
-      rgba(8, 4, 10, 0.4) 65%,
+      rgba(8, 4, 10, 0.88) 0%,
+      rgba(8, 4, 10, 0.65) 30%,
+      rgba(8, 4, 10, 0.25) 60%,
       rgba(8, 4, 10, 0) 100%
     );
     z-index: 2;
     pointer-events: none;
-    transition: opacity 0.4s ease;
+    transition: background 0.4s ease;
   }
 
   .ai-mood-card-{{ ai_gen_id }}:hover .ai-mood-card-overlay-{{ ai_gen_id }} {
     background: linear-gradient(
       to top,
-      rgba(8, 4, 10, 1) 0%,
-      rgba(8, 4, 10, 0.9) 45%,
-      rgba(8, 4, 10, 0.5) 70%,
-      rgba(8, 4, 10, 0.1) 100%
+      rgba(8, 4, 10, 0.92) 0%,
+      rgba(8, 4, 10, 0.72) 38%,
+      rgba(8, 4, 10, 0.3) 65%,
+      rgba(8, 4, 10, 0) 100%
     );
   }
 
-  /* ── Premium Text Panel ── */
+  /* ── Text panel — fills card, text pushed to bottom via flex ── */
   .ai-mood-card-content-{{ ai_gen_id }} {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     padding: {{ block.settings.card_padding }}px;
-    z-index: 10 !important;
-    transform: translateY(0);
-    transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    z-index: 10;
     isolation: isolate;
+    overflow: hidden;
   }
 
   .ai-mood-card-title-{{ ai_gen_id }} {
@@ -429,7 +429,7 @@
     }
   }
 
-  /* ── Mobile ── */
+  /* ── Mobile — 2-column grid, no horizontal scroll ── */
   @media screen and (max-width: 749px) {
     .ai-mood-{{ ai_gen_id }} {
       padding: {{ block.settings.section_padding_top | times: 0.7 }}px 0 {{ block.settings.section_padding_bottom | times: 0.7 }}px;
@@ -439,8 +439,22 @@
       padding: 0 16px;
     }
 
+    .ai-mood-scroll-container-{{ ai_gen_id }} {
+      overflow-x: visible;
+    }
+
+    .ai-mood-grid-{{ ai_gen_id }} {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+    }
+
     .ai-mood-card-{{ ai_gen_id }} {
-      flex: 0 0 {{ block.settings.card_width_mobile }}px;
+      flex: unset;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      min-height: unset;
     }
 
     .ai-mood-title-{{ ai_gen_id }} {
@@ -479,14 +493,7 @@
     }
 
     .ai-mood-nav-{{ ai_gen_id }} {
-      width: 36px;
-      height: 36px;
       display: none;
-    }
-
-    .ai-mood-nav-{{ ai_gen_id }} svg {
-      width: 16px;
-      height: 16px;
     }
   }
 

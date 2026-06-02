@@ -161,9 +161,9 @@
     transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   
-  /* Cards — darker than section bg for contrast */
+  /* Cards */
   .ai-bestsellers-card-{{ ai_gen_id }} {
-    background: #1e0810;
+    background: #2d0f1e;
     border-radius: 24px;
     overflow: hidden;
     display: flex;
@@ -198,19 +198,19 @@
     overflow: hidden;
     background: #160710;
     border-radius: 16px;
+    transition: transform 0.5s ease;
   }
-  
+
+  .ai-bestsellers-card-{{ ai_gen_id }}:hover .ai-bestsellers-image-wrapper-{{ ai_gen_id }} {
+    transform: scale(1.04);
+  }
+
   .ai-bestsellers-image-{{ ai_gen_id }} {
     width: 100%;
     height: 100%;
     object-fit: contain;
     object-position: center;
-    transition: transform 0.6s ease;
     padding: {{ block.settings.image_padding }}px;
-  }
-  
-  .ai-bestsellers-card-{{ ai_gen_id }}:hover .ai-bestsellers-image-{{ ai_gen_id }} {
-    transform: scale(1.05);
   }
   
   /* Premium Badges */

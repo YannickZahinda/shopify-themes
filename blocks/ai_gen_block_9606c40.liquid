@@ -85,12 +85,12 @@
           </div>
         </div>
 
-        <!-- Card 4 -->
+        <!-- Card 4 — Deal of the Day: copies code on click -->
         {% assign card_4_heading = block.settings.card_4_heading | default: 'Deal of the Day' %}
         {% assign card_4_subheading = block.settings.card_4_subheading | default: 'Exclusive daily offers for our community' %}
         {% assign card_4_emoji = block.settings.card_4_emoji | default: '🏷️' %}
         {% assign card_4_button_label = block.settings.card_4_button_label | default: 'Use Code: 10% OFF' %}
-        {% assign card_4_button_link = block.settings.card_4_button_link | default: '' %}
+        {% assign card_4_copy_code = block.settings.card_4_copy_code | default: 'AROUSIQUE10' %}
         <div class="promo-card-{{ ai_gen_id }}">
           <div class="promo-icon-wrap-{{ ai_gen_id }}">
             <span class="promo-emoji-{{ ai_gen_id }}">{{ card_4_emoji }}</span>
@@ -100,10 +100,26 @@
             <p class="promo-subheading-{{ ai_gen_id }}">{{ card_4_subheading }}</p>
           </div>
           <div class="promo-btn-wrap-{{ ai_gen_id }}">
-            <a href="{{ card_4_button_link }}" class="promo-btn-{{ ai_gen_id }}">
+            <button
+              type="button"
+              class="promo-btn-{{ ai_gen_id }} promo-copy-btn-{{ ai_gen_id }}"
+              data-code="{{ card_4_copy_code }}"
+              data-label="{{ card_4_button_label }}"
+              onclick="(function(btn){
+                var code = btn.getAttribute('data-code');
+                navigator.clipboard.writeText(code).then(function(){
+                  var orig = btn.innerHTML;
+                  btn.textContent = '✓ Copied!';
+                  setTimeout(function(){ btn.innerHTML = orig; }, 2000);
+                }).catch(function(){
+                  btn.textContent = code;
+                  setTimeout(function(){ btn.innerHTML = btn.getAttribute('data-label'); }, 3000);
+                });
+              })(this)"
+            >
               {{ card_4_button_label }}
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </a>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
           </div>
         </div>
 
@@ -301,21 +317,43 @@
     flex-direction: column;
     gap: 8px;
     width: 100%;
+    position: relative;
+    z-index: 2;
   }
 
   .promo-heading-{{ ai_gen_id }} {
     font-size: 15px;
     font-weight: 700;
-    color: #2D1B2E;
+    color: #2D1B2E !important;
+    -webkit-text-fill-color: #2D1B2E !important;
+    background: none !important;
     margin: 0;
     line-height: 1.35;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 
   .promo-subheading-{{ ai_gen_id }} {
     font-size: 12px;
-    color: #8B6B7A;
+    color: #8B6B7A !important;
+    -webkit-text-fill-color: #8B6B7A !important;
+    background: none !important;
     margin: 0;
     line-height: 1.55;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .promo-card-{{ ai_gen_id }}:hover .promo-heading-{{ ai_gen_id }} {
+    color: #2D1B2E !important;
+    -webkit-text-fill-color: #2D1B2E !important;
+    background: none !important;
+  }
+
+  .promo-card-{{ ai_gen_id }}:hover .promo-subheading-{{ ai_gen_id }} {
+    color: #8B6B7A !important;
+    -webkit-text-fill-color: #8B6B7A !important;
+    background: none !important;
   }
 
   /* ── Button ── */
@@ -392,29 +430,36 @@
     }
   }
 
-  /* ── Mobile ── */
+  /* ── Mobile — 2-column grid (no horizontal scroll) ── */
   @media screen and (max-width: 749px) {
-    .promo-card-{{ ai_gen_id }} {
-      flex: 0 0 {{ block.settings.card_width_mobile }}px;
-      width: {{ block.settings.card_width_mobile }}px;
-      padding: 22px 16px 18px;
+    .promo-scroll-{{ ai_gen_id }} {
+      overflow-x: visible;
+      cursor: default;
     }
+
+    .promo-grid-{{ ai_gen_id }} {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      flex-wrap: unset;
+      gap: 14px;
+      padding: 8px 16px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .promo-card-{{ ai_gen_id }} {
+      flex: unset;
+      width: 100%;
+      padding: 20px 14px 18px;
+      scroll-snap-align: unset;
+    }
+
     .promo-title-{{ ai_gen_id }}    { font-size: {{ block.settings.title_size_mobile }}px; }
     .promo-subtitle-{{ ai_gen_id }} { font-size: {{ block.settings.subtitle_size_mobile }}px; }
     .promo-icon-wrap-{{ ai_gen_id }} { width: 60px; height: 60px; }
     .promo-emoji-{{ ai_gen_id }}    { font-size: 28px; }
 
-    /* Tighter side padding on mobile so first card peeks correctly */
-    .promo-grid-{{ ai_gen_id }} {
-      padding: 8px 16px 8px 16px;
-      gap: 14px;
-    }
-
-    /* Hide desktop scroll hint; dots hint is enough */
     .promo-scroll-hint-{{ ai_gen_id }} { display: none; }
-
-    /* Show native scrollbar on mobile so users know it scrolls */
-    .promo-scroll-{{ ai_gen_id }}::-webkit-scrollbar { height: 3px; }
   }
   @media screen and (min-width: 990px) {
     .promo-scroll-{{ ai_gen_id }} {
@@ -717,9 +762,11 @@
       "default": "Use Code: 10% OFF"
     },
     {
-      "type": "url",
-      "id": "card_4_button_link",
-      "label": "Button Link"
+      "type": "text",
+      "id": "card_4_copy_code",
+      "label": "Discount Code to Copy",
+      "default": "AROUSIQUE10",
+      "info": "Clicking the button copies this code to clipboard instead of redirecting."
     },
     {
       "type": "header",
