@@ -10,14 +10,33 @@
     width: 100vw;
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
+    /* Fallback colour shown while image loads / when no image is set */
     background: {{ section.settings.bg_color_fallback | default: '#fae0e4' }};
-    background-image: url('{{ section.settings.bg_image | image_url }}');
-    background-size: {{ section.settings.bg_size }};
-    background-position: {{ section.settings.bg_position }};
-    background-repeat: {{ section.settings.bg_repeat }};
-    background-attachment: {{ section.settings.bg_attachment }};
     overflow: hidden;
-    color: {{ section.settings.text_color }};
+    color: {{ section.settings.text_text_color | default: section.settings.text_color }};
+  }
+
+  /* Background image layer — uses real <img> so object-position works reliably */
+  #clh-{{ section.id }} .clh-bg-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  #clh-{{ section.id }} .clh-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: {{ section.settings.bg_position | default: 'center center' }};
+    display: block;
+  }
+
+  /* Mobile: shift focal point right to show the subject */
+  @media (max-width: 749px) {
+    #clh-{{ section.id }} .clh-bg-img {
+      object-position: 70% top;
+    }
   }
 
   #clh-{{ section.id }} .clh-container {
@@ -115,18 +134,45 @@
 
   /* ---------- MOBILE ---------- */
   @media (max-width: 749px) {
+    /* Shift background right to show the person, prevent iOS fixed-bg bug */
+    #clh-{{ section.id }} {
+      background-attachment: scroll;
+      background-position: 68% center;
+      background-size: cover;
+    }
+
+    /* Overlay very light on mobile — real image shows through */
+    #clh-{{ section.id }}::before,
+    #clh-{{ section.id }}[data-has-bg-image="true"]::before {
+      opacity: 0.18;
+    }
+
     #clh-{{ section.id }} .clh-container {
-      padding: 40px 20px 0;
+      padding: 32px 20px 24px;
       min-height: {{ section.settings.m_hero_height }}vh;
-      justify-content: flex-start;
+      justify-content: center;
       flex-direction: column;
     }
 
-    .clh-content-block {
+    /* No opaque card — text sits directly over the image with shadows */
+    #clh-{{ section.id }} .clh-content-block {
       text-align: center;
       margin: 0 auto;
       flex: 0 0 auto;
       width: 100%;
+      background: none;
+    }
+
+    /* Deep text-shadows keep headings readable on any background */
+    #clh-{{ section.id }} .clh-heading,
+    #clh-{{ section.id }} .clh-super-meta {
+      text-shadow:
+        0 2px 24px rgba(0, 0, 0, 0.85),
+        0 1px 6px rgba(0, 0, 0, 1);
+    }
+
+    #clh-{{ section.id }} .clh-text {
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.8);
     }
 
     #clh-{{ section.id }} .clh-super-meta {
@@ -196,10 +242,27 @@
 
 <div
   id="clh-{{ section.id }}"
-  class="customised-learn-hero"
+  class="customised-learn-hero{% if section.settings.bg_image == blank %} no-bg-image{% endif %}"
   {% if section.settings.bg_image != blank %}data-has-bg-image="true"{% endif %}
-  {% if section.settings.bg_image == blank %}class="no-bg-image"{% endif %}
 >
+
+  {% if section.settings.bg_image != blank %}
+    <div class="clh-bg-layer">
+      <img
+        class="clh-bg-img"
+        src="{{ section.settings.bg_image | image_url: width: 1200 }}"
+        srcset="{{ section.settings.bg_image | image_url: width: 750 }} 750w,
+                {{ section.settings.bg_image | image_url: width: 1200 }} 1200w,
+                {{ section.settings.bg_image | image_url: width: 1920 }} 1920w"
+        sizes="100vw"
+        alt=""
+        loading="eager"
+        fetchpriority="high"
+        width="{{ section.settings.bg_image.width }}"
+        height="{{ section.settings.bg_image.height }}"
+      >
+    </div>
+  {% endif %}
 
   <div class="clh-container">
 

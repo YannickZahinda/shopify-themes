@@ -91,7 +91,9 @@
         {% assign card_4_emoji = block.settings.card_4_emoji | default: '🏷️' %}
         {% assign card_4_button_label = block.settings.card_4_button_label | default: 'Use Code: 10% OFF' %}
         {% assign card_4_copy_code = block.settings.card_4_copy_code | default: 'AROUSIQUE10' %}
-        <div class="promo-card-{{ ai_gen_id }}">
+        <div class="promo-card-{{ ai_gen_id }} promo-deal-card-{{ ai_gen_id }}"
+             data-promo-copy="{{ card_4_copy_code }}"
+             style="cursor: pointer;">
           <div class="promo-icon-wrap-{{ ai_gen_id }}">
             <span class="promo-emoji-{{ ai_gen_id }}">{{ card_4_emoji }}</span>
           </div>
@@ -103,22 +105,10 @@
             <button
               type="button"
               class="promo-btn-{{ ai_gen_id }} promo-copy-btn-{{ ai_gen_id }}"
-              data-code="{{ card_4_copy_code }}"
-              data-label="{{ card_4_button_label }}"
-              onclick="(function(btn){
-                var code = btn.getAttribute('data-code');
-                navigator.clipboard.writeText(code).then(function(){
-                  var orig = btn.innerHTML;
-                  btn.textContent = '✓ Copied!';
-                  setTimeout(function(){ btn.innerHTML = orig; }, 2000);
-                }).catch(function(){
-                  btn.textContent = code;
-                  setTimeout(function(){ btn.innerHTML = btn.getAttribute('data-label'); }, 3000);
-                });
-              })(this)"
+              data-promo-copy="{{ card_4_copy_code }}"
             >
-              {{ card_4_button_label }}
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              {{ card_4_button_label }}
             </button>
           </div>
         </div>
@@ -476,28 +466,107 @@
     }
     .promo-scroll-hint-{{ ai_gen_id }} { display: none; }
   }
+
+  /* Clipboard toast */
+  .promo-toast-{{ ai_gen_id }} {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    background: #1A0D12;
+    color: #F0CC55;
+    padding: 11px 26px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 99999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    border: 1.5px solid rgba(240, 204, 85, 0.6);
+    white-space: nowrap;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  }
+
+  .promo-toast-{{ ai_gen_id }}.promo-toast-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 {% endstyle %}
 
 <script>
 (function() {
+  /* Toast */
+  var toast = document.createElement('div');
+  toast.className = 'promo-toast-{{ ai_gen_id }}';
+  document.body.appendChild(toast);
+  var toastTimer;
+  function showToast(msg) {
+    clearTimeout(toastTimer);
+    toast.textContent = msg;
+    toast.classList.add('promo-toast-visible');
+    toastTimer = setTimeout(function() { toast.classList.remove('promo-toast-visible'); }, 2800);
+  }
+
+  /* Clipboard copy — handles both button clicks and full card clicks */
+  function copyCode(code, btn) {
+    var orig = btn ? btn.innerHTML : null;
+    function onSuccess() {
+      showToast('✓ Code copied: ' + code);
+      if (btn) {
+        btn.textContent = '✓ Copied!';
+        setTimeout(function() { if (orig) btn.innerHTML = orig; }, 2200);
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(code).then(onSuccess).catch(function() {
+        try { fallbackCopy(code); onSuccess(); } catch(e) { showToast(code); }
+      });
+    } else {
+      try { fallbackCopy(code); onSuccess(); } catch(e) { showToast(code); }
+    }
+  }
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+
+  /* Attach to the Deal card (whole card) and the copy button */
+  document.querySelectorAll('[data-promo-copy]').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var code = el.getAttribute('data-promo-copy');
+      var btn = el.classList.contains('promo-copy-btn-{{ ai_gen_id }}') ? el : el.querySelector('.promo-copy-btn-{{ ai_gen_id }}');
+      copyCode(code, btn);
+    });
+  });
+
   var container = document.querySelector('.promo-scroll-{{ ai_gen_id }}');
   if (!container) return;
 
   /* Mouse drag to scroll — desktop */
-  var isDragging = false, startX, scrollLeft;
+  var isDragging = false, startX, scrollLeft, didDrag = false;
   container.addEventListener('mousedown', function(e) {
     if (e.button !== 0) return;
     isDragging = true;
+    didDrag = false;
     startX = e.pageX - container.offsetLeft;
     scrollLeft = container.scrollLeft;
     container.style.cursor = 'grabbing';
-    e.preventDefault();
   });
   window.addEventListener('mousemove', function(e) {
     if (!isDragging) return;
-    e.preventDefault();
     var x = e.pageX - container.offsetLeft;
-    container.scrollLeft = scrollLeft - (x - startX) * 1.5;
+    var delta = x - startX;
+    if (Math.abs(delta) > 4) didDrag = true;
+    container.scrollLeft = scrollLeft - delta * 1.5;
   });
   window.addEventListener('mouseup', function() {
     isDragging = false;

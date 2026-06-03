@@ -1,9 +1,10 @@
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
 {% style %}
+  /* ── Section ── */
   .ai-category-nav-{{ ai_gen_id }} {
     padding: {{ block.settings.section_padding_top }}px 0 {{ block.settings.section_padding_bottom }}px;
-    background-color: {{ block.settings.background_color }};
+    background: {{ block.settings.background_color }};
   }
 
   .ai-category-nav-container-{{ ai_gen_id }} {
@@ -34,173 +35,141 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: {{ block.settings.label_spacing }}px;
     text-decoration: none;
-    transition: transform 0.3s ease;
+    transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
   }
 
   .ai-category-nav-link-{{ ai_gen_id }}:hover {
-    transform: {{ block.settings.hover_effect }};
+    transform: translateY(-6px);
   }
 
-  /* =========================================
-     3D GLOSSY ROUNDED ICON CONTAINER
-     Force 50% border-radius to stay round
-  ========================================= */
+  /* ── Icon circle ── Clean white disc + brand-colored border ring ── */
   .ai-category-nav-circle-{{ ai_gen_id }} {
     width: {{ block.settings.circle_size }}px;
     height: {{ block.settings.circle_size }}px;
-    border-radius: 50% !important;
+    border-radius: 50%;
+    background: #ffffff;
+    /* Border uses the per-category accent color via --cat-color CSS var */
+    border: 2.5px solid var(--cat-color, #E75480);
+    /* Soft shadow + outer glow hint at accent color */
+    box-shadow:
+      0 4px 14px rgba(0, 0, 0, 0.09),
+      0 1px 4px rgba(0, 0, 0, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: {{ block.settings.label_spacing }}px;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
     position: relative;
     overflow: hidden;
     flex-shrink: 0;
-    
-    /* 3D Glossy Effect - Multiple shadows for depth */
-    box-shadow: 
-      0 12px 24px -8px rgba(0, 0, 0, 0.25),
-      0 4px 8px -4px rgba(0, 0, 0, 0.15),
-      inset 0 -2px 0 rgba(0, 0, 0, 0.1),
-      inset 0 2px 4px rgba(255, 255, 255, 0.4);
+    transition:
+      box-shadow 0.35s ease,
+      border-color 0.35s ease,
+      transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
   }
 
-  /* Top glossy highlight overlay */
+  /* Subtle top-left gloss that works on white background */
   .ai-category-nav-circle-{{ ai_gen_id }}::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50% !important;
+    top: 6%;
+    left: 6%;
+    width: 46%;
+    height: 36%;
+    border-radius: 50%;
     background: radial-gradient(
-      ellipse at 30% 28%,
-      rgba(255, 255, 255, 0.65) 0%,
-      rgba(255, 255, 255, 0.2) 40%,
-      transparent 80%
+      ellipse at center,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0) 100%
     );
     pointer-events: none;
-    z-index: 1;
+    z-index: 2;
   }
 
-  /* Bottom shadow that extends outside (for floating effect) */
-  .ai-category-nav-circle-{{ ai_gen_id }}::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 15%;
-    width: 70%;
-    height: 16px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.25);
-    filter: blur(8px);
-    pointer-events: none;
-    z-index: -1;
-    transition: opacity 0.3s ease, filter 0.3s ease;
-  }
-
-  /* Hover state - lift and enhance shadows */
+  /* Hover: accent border glows + shadow intensifies */
   .ai-category-nav-link-{{ ai_gen_id }}:hover .ai-category-nav-circle-{{ ai_gen_id }} {
-    box-shadow: 
-      {{ block.settings.hover_shadow }},
-      0 4px 8px -4px rgba(0, 0, 0, 0.2),
-      inset 0 -2px 0 rgba(0, 0, 0, 0.08),
-      inset 0 2px 4px rgba(255, 255, 255, 0.5);
-    transform: translateY(-2px);
+    box-shadow:
+      0 12px 32px rgba(0, 0, 0, 0.13),
+      0 0 0 4px rgba(123, 30, 58, 0.10);
+    border-color: var(--cat-color, #E75480);
   }
 
-  .ai-category-nav-link-{{ ai_gen_id }}:hover .ai-category-nav-circle-{{ ai_gen_id }}::after {
-    opacity: 0.5;
-    filter: blur(10px);
-    transform: scale(1.05);
-  }
-
-  /* SVG icon inside circle - ensure crisp rendering */
+  /* SVG icons — use accent color since background is white */
   .ai-category-nav-circle-{{ ai_gen_id }} svg {
-    width: 48%;
-    height: 48%;
+    width: 52%;
+    height: 52%;
     flex-shrink: 0;
     display: block;
     position: relative;
-    z-index: 2;
-    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+    z-index: 1;
+    color: var(--cat-color, #7B1E3A);
+    stroke: var(--cat-color, #7B1E3A);
   }
 
-  /* Optional uploaded image (overrides SVG if set) */
+  /* Uploaded PNG — contained at 68%, centered, with drop shadow for depth */
   .ai-category-nav-icon-{{ ai_gen_id }} {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 68%;
+    height: 68%;
+    object-fit: contain;
     position: absolute;
-    inset: 0;
-    z-index: 2;
-    border-radius: 50% !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.18));
   }
 
+  /* ── Label ── */
   .ai-category-nav-label-{{ ai_gen_id }} {
     font-size: {{ block.settings.label_size }}px;
     color: {{ block.settings.label_color }};
     font-weight: {{ block.settings.label_weight }};
-    max-width: {{ block.settings.circle_size | plus: 20 }}px;
+    max-width: {{ block.settings.circle_size | plus: 16 }}px;
     word-wrap: break-word;
-    line-height: 1.3;
+    line-height: 1.25;
     margin: 0;
     text-align: center;
+    letter-spacing: 0.01em;
   }
 
-  /* Inner ring for premium 3D look */
-  .ai-category-nav-circle-{{ ai_gen_id }} .inner-ring {
-    position: absolute;
-    top: 8%;
-    left: 8%;
-    width: 84%;
-    height: 84%;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    pointer-events: none;
-    z-index: 2;
+  /* Accent underline on label on hover */
+  .ai-category-nav-link-{{ ai_gen_id }}:hover .ai-category-nav-label-{{ ai_gen_id }} {
+    color: var(--cat-color, #7B1E3A);
   }
 
+  /* ── Mobile ── horizontal scroll, no wrapping ── */
   @media screen and (max-width: 749px) {
     .ai-category-nav-{{ ai_gen_id }} {
-      padding: {{ block.settings.section_padding_top | times: 0.7 }}px 0 {{ block.settings.section_padding_bottom | times: 0.7 }}px;
+      padding: {{ block.settings.section_padding_top | times: 0.75 | round }}px 0 {{ block.settings.section_padding_bottom | times: 0.75 | round }}px;
     }
 
     .ai-category-nav-container-{{ ai_gen_id }} {
-      padding: 0 10px;
+      padding: 0 12px;
     }
 
     .ai-category-nav-list-{{ ai_gen_id }} {
-      gap: {{ block.settings.spacing | times: 0.6 }}px;
       flex-wrap: nowrap;
       overflow-x: auto;
-      overflow-y: hidden;
+      overflow-y: visible;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       justify-content: flex-start;
+      gap: {{ block.settings.spacing | times: 0.65 | round }}px;
       padding-bottom: 4px;
     }
 
-    .ai-category-nav-list-{{ ai_gen_id }}::-webkit-scrollbar {
-      display: none;
-    }
+    .ai-category-nav-list-{{ ai_gen_id }}::-webkit-scrollbar { display: none; }
 
-    .ai-category-nav-item-{{ ai_gen_id }} {
-      flex-shrink: 0;
-    }
+    .ai-category-nav-item-{{ ai_gen_id }} { flex-shrink: 0; }
 
     .ai-category-nav-circle-{{ ai_gen_id }} {
-      width: {{ block.settings.circle_size | times: 0.7 }}px;
-      height: {{ block.settings.circle_size | times: 0.7 }}px;
-      margin-bottom: {{ block.settings.label_spacing | times: 0.7 }}px;
+      width: {{ block.settings.circle_size | times: 0.75 | round }}px;
+      height: {{ block.settings.circle_size | times: 0.75 | round }}px;
     }
 
     .ai-category-nav-label-{{ ai_gen_id }} {
-      font-size: {{ block.settings.label_size | times: 0.85 }}px;
-      max-width: {{ block.settings.circle_size | times: 0.7 | plus: 10 }}px;
+      font-size: {{ block.settings.label_size | times: 0.88 | round }}px;
+      max-width: {{ block.settings.circle_size | times: 0.75 | round | plus: 8 }}px;
     }
   }
 {% endstyle %}
@@ -338,9 +307,8 @@
             >
               <div
                 class="ai-category-nav-circle-{{ ai_gen_id }}"
-                style="background: {{ category_circle_bg | default: block.settings.circle_background }}; color: {{ category_icon_color | default: block.settings.icon_color }};"
+                style="--cat-color: {{ category_circle_bg | default: '#7B1E3A' }};"
               >
-                <div class="inner-ring"></div>
                 {% if category_icon != blank %}
                   {% comment %} Uploaded image takes priority over SVG icon {% endcomment %}
                   <img

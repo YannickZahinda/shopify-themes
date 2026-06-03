@@ -1,632 +1,1220 @@
 {% comment %}
-  Customer Reviews Section
-  Displays product reviews with rating summary and individual review cards
+  Customer Reviews Section — Arousique premium design
 {% endcomment %}
 
 {% liquid
   assign reviews_to_show = section.settings.reviews_to_show | default: 3
-  assign product_reviews = product.metafields.reviews.data | default: section.blocks
 %}
 
-<div class="customer-reviews-section color-{{ section.settings.color_scheme }}">
-  <div class="reviews-container">
-    
-    {%- comment -%} Section Title {%- endcomment -%}
-    <h2 class="reviews-title">{{ section.settings.section_title | default: 'Customer Reviews' }}</h2>
+<div class="rvs-section color-{{ section.settings.color_scheme }}">
+  <div class="rvs-container">
 
-    {%- comment -%} Rating Summary {%- endcomment -%}
-    <div class="reviews-summary">
-      <div class="summary-left">
-        <div class="average-rating">
-          <span class="rating-number">{{ section.settings.average_rating | default: 4.8 }}</span>
-          <div class="rating-stars-large">
-            {% for i in (1..5) %}
-              <span class="star-icon filled">★</span>
-            {% endfor %}
-          </div>
-          <p class="rating-text">Based on {{ section.settings.total_reviews | default: 6 }} reviews</p>
+    {%- comment -%} Section Header {%- endcomment -%}
+    <div class="rvs-header">
+      <h2 class="rvs-title">{{ section.settings.section_title | default: 'Customer Reviews' }}</h2>
+      <p class="rvs-subtitle">What our customers are saying</p>
+    </div>
+
+    {%- comment -%} Rating Summary Card {%- endcomment -%}
+    <div class="rvs-summary">
+
+      {%- comment -%} Score Column {%- endcomment -%}
+      <div class="rvs-score">
+        <span class="rvs-score__number">{{ section.settings.average_rating | default: '4.8' }}</span>
+        <div class="rvs-score__stars">
+          {%- for i in (1..5) -%}
+            <svg class="rvs-star rvs-star--gold" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          {%- endfor -%}
         </div>
+        <p class="rvs-score__label">{{ section.settings.total_reviews | default: 6 }} verified reviews</p>
       </div>
 
-      <div class="summary-center">
-        <div class="rating-bars">
-          {% for i in (1..5) %}
-            {% assign star_num = 6 | minus: i %}
-            {% assign count_key = 'star_' | append: star_num | append: '_count' %}
-            {% assign count = section.settings[count_key] | default: 0 %}
-            {% assign percentage = count | times: 100 | divided_by: section.settings.total_reviews | default: 0 %}
-            
-            <div class="rating-bar-row">
-              <span class="star-label">{{ star_num }}</span>
-              <span class="star-icon-small">★</span>
-              <div class="bar-container">
-                <div class="bar-fill" style="width: {{ percentage }}%"></div>
-              </div>
-              <span class="bar-count">{{ count }}</span>
+      {%- comment -%} Bars Column {%- endcomment -%}
+      <div class="rvs-bars">
+        {%- for i in (1..5) -%}
+          {%- assign star_num = 6 | minus: i -%}
+          {%- assign count_key = 'star_' | append: star_num | append: '_count' -%}
+          {%- assign count = section.settings[count_key] | default: 0 -%}
+          {%- assign total = section.settings.total_reviews | default: 1 -%}
+          {%- assign pct = count | times: 100 | divided_by: total -%}
+          <div class="rvs-bar-row">
+            <span class="rvs-bar-label">
+              <svg class="rvs-star rvs-star--sm rvs-star--gold" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+              {{ star_num }}
+            </span>
+            <div class="rvs-bar-track">
+              <div class="rvs-bar-fill" style="width:{{ pct }}%"></div>
             </div>
-          {% endfor %}
-        </div>
+            <span class="rvs-bar-count">{{ count }}</span>
+          </div>
+        {%- endfor -%}
       </div>
 
-      <div class="summary-right">
-        <button class="write-review-btn" onclick="openReviewForm()">
-          {{ section.settings.button_text | default: 'WRITE A REVIEW' }}
+      {%- comment -%} CTA Column {%- endcomment -%}
+      <div class="rvs-cta">
+        <p class="rvs-cta__tagline">Loved it? Hated it?<br>We want to know.</p>
+        <button class="rvs-write-btn" onclick="openReviewForm()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          {{ section.settings.button_text | default: 'Write a Review' }}
         </button>
       </div>
+
     </div>
 
     {%- comment -%} Individual Reviews {%- endcomment -%}
-    <div class="reviews-list" id="reviewsList">
-      {% for block in section.blocks %}
-        {% if block.type == 'review' %}
-          {% assign review_index = forloop.index %}
-          <div class="review-card {% if review_index > reviews_to_show %}hidden-review{% endif %}" {{ block.shopify_attributes }}>
-            <div class="review-header">
-              <div class="reviewer-info">
-                <div class="reviewer-avatar">
-                  {% if block.settings.avatar_image %}
-                    <img src="{{ block.settings.avatar_image | img_url: '80x80' }}" alt="{{ block.settings.reviewer_name }}">
-                  {% else %}
-                    <div class="avatar-placeholder">{{ block.settings.reviewer_name | slice: 0 }}</div>
-                  {% endif %}
-                  {% if block.settings.verified_purchase %}
-                    <span class="verified-badge" title="Verified Purchase">✓</span>
-                  {% endif %}
+    <div class="rvs-list" id="rvsList">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'review' -%}
+          {%- assign review_index = forloop.index -%}
+          <article class="rvs-card {%- if review_index > reviews_to_show %} rvs-card--hidden{%- endif -%}" {{ block.shopify_attributes }}>
+
+            <div class="rvs-card__top">
+              <div class="rvs-card__meta">
+                <div class="rvs-avatar">
+                  {%- if block.settings.avatar_image -%}
+                    <img src="{{ block.settings.avatar_image | img_url: '80x80' }}" alt="{{ block.settings.reviewer_name }}" loading="lazy">
+                  {%- else -%}
+                    <span class="rvs-avatar__initials">{{ block.settings.reviewer_name | slice: 0 }}</span>
+                  {%- endif -%}
                 </div>
-                <div class="reviewer-details">
-                  <p class="reviewer-name">{{ block.settings.reviewer_name }}</p>
-                  <div class="review-stars">
-                    {% for i in (1..5) %}
-                      {% if i <= block.settings.rating %}
-                        <span class="star-icon filled">★</span>
-                      {% else %}
-                        <span class="star-icon">★</span>
-                      {% endif %}
-                    {% endfor %}
+                <div>
+                  <p class="rvs-card__name">
+                    {{ block.settings.reviewer_name }}
+                    {%- if block.settings.verified_purchase -%}
+                      <span class="rvs-verified" title="Verified Purchase">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-label="Verified purchase"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+                        Verified
+                      </span>
+                    {%- endif -%}
+                  </p>
+                  <div class="rvs-card__stars">
+                    {%- for i in (1..5) -%}
+                      <svg class="rvs-star rvs-star--sm {%- if i <= block.settings.rating %} rvs-star--gold{%- else %} rvs-star--empty{%- endif -%}" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      </svg>
+                    {%- endfor -%}
                   </div>
                 </div>
               </div>
-              <span class="review-date">{{ block.settings.review_date }}</span>
+              <time class="rvs-card__date">{{ block.settings.review_date }}</time>
             </div>
 
-            <div class="review-content">
-              <h3 class="review-title">{{ block.settings.review_title }}</h3>
-              <p class="review-text">{{ block.settings.review_text }}</p>
+            <div class="rvs-card__body">
+              <h3 class="rvs-card__title">{{ block.settings.review_title }}</h3>
+              <p class="rvs-card__text">{{ block.settings.review_text }}</p>
             </div>
 
-            {% if block.settings.review_images %}
-              <div class="review-images">
-                {% assign images = block.settings.review_images | split: ',' %}
-                {% for img_url in images %}
-                  <img src="{{ img_url | strip | img_url: '200x200' }}" alt="Review image" class="review-image">
-                {% endfor %}
+            {%- if block.settings.review_images -%}
+              <div class="rvs-card__images">
+                {%- assign images = block.settings.review_images | split: ',' -%}
+                {%- for img_url in images -%}
+                  <img src="{{ img_url | strip | img_url: '200x200' }}" alt="Review image" class="rvs-card__image" loading="lazy">
+                {%- endfor -%}
               </div>
-            {% endif %}
+            {%- endif -%}
 
-            {% if section.settings.show_helpfulness %}
-              <div class="review-actions">
-                <button class="helpful-btn" onclick="markHelpful(this)">
+            {%- if section.settings.show_helpfulness -%}
+              <div class="rvs-card__helpful">
+                <button class="rvs-helpful-btn" onclick="markHelpful(this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
                   Helpful ({{ block.settings.helpful_count | default: 0 }})
                 </button>
               </div>
-            {% endif %}
-          </div>
-        {% endif %}
-      {% endfor %}
+            {%- endif -%}
+
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
     </div>
 
-    {%- comment -%} Show More/Less Button {%- endcomment -%}
-    {% if section.blocks.size > reviews_to_show %}
-      <div class="show-more-container">
-        <button class="show-more-btn" id="showMoreBtn" onclick="toggleReviews()">
-          <span class="show-more-icon"></span>
-          <span class="show-more-text">{{ section.settings.show_more_text | default: 'Show More' }}</span>
+    {%- comment -%} Show More {%- endcomment -%}
+    {%- if section.blocks.size > reviews_to_show -%}
+      <div class="rvs-more">
+        <button class="rvs-more-btn" id="rvsMoreBtn" onclick="rvsToggleMore()">
+          <span id="rvsMoreText">{{ section.settings.show_more_text | default: 'Show More Reviews' }}</span>
+          <svg id="rvsMoreIcon" class="rvs-more-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
       </div>
-    {% endif %}
+    {%- endif -%}
 
   </div>
+
+  {%- comment -%} Write a Review Modal — 2-step {%- endcomment -%}
+  <div id="rvsModal-{{ section.id }}" class="rvsm" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="rvsmTitle-{{ section.id }}">
+    <div class="rvsm__backdrop" onclick="closeReviewForm()"></div>
+    <div class="rvsm__card" tabindex="-1">
+
+      {%- comment -%} Close Button {%- endcomment -%}
+      <button class="rvsm__close" onclick="closeReviewForm()" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      {%- comment -%} Step 1 — Star Rating {%- endcomment -%}
+      <div id="rvsmStep1-{{ section.id }}" class="rvsm__step">
+        <div class="rvsm__step1-header">
+          <p class="rvsm__eyebrow">Share your experience</p>
+          <h3 id="rvsmTitle-{{ section.id }}" class="rvsm__heading">How would you rate<br>this product?</h3>
+        </div>
+
+        <div class="rvsm__stars-wrap" id="rvsmStars-{{ section.id }}">
+          {%- for i in (1..5) -%}
+            <button type="button" class="rvsm__star" data-value="{{ i }}" aria-label="{{ i }} star{% if i != 1 %}s{% endif %}">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            </button>
+          {%- endfor -%}
+        </div>
+        <p class="rvsm__rating-label" id="rvsmLabel-{{ section.id }}">&nbsp;</p>
+
+        <p id="rvsmStep1Error-{{ section.id }}" class="rvsm__error" style="display:none;">Please select a rating to continue.</p>
+
+        <button class="rvsm__next-btn" onclick="rvsmGoStep2('{{ section.id }}')">
+          Continue
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+
+      {%- comment -%} Step 2 — Review Details {%- endcomment -%}
+      <div id="rvsmStep2-{{ section.id }}" class="rvsm__step" style="display:none;">
+
+        <div class="rvsm__step2-header">
+          <button class="rvsm__back-btn" onclick="rvsmGoStep1('{{ section.id }}')" aria-label="Back to rating">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            Back
+          </button>
+          <div class="rvsm__progress">
+            <span class="rvsm__progress-dot rvsm__progress-dot--done"></span>
+            <span class="rvsm__progress-dot rvsm__progress-dot--active"></span>
+          </div>
+        </div>
+
+        <div class="rvsm__selected-rating" id="rvsmSelectedRating-{{ section.id }}"></div>
+        <h3 class="rvsm__heading rvsm__heading--sm">Tell us more</h3>
+
+        {% form 'contact' %}
+          <input type="hidden" id="rvsmRatingVal-{{ section.id }}" name="contact[rating]">
+
+          <div class="rvsm__field">
+            <label class="rvsm__label" for="rvsmName-{{ section.id }}">Name <span class="rvsm__req">*</span></label>
+            <input class="rvsm__input" type="text" id="rvsmName-{{ section.id }}" name="contact[name]" required placeholder="Your name">
+          </div>
+
+          <div class="rvsm__field">
+            <label class="rvsm__label" for="rvsmEmail-{{ section.id }}">Email <span class="rvsm__req">*</span></label>
+            <input class="rvsm__input" type="email" id="rvsmEmail-{{ section.id }}" name="contact[email]" required placeholder="your@email.com">
+          </div>
+
+          <div class="rvsm__field">
+            <label class="rvsm__label" for="rvsmTitle-{{ section.id }}">Review Title <span class="rvsm__req">*</span></label>
+            <input class="rvsm__input" type="text" id="rvsmTitle-{{ section.id }}" name="contact[review_title]" required placeholder="Summarise your experience">
+          </div>
+
+          <div class="rvsm__field">
+            <label class="rvsm__label" for="rvsmBody-{{ section.id }}">Your Review <span class="rvsm__req">*</span></label>
+            <textarea class="rvsm__input rvsm__textarea" id="rvsmBody-{{ section.id }}" name="contact[body]" required rows="4" placeholder="Tell others what you think..."></textarea>
+          </div>
+
+          <p id="rvsmSubmitError-{{ section.id }}" class="rvsm__error" style="display:none;">Please fill in all required fields.</p>
+
+          <button type="submit" class="rvsm__submit-btn">
+            Submit Review
+          </button>
+        {% endform %}
+
+      </div>
+
+      {%- comment -%} Step 3 — Success {%- endcomment -%}
+      <div id="rvsmStep3-{{ section.id }}" class="rvsm__step rvsm__step--success" style="display:none;">
+        <div class="rvsm__checkmark">
+          <svg viewBox="0 0 52 52" aria-hidden="true">
+            <circle cx="26" cy="26" r="25" fill="none"/>
+            <path class="rvsm__check-path" fill="none" d="M14 27l8 8 16-16"/>
+          </svg>
+        </div>
+        <h3 class="rvsm__heading">Thank you!</h3>
+        <p class="rvsm__success-msg">Your review has been received and will appear on the site after a quick verification.</p>
+        <button class="rvsm__next-btn" onclick="closeReviewForm()">Back to Reviews</button>
+      </div>
+
+    </div>
+  </div>
+
 </div>
 
 <script>
-  let reviewsShown = {{ reviews_to_show }};
-  const totalReviews = {{ section.blocks.size }};
-  let allExpanded = false;
+  /* ── Section toggle ── */
+  var rvsAllExpanded = false;
 
-  function openReviewForm() {
-    // Integrate with your review app or custom form
-    alert('Review form would open here. Integrate with Judge.me, Loox, or custom solution.');
-  }
+  function rvsToggleMore() {
+    var cards = document.querySelectorAll('.rvs-card--hidden, .rvs-card--visible');
+    var hidden = document.querySelectorAll('.rvs-card--hidden');
+    var btn = document.getElementById('rvsMoreBtn');
+    var txt = document.getElementById('rvsMoreText');
+    var icon = document.getElementById('rvsMoreIcon');
 
-  function toggleReviews() {
-    const hiddenReviews = document.querySelectorAll('.review-card.hidden-review');
-    const visibleReviews = document.querySelectorAll('.review-card.reveal-review');
-    const showMoreBtn = document.getElementById('showMoreBtn');
-    const showMoreText = showMoreBtn.querySelector('.show-more-text');
-    const showMoreIcon = showMoreBtn.querySelector('.show-more-icon');
-    
-    if (!allExpanded) {
-      // Show all reviews
-      hiddenReviews.forEach(review => {
-        review.classList.remove('hidden-review');
-        review.classList.add('reveal-review');
+    if (!rvsAllExpanded) {
+      hidden.forEach(function(c) {
+        c.classList.remove('rvs-card--hidden');
+        c.classList.add('rvs-card--visible');
       });
-      showMoreText.textContent = '{{ section.settings.show_less_text | default: "Show Less" }}';
-      showMoreIcon.classList.add('minus');
-      allExpanded = true;
+      txt.textContent = '{{ section.settings.show_less_text | default: "Show Less" }}';
+      icon.style.transform = 'rotate(180deg)';
+      rvsAllExpanded = true;
     } else {
-      // Hide reviews back to initial state
-      const allReviews = document.querySelectorAll('.review-card');
-      allReviews.forEach((review, index) => {
-        if (index >= {{ reviews_to_show }}) {
-          review.classList.remove('reveal-review');
-          review.classList.add('hidden-review');
+      document.querySelectorAll('.rvs-card').forEach(function(c, i) {
+        if (i >= {{ reviews_to_show }}) {
+          c.classList.remove('rvs-card--visible');
+          c.classList.add('rvs-card--hidden');
         }
       });
-      showMoreText.textContent = '{{ section.settings.show_more_text | default: "Show More" }}';
-      showMoreIcon.classList.remove('minus');
-      allExpanded = false;
-      
-      // Scroll back to reviews section
-      document.querySelector('.reviews-list').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      txt.textContent = '{{ section.settings.show_more_text | default: "Show More Reviews" }}';
+      icon.style.transform = 'rotate(0deg)';
+      rvsAllExpanded = false;
+      document.getElementById('rvsList').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 
-  function markHelpful(button) {
-    const currentCount = parseInt(button.textContent.match(/\d+/)[0]);
-    button.textContent = `Helpful (${currentCount + 1})`;
-    button.disabled = true;
-    button.classList.add('marked');
+  function markHelpful(btn) {
+    var n = parseInt((btn.textContent.match(/\d+/) || ['0'])[0]);
+    btn.innerHTML = btn.innerHTML.replace(/Helpful \(\d+\)/, 'Helpful (' + (n + 1) + ')');
+    btn.disabled = true;
+    btn.classList.add('rvs-helpful-btn--marked');
   }
+
+  /* ── Modal open/close ── */
+  function openReviewForm() {
+    var modal = document.getElementById('rvsModal-{{ section.id }}');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('rvsm-noscroll');
+    setTimeout(function() { modal.querySelector('.rvsm__card').focus(); }, 60);
+  }
+
+  function closeReviewForm() {
+    var modal = document.getElementById('rvsModal-{{ section.id }}');
+    if (!modal) return;
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('rvsm-noscroll');
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeReviewForm();
+  });
+
+  /* ── Star rating labels ── */
+  var RATING_LABELS = ['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent!'];
+
+  /* ── Init modal ── */
+  (function initModal() {
+    var modal = document.getElementById('rvsModal-{{ section.id }}');
+    if (!modal) return;
+
+    var stars = modal.querySelectorAll('.rvsm__star');
+    var labelEl = document.getElementById('rvsmLabel-{{ section.id }}');
+    var selectedRating = 0;
+
+    function paintStars(n) {
+      stars.forEach(function(s, i) {
+        s.classList.toggle('rvsm__star--active', i < n);
+      });
+      labelEl.textContent = n > 0 ? RATING_LABELS[n] : ' ';
+    }
+
+    stars.forEach(function(star, idx) {
+      star.addEventListener('mouseenter', function() { paintStars(idx + 1); });
+      star.addEventListener('click', function() {
+        selectedRating = idx + 1;
+        paintStars(selectedRating);
+      });
+    });
+
+    modal.querySelector('.rvsm__stars-wrap').addEventListener('mouseleave', function() {
+      paintStars(selectedRating);
+    });
+
+    /* Step navigation */
+    window.rvsmGoStep2 = function(sid) {
+      if (!selectedRating) {
+        document.getElementById('rvsmStep1Error-' + sid).style.display = 'block';
+        return;
+      }
+      document.getElementById('rvsmStep1Error-' + sid).style.display = 'none';
+      document.getElementById('rvsmStep1-' + sid).style.display = 'none';
+      document.getElementById('rvsmStep2-' + sid).style.display = 'block';
+      document.getElementById('rvsmRatingVal-' + sid).value = selectedRating + ' stars';
+
+      /* Show selected rating recap */
+      var recap = document.getElementById('rvsmSelectedRating-' + sid);
+      var starsHtml = '';
+      for (var i = 1; i <= 5; i++) {
+        starsHtml += '<svg class="rvsm__recap-star' + (i <= selectedRating ? ' rvsm__recap-star--on' : '') + '" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+      }
+      recap.innerHTML = starsHtml + '<span class="rvsm__recap-label">' + RATING_LABELS[selectedRating] + '</span>';
+
+      modal.querySelector('.rvsm__card').scrollTop = 0;
+    };
+
+    window.rvsmGoStep1 = function(sid) {
+      document.getElementById('rvsmStep2-' + sid).style.display = 'none';
+      document.getElementById('rvsmStep1-' + sid).style.display = 'block';
+    };
+
+    /* Form submit */
+    var form = modal.querySelector('form');
+    if (!form) return;
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var sid = '{{ section.id }}';
+      var errEl = document.getElementById('rvsmSubmitError-' + sid);
+      var submitBtn = form.querySelector('.rvsm__submit-btn');
+      var titleInput = form.querySelector('[name="contact[review_title]"]');
+      var bodyInput = form.querySelector('[name="contact[body]"]');
+      var ratingInput = form.querySelector('[name="contact[rating]"]');
+
+      var fd = new FormData(form);
+      fd.set('contact[body]', [
+        '=== REVIEW SUBMISSION ===',
+        'Product: ' + document.title,
+        'Rating: ' + (ratingInput ? ratingInput.value : ''),
+        'Review Title: ' + (titleInput ? titleInput.value : ''),
+        '',
+        bodyInput ? bodyInput.value : ''
+      ].join('\n'));
+
+      submitBtn.textContent = 'Submitting…';
+      submitBtn.disabled = true;
+      errEl.style.display = 'none';
+
+      fetch(form.action || '/contact', {
+        method: 'POST',
+        body: fd,
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      }).then(function(r) {
+        if (r.ok) {
+          document.getElementById('rvsmStep2-' + sid).style.display = 'none';
+          document.getElementById('rvsmStep3-' + sid).style.display = 'flex';
+        } else {
+          submitBtn.textContent = 'Submit Review';
+          submitBtn.disabled = false;
+          errEl.style.display = 'block';
+        }
+      }).catch(function() {
+        submitBtn.textContent = 'Submit Review';
+        submitBtn.disabled = false;
+      });
+    });
+  })();
 </script>
 
 {% stylesheet %}
-  .customer-reviews-section {
-    padding: 60px 20px;
-    background: #FAFAFA;
+
+  /* ══════════════════════════════════════
+     SHARED STAR SVG
+  ══════════════════════════════════════ */
+  .rvs-star {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+    fill: #E0D8D0;
+  }
+  .rvs-star--gold { fill: #D4AF37; }
+  .rvs-star--empty { fill: #E0D8D0; }
+  .rvs-star--sm { width: 16px; height: 16px; }
+
+  /* ══════════════════════════════════════
+     SECTION SHELL
+  ══════════════════════════════════════ */
+  .rvs-section {
+    padding: 72px 24px;
+    background: #F7F4F0;
   }
 
-  .reviews-container {
-    max-width: 1200px;
+  .rvs-container {
+    max-width: 1160px;
     margin: 0 auto;
   }
 
-  .reviews-title {
+  /* ── Section Header ── */
+  .rvs-header {
     text-align: center;
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 40px;
-    color: #3B2A6F;
+    margin-bottom: 48px;
   }
 
-  /* Rating Summary */
-  .reviews-summary {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 60px;
-    align-items: center;
-    background: white;
-    padding: 40px;
-    border-radius: 16px;
-    margin-bottom: 40px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  .rvs-title {
+    font-size: 36px;
+    font-weight: 800;
+    color: #1A0D12;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
   }
 
-  .average-rating {
-    text-align: center;
-  }
-
-  .rating-number {
-    font-size: 64px;
-    font-weight: 700;
-    display: block;
-    line-height: 1;
-    margin-bottom: 8px;
-    color: #1a1a1a;
-  }
-
-  .rating-stars-large {
-    margin-bottom: 8px;
-  }
-
-  .rating-stars-large .star-icon {
-    color: #F85F73;
-    font-size: 24px;
-    margin: 0 2px;
-  }
-
-  .rating-text {
-    font-size: 14px;
-    color: #666;
+  .rvs-subtitle {
+    font-size: 15px;
+    color: #8C7A75;
     margin: 0;
   }
 
-  /* Rating Bars */
-  .rating-bars {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    min-width: 300px;
+  /* ══════════════════════════════════════
+     SUMMARY CARD
+  ══════════════════════════════════════ */
+  .rvs-summary {
+    display: grid;
+    grid-template-columns: 180px 1fr auto;
+    gap: 48px;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px 48px;
+    margin-bottom: 40px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 4px 24px rgba(26,13,18,0.07);
+    border: 1px solid rgba(212, 175, 55, 0.12);
   }
 
-  .rating-bar-row {
+  /* Score column */
+  .rvs-score {
+    text-align: center;
+    padding-right: 48px;
+    border-right: 1px solid #F0EBE6;
+  }
+
+  .rvs-score__number {
+    display: block;
+    font-size: 72px;
+    font-weight: 800;
+    line-height: 1;
+    color: #1A0D12;
+    letter-spacing: -0.04em;
+    margin-bottom: 10px;
+  }
+
+  .rvs-score__stars {
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+    margin-bottom: 8px;
+  }
+
+  .rvs-score__stars .rvs-star {
+    width: 22px;
+    height: 22px;
+  }
+
+  .rvs-score__label {
+    font-size: 13px;
+    color: #9B8B86;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  /* Bars column */
+  .rvs-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .rvs-bar-row {
     display: grid;
-    grid-template-columns: 12px 20px 1fr 30px;
+    grid-template-columns: 44px 1fr 28px;
     align-items: center;
     gap: 12px;
   }
 
-  .star-label {
-    font-size: 14px;
+  .rvs-bar-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
     font-weight: 600;
-    color: #333;
+    color: #555;
+    white-space: nowrap;
   }
 
-  .star-icon-small {
-    color: #F85F73;
-    font-size: 16px;
-  }
-
-  .bar-container {
-    height: 8px;
-    background: #E8E8E8;
-    border-radius: 4px;
+  .rvs-bar-track {
+    height: 10px;
+    background: #EDE9E5;
+    border-radius: 99px;
     overflow: hidden;
   }
 
-  .bar-fill {
+  .rvs-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, #FF6B9D 0%, #FF8FAD 100%);
-    border-radius: 4px;
-    transition: width 0.3s ease;
+    background: linear-gradient(90deg, #D4AF37 0%, #E8C84A 100%);
+    border-radius: 99px;
+    transition: width 0.6s cubic-bezier(.22,.68,0,1.2);
   }
 
-  .bar-count {
-    font-size: 14px;
-    color: #666;
+  .rvs-bar-count {
+    font-size: 12px;
+    color: #9B8B86;
     text-align: right;
   }
 
-  /* Write Review Button */
-  .write-review-btn {
+  /* CTA column */
+  .rvs-cta {
+    text-align: center;
+    padding-left: 48px;
+    border-left: 1px solid #F0EBE6;
+  }
+
+  .rvs-cta__tagline {
+    font-size: 14px;
+    color: #6B5B57;
+    line-height: 1.5;
+    margin: 0 0 18px;
+  }
+
+  .rvs-write-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     background: #7b1e3a;
-    color: white;
+    color: #fff;
     border: none;
-    padding: 14px 32px;
+    padding: 13px 26px;
     border-radius: 50px;
     font-size: 14px;
     font-weight: 700;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+    box-shadow: 0 4px 18px rgba(123, 30, 58, 0.32);
     white-space: nowrap;
-    box-shadow: 0 4px 16px rgba(123, 30, 58, 0.35);
   }
 
-  .write-review-btn:hover {
-    transform: translateY(-2px);
-    background: #5a1428;
-    box-shadow: 0 8px 22px rgba(123, 30, 58, 0.45);
-  }
-
-  /* Review Cards */
-  .reviews-list {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .review-card {
-    background: white;
-    padding: 32px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    transition: all 0.3s ease;
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .review-card.hidden-review {
-    display: none;
-  }
-
-  .review-card.reveal-review {
-    animation: slideIn 0.4s ease forwards;
-  }
-
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .review-card:hover {
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-  }
-
-  .review-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 16px;
-  }
-
-  .reviewer-info {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-  }
-
-  .reviewer-avatar {
-    position: relative;
-    width: 48px;
-    height: 48px;
+  .rvs-write-btn svg {
+    width: 15px;
+    height: 15px;
     flex-shrink: 0;
   }
 
-  .reviewer-avatar img,
-  .avatar-placeholder {
+  .rvs-write-btn:hover {
+    background: #5a1428;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(123, 30, 58, 0.42);
+  }
+
+  /* ══════════════════════════════════════
+     REVIEW CARDS
+  ══════════════════════════════════════ */
+  .rvs-list {
+    display: grid;
+    gap: 20px;
+  }
+
+  .rvs-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px 32px;
+    border-left: 4px solid #D4AF37;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 2px 12px rgba(26,13,18,0.05);
+    transition: box-shadow 0.25s, transform 0.25s;
+  }
+
+  .rvs-card:hover {
+    box-shadow: 0 4px 24px rgba(26,13,18,0.1);
+    transform: translateY(-1px);
+  }
+
+  .rvs-card--hidden { display: none; }
+
+  .rvs-card--visible {
+    animation: rvsSlideIn 0.35s ease forwards;
+  }
+
+  @keyframes rvsSlideIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .rvs-card__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+    gap: 12px;
+  }
+
+  .rvs-card__meta {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .rvs-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #7b1e3a, #c2547a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .rvs-avatar img {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
     object-fit: cover;
   }
 
-  .avatar-placeholder {
-    background: linear-gradient(135deg, #FF6B9D 0%, #FF8FAD 100%);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: 600;
-  }
-
-  .verified-badge {
-    position: absolute;
-    bottom: -2px;
-    right: -2px;
-    background: #FF6B9D;
-    color: white;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    border: 2px solid white;
-  }
-
-  .reviewer-name {
-    font-size: 16px;
-    font-weight: 600;
-    margin: 0 0 4px 0;
-    color: #1a1a1a;
-  }
-
-  .review-stars .star-icon {
-    color: #E8E8E8;
+  .rvs-avatar__initials {
+    color: #fff;
     font-size: 18px;
-    margin-right: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1;
   }
 
-  .review-stars .star-icon.filled {
-    color: #F85F73;
+  .rvs-card__name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1A0D12;
+    margin: 0 0 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
 
-  .review-date {
-    font-size: 14px;
-    color: #999;
+  .rvs-verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #2E7D32;
+    background: #E8F5E9;
+    padding: 2px 7px;
+    border-radius: 99px;
   }
 
-  .review-content {
-    margin-bottom: 16px;
+  .rvs-verified svg {
+    width: 11px;
+    height: 11px;
+    fill: none;
+    stroke: #2E7D32;
+    stroke-width: 2.5;
   }
 
-  .review-title {
+  .rvs-card__stars {
+    display: flex;
+    gap: 2px;
+  }
+
+  .rvs-card__date {
+    font-size: 13px;
+    color: #B0A09B;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .rvs-card__title {
     font-size: 16px;
     font-weight: 700;
-    margin: 0 0 8px 0;
-    color: #1a1a1a;
+    color: #1A0D12;
+    margin: 0 0 6px;
   }
 
-  .review-text {
+  .rvs-card__text {
     font-size: 14px;
-    line-height: 1.6;
-    color: #666;
+    line-height: 1.65;
+    color: #6B5B57;
     margin: 0;
   }
 
-  .review-images {
+  .rvs-card__images {
     display: flex;
-    gap: 12px;
-    margin-bottom: 16px;
+    gap: 10px;
+    margin-top: 14px;
     flex-wrap: wrap;
   }
 
-  .review-image {
-    width: 100px;
-    height: 100px;
+  .rvs-card__image {
+    width: 88px;
+    height: 88px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     transition: transform 0.2s;
   }
 
-  .review-image:hover {
-    transform: scale(1.05);
+  .rvs-card__image:hover { transform: scale(1.04); }
+
+  .rvs-card__helpful {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #F0EBE6;
   }
 
-  .review-actions {
-    padding-top: 16px;
-    border-top: 1px solid #F0F0F0;
-  }
-
-  .helpful-btn {
-    background: transparent;
-    border: 1px solid #E0E0E0;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 13px;
-    color: #666;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-
-  .helpful-btn:hover:not(:disabled) {
-    border-color: #FF6B9D;
-    color: #FF6B9D;
-  }
-
-  .helpful-btn.marked {
-    background: #FFF5F8;
-    border-color: #FF6B9D;
-    color: #FF6B9D;
-  }
-
-  .helpful-btn:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
-
-  /* Show More/Less Button */
-  .show-more-container {
-    text-align: center;
-    margin-top: 40px;
-  }
-
-  .show-more-btn {
-    background: transparent;
-    border: none;
-    color: #1a1a1a;
-    font-size: 24px;
-    font-weight: 500;
-    cursor: pointer;
+  .rvs-helpful-btn {
     display: inline-flex;
     align-items: center;
-    gap: 16px;
-    transition: all 0.3s;
-    padding: 12px 24px;
+    gap: 6px;
+    background: transparent;
+    border: 1px solid #E0D8D0;
+    padding: 7px 14px;
+    border-radius: 99px;
+    font-size: 13px;
+    color: #8C7A75;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
   }
 
-  .show-more-btn:hover {
-    opacity: 0.7;
+  .rvs-helpful-btn svg { width: 14px; height: 14px; }
+
+  .rvs-helpful-btn:hover:not(:disabled) {
+    border-color: #D4AF37;
+    color: #B8912A;
   }
 
-  .show-more-icon {
-    width: 44px;
-    height: 44px;
-    background: #FF6B9D;
-    color: white;
-    border-radius: 50%;
-    position: relative;
-    transition: all 0.3s;
-    flex-shrink: 0;
+  .rvs-helpful-btn--marked {
+    background: #FDF8EC;
+    border-color: #D4AF37;
+    color: #B8912A;
   }
 
-  .show-more-icon::before {
-    content: '+';
+  .rvs-helpful-btn:disabled { cursor: default; opacity: 0.6; }
+
+  /* ══════════════════════════════════════
+     SHOW MORE BUTTON
+  ══════════════════════════════════════ */
+  .rvs-more {
+    text-align: center;
+    margin-top: 36px;
+  }
+
+  .rvs-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1.5px solid #D4AF37;
+    color: #7b1e3a;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: inherit;
+  }
+
+  .rvs-more-btn__icon {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s;
+  }
+
+  .rvs-more-btn:hover {
+    background: #7b1e3a;
+    border-color: #7b1e3a;
+    color: #fff;
+  }
+
+  /* ══════════════════════════════════════
+     MODAL
+  ══════════════════════════════════════ */
+  .rvsm-noscroll { overflow: hidden; }
+
+  .rvsm {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .rvsm__backdrop {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 32px;
-    font-weight: 300;
-    line-height: 1;
+    inset: 0;
+    background: rgba(26, 13, 18, 0.75);
+    backdrop-filter: blur(6px);
   }
 
-  .show-more-icon.minus::before {
-    content: '−';
+  .rvsm__card {
+    position: relative;
+    background: #fff;
+    border-radius: 24px;
+    padding: 48px 44px 44px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    z-index: 1;
+    box-shadow: 0 32px 80px rgba(26, 13, 18, 0.3);
   }
 
-  .show-more-btn:hover .show-more-icon {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+  .rvsm__close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #F7F4F0;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6B5B57;
+    transition: background 0.2s, color 0.2s;
   }
 
-  .show-more-text {
-    font-size: 24px;
-    font-weight: 500;
+  .rvsm__close svg { width: 16px; height: 16px; }
+
+  .rvsm__close:hover {
+    background: #EDE9E5;
+    color: #1A0D12;
   }
 
-  /* Mobile Responsive */
-  @media screen and (max-width: 968px) {
-    .reviews-summary {
+  .rvsm__step { display: block; }
+
+  /* Step 1 */
+  .rvsm__step1-header { margin-bottom: 36px; }
+
+  .rvsm__eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #D4AF37;
+    margin: 0 0 10px;
+  }
+
+  .rvsm__heading {
+    font-size: 26px;
+    font-weight: 800;
+    color: #1A0D12;
+    margin: 0;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  .rvsm__heading--sm { font-size: 20px; margin-bottom: 20px; }
+
+  /* Stars */
+  .rvsm__stars-wrap {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+
+  .rvsm__star {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s;
+  }
+
+  .rvsm__star:hover { transform: scale(1.15); }
+
+  .rvsm__star svg {
+    width: 52px;
+    height: 52px;
+    fill: #E0D8D0;
+    transition: fill 0.15s;
+    display: block;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.08));
+  }
+
+  .rvsm__star--active svg { fill: #D4AF37; }
+
+  .rvsm__rating-label {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #7b1e3a;
+    min-height: 24px;
+    margin: 0 0 28px;
+    letter-spacing: 0.2px;
+  }
+
+  .rvsm__error {
+    background: #FFF0F3;
+    border: 1px solid #F7C0CB;
+    color: #A8182F;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+
+  .rvsm__next-btn {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #7b1e3a;
+    color: #fff;
+    border: none;
+    padding: 15px 32px;
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+    box-shadow: 0 4px 18px rgba(123, 30, 58, 0.32);
+    font-family: inherit;
+  }
+
+  .rvsm__next-btn svg { width: 16px; height: 16px; }
+
+  .rvsm__next-btn:hover {
+    background: #5a1428;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(123, 30, 58, 0.42);
+  }
+
+  /* Step 2 */
+  .rvsm__step2-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .rvsm__back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #8C7A75;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s;
+    font-family: inherit;
+  }
+
+  .rvsm__back-btn svg { width: 16px; height: 16px; }
+  .rvsm__back-btn:hover { color: #1A0D12; }
+
+  .rvsm__progress { display: flex; gap: 6px; }
+
+  .rvsm__progress-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #E0D8D0;
+    transition: background 0.2s;
+  }
+
+  .rvsm__progress-dot--done { background: #D4AF37; }
+  .rvsm__progress-dot--active { background: #7b1e3a; }
+
+  /* Rating recap */
+  .rvsm__selected-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+
+  .rvsm__recap-star {
+    width: 18px;
+    height: 18px;
+    fill: #E0D8D0;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .rvsm__recap-star--on { fill: #D4AF37; }
+
+  .rvsm__recap-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #7b1e3a;
+    margin-left: 6px;
+  }
+
+  /* Form */
+  .rvsm__field { margin-bottom: 16px; }
+
+  .rvsm__label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #6B5B57;
+    margin-bottom: 6px;
+  }
+
+  .rvsm__req { color: #E75480; }
+
+  .rvsm__input {
+    width: 100%;
+    border: 1.5px solid #E0D8D0;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 14px;
+    color: #1A0D12;
+    background: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+    font-family: inherit;
+  }
+
+  .rvsm__input:focus {
+    outline: none;
+    border-color: #D4AF37;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
+  }
+
+  .rvsm__textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .rvsm__submit-btn {
+    width: 100%;
+    background: #7b1e3a;
+    color: #fff;
+    border: none;
+    padding: 15px 32px;
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+    box-shadow: 0 4px 18px rgba(123, 30, 58, 0.32);
+    margin-top: 6px;
+    font-family: inherit;
+  }
+
+  .rvsm__submit-btn:hover:not(:disabled) {
+    background: #5a1428;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(123, 30, 58, 0.42);
+  }
+
+  .rvsm__submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  /* Step 3 — Success */
+  .rvsm__step--success {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px 0 8px;
+    gap: 16px;
+  }
+
+  .rvsm__checkmark {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto;
+  }
+
+  .rvsm__checkmark svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .rvsm__checkmark circle {
+    stroke: #D4AF37;
+    stroke-width: 2;
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    animation: rvsCircle 0.6s ease forwards;
+  }
+
+  .rvsm__check-path {
+    stroke: #7b1e3a;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: rvsCheck 0.4s 0.5s ease forwards;
+  }
+
+  @keyframes rvsCircle {
+    to { stroke-dashoffset: 0; }
+  }
+
+  @keyframes rvsCheck {
+    to { stroke-dashoffset: 0; }
+  }
+
+  .rvsm__success-msg {
+    font-size: 15px;
+    color: #6B5B57;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 300px;
+  }
+
+  /* ══════════════════════════════════════
+     RESPONSIVE
+  ══════════════════════════════════════ */
+  @media screen and (max-width: 960px) {
+    .rvs-summary {
       grid-template-columns: 1fr;
       gap: 32px;
+      padding: 32px;
       text-align: center;
     }
 
-    .rating-bars {
-      margin: 0 auto;
+    .rvs-score {
+      padding-right: 0;
+      border-right: none;
+      padding-bottom: 32px;
+      border-bottom: 1px solid #F0EBE6;
     }
 
-    .summary-right {
-      display: flex;
-      justify-content: center;
+    .rvs-cta {
+      padding-left: 0;
+      border-left: none;
+      padding-top: 32px;
+      border-top: 1px solid #F0EBE6;
     }
+
+    .rvs-bars { max-width: 400px; margin: 0 auto; }
   }
 
   @media screen and (max-width: 640px) {
-    .customer-reviews-section {
-      padding: 40px 16px;
+    .rvs-section { padding: 48px 16px; }
+    .rvs-title { font-size: 26px; }
+
+    .rvs-card {
+      padding: 20px 18px;
+      border-left-width: 3px;
     }
 
-    .reviews-title {
-      font-size: 24px;
-      margin-bottom: 24px;
+    .rvs-card__top { flex-direction: column; gap: 10px; }
+
+    .rvsm__card {
+      padding: 36px 24px 32px;
+      border-radius: 20px;
     }
 
-    .reviews-summary {
-      padding: 24px;
-    }
-
-    .rating-number {
-      font-size: 48px;
-    }
-
-    .review-card {
-      padding: 20px;
-    }
-
-    .review-header {
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .review-date {
-      align-self: flex-start;
-    }
-
-    .rating-bars {
-      min-width: 100%;
-    }
-
-    .show-more-btn {
-      font-size: 18px;
-      gap: 12px;
-      padding: 8px 16px;
-    }
-
-    .show-more-icon {
-      width: 36px;
-      height: 36px;
-    }
-
-    .show-more-icon::before {
-      font-size: 26px;
-    }
-
-    .show-more-text {
-      font-size: 18px;
-    }
+    .rvsm__heading { font-size: 22px; }
+    .rvsm__star svg { width: 44px; height: 44px; }
   }
+
 {% endstylesheet %}
 
 {% schema %}
@@ -704,13 +1292,13 @@
       "type": "text",
       "id": "button_text",
       "label": "Write review button text",
-      "default": "WRITE A REVIEW"
+      "default": "Write a Review"
     },
     {
       "type": "text",
       "id": "show_more_text",
       "label": "Show more button text",
-      "default": "Show More"
+      "default": "Show More Reviews"
     },
     {
       "type": "text",

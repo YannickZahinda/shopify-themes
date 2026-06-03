@@ -4494,15 +4494,9 @@ img {
 }
 
 @media (max-width: 749px) {
-  .customised-learn-hero[data-has-bg-image="true"] .clh-content-block {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 20px;
-    padding: 20px;
-    margin: -20px -20px 0 -20px;
-  }
+  /* Content block styling deferred to section CSS to avoid specificity conflicts */
 
   .customised-learn-hero[data-has-bg-image="true"] .clh-badges {
-    background: rgba(0, 0, 0, 0.3);
     border-radius: 50px;
     padding: 8px 16px;
     width: fit-content;
@@ -5150,27 +5144,166 @@ a.jdgm-write-rev-link:hover {
   box-shadow: 0 8px 22px rgba(123, 30, 58, 0.45) !important;
 }
 
-/* ── Hero: mobile background position fix (#13) ── */
+/* ── Hero: mobile background — position/attachment handled in section CSS ── */
 @media (max-width: 749px) {
   [id^="clh-"] {
-    background-position: top center !important;
+    background-attachment: scroll; /* Prevent iOS fixed-bg freeze */
   }
 }
 
-/* ── Judge.me review form — full override (#20, #21) ── */
-/* Rating bar graphs → brand colours */
+/* ══════════════════════════════════════════════════
+   JUDGE.ME — FULL BRAND OVERRIDE
+   ══════════════════════════════════════════════════ */
+
+/* ── Histogram bars: gold fill ── */
 body .jdgm-histogram__bar-fill,
 body [class*="jdgm-histogram"] [class*="fill"],
 body [class*="jdgm"] [class*="bar-fill"] {
-  background: #7b1e3a !important;
+  background: linear-gradient(90deg, #D4AF37, #E8C84A) !important;
+  border-radius: 99px !important;
 }
 
 body .jdgm-histogram__bar,
-body [class*="jdgm-histogram"] [class*="bar"] {
-  background: rgba(123, 30, 58, 0.15) !important;
+body [class*="jdgm-histogram"] [class*="bar"],
+body .jdgm-histogram__bar-track {
+  background: #EDE9E5 !important;
+  border-radius: 99px !important;
+  height: 10px !important;
 }
 
-/* Review form input fields — white text on dark bg */
+/* ── Stars: force Unicode ★ so system font renders them regardless of icon font ── */
+body [class*="jdgm"] i.jdgm-star,
+body [class*="jdgm"] .jdgm-star {
+  font-family: Georgia, "Times New Roman", "Noto Serif", serif !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  speak: none !important;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block !important;
+  font-size: 28px !important;
+  line-height: 1 !important;
+  color: #D4AF37 !important;
+  -webkit-text-fill-color: #D4AF37 !important;
+}
+
+/* All stars default: filled gold ★ */
+body [class*="jdgm"] i.jdgm-star::before,
+body [class*="jdgm"] .jdgm-star::before {
+  content: "\2605" !important; /* ★ filled star */
+  color: #D4AF37 !important;
+  -webkit-text-fill-color: #D4AF37 !important;
+}
+
+/* Empty/off stars: outlined ☆ */
+body [class*="jdgm"] i.jdgm-star.jdgm--off::before,
+body [class*="jdgm"] .jdgm-star.jdgm--off::before,
+body [class*="jdgm"] i.jdgm-star.jdgm--empty::before {
+  content: "\2606" !important; /* ☆ empty star */
+  color: rgba(212, 175, 55, 0.45) !important;
+  -webkit-text-fill-color: rgba(212, 175, 55, 0.45) !important;
+}
+
+/* Half stars */
+body [class*="jdgm"] i.jdgm-star.jdgm--half-on::before {
+  content: "\2BE8" !important; /* ⯨ half star fallback — use ★ with opacity if unavailable */
+  color: #D4AF37 !important;
+  -webkit-text-fill-color: #D4AF37 !important;
+}
+
+/* Stars SVG (newer Judge.me) */
+body [class*="jdgm"] .jdgm-star svg,
+body [class*="jdgm"] .jdgm-star path {
+  fill: #D4AF37 !important;
+  stroke: none !important;
+}
+
+/* ── Review form popup overlay: dark backdrop ── */
+body .jdgm-overlay,
+body #jdgm-popup-overlay,
+body [class*="jdgm"][class*="overlay"] {
+  background: rgba(26, 13, 18, 0.78) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 20px !important;
+}
+
+/* ── Review form popup: clean white card ── */
+#jdgm-popup,
+.jdgm-popup,
+body .jdgm-rev-form-wrap,
+body [class*="jdgm"] .jdgm-rev-form-wrap,
+body [class*="jdgm"][class*="popup"]:not([class*="overlay"]):not([class*="close"]) {
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  box-shadow: 0 24px 80px rgba(26, 13, 18, 0.28) !important;
+  padding: 40px 36px !important;
+  max-width: 520px !important;
+  width: 92% !important;
+  border: none !important;
+  margin: auto !important;
+  position: relative !important;
+}
+
+/* All text inside the popup: dark (overrides any white-on-dark) */
+#jdgm-popup *,
+body .jdgm-rev-form-wrap *,
+body .jdgm-popup * {
+  color: #1A0D12 !important;
+  -webkit-text-fill-color: #1A0D12 !important;
+}
+
+/* Restore gold for stars inside popup */
+#jdgm-popup i.jdgm-star,
+#jdgm-popup i.jdgm-star::before,
+body .jdgm-popup i.jdgm-star::before,
+body .jdgm-rev-form-wrap i.jdgm-star::before {
+  color: #D4AF37 !important;
+  -webkit-text-fill-color: #D4AF37 !important;
+}
+#jdgm-popup i.jdgm-star.jdgm--off::before,
+body .jdgm-popup i.jdgm-star.jdgm--off::before {
+  color: rgba(212, 175, 55, 0.4) !important;
+  -webkit-text-fill-color: rgba(212, 175, 55, 0.4) !important;
+}
+
+/* Popup heading */
+#jdgm-popup h3,
+#jdgm-popup h4,
+body .jdgm-popup h3,
+body .jdgm-popup h4,
+body [class*="jdgm"] .jdgm-rev-form__title {
+  color: #1A0D12 !important;
+  -webkit-text-fill-color: #1A0D12 !important;
+  font-size: 22px !important;
+  font-weight: 800 !important;
+}
+
+/* Popup subtitle/description */
+body [class*="jdgm"] .jdgm-rev-form__subtitle,
+body [class*="jdgm"] .jdgm-rev-form__desc {
+  color: #6B5B57 !important;
+  -webkit-text-fill-color: #6B5B57 !important;
+}
+
+/* Popup close button */
+#jdgm-popup .jdgm-popup__close,
+body [class*="jdgm"] [class*="popup__close"],
+body [class*="jdgm"] [class*="close-btn"] {
+  color: #8C7A75 !important;
+  -webkit-text-fill-color: #8C7A75 !important;
+  background: #F7F4F0 !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* ── Form input fields — dark text on white ── */
 body .jdgm-rev-form input,
 body .jdgm-rev-form textarea,
 body .jdgm-rev-form select,
@@ -5179,61 +5312,204 @@ body [class*="jdgm-rev-form"] textarea,
 body [class*="jdgm"] input[type="text"],
 body [class*="jdgm"] input[type="email"],
 body [class*="jdgm"] textarea {
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
-  background: rgba(255, 255, 255, 0.1) !important;
+  color: #1A0D12 !important;
+  -webkit-text-fill-color: #1A0D12 !important;
+  border: 1.5px solid #E0D8D0 !important;
+  border-radius: 10px !important;
+  background: #ffffff !important;
+  padding: 11px 14px !important;
+  font-size: 14px !important;
+  transition: border-color 0.2s !important;
+}
+
+body [class*="jdgm"] input[type="text"]:focus,
+body [class*="jdgm"] input[type="email"]:focus,
+body [class*="jdgm"] textarea:focus {
+  outline: none !important;
+  border-color: #D4AF37 !important;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12) !important;
 }
 
 body [class*="jdgm"] input::placeholder,
 body [class*="jdgm"] textarea::placeholder {
-  color: rgba(255, 255, 255, 0.5) !important;
-  -webkit-text-fill-color: rgba(255, 255, 255, 0.5) !important;
+  color: #B0A09B !important;
+  -webkit-text-fill-color: #B0A09B !important;
 }
 
-/* Form labels and text */
+/* ── Form labels ── */
 body .jdgm-rev-form label,
 body [class*="jdgm-rev-form"] label,
-body [class*="jdgm"] .jdgm-form__field-label {
-  color: #f6eef2 !important;
-  -webkit-text-fill-color: #f6eef2 !important;
+body [class*="jdgm"] .jdgm-form__field-label,
+body [class*="jdgm"] .jdgm-form__title {
+  color: #1A0D12 !important;
+  -webkit-text-fill-color: #1A0D12 !important;
+  font-weight: 600 !important;
 }
 
-/* Disclaimer text */
+body [class*="jdgm"] .jdgm-form__subtitle,
 body [class*="jdgm"] .jdgm-form__disclaimer,
 body [class*="jdgm"] [class*="disclaimer"] {
-  color: rgba(246, 238, 242, 0.7) !important;
-  -webkit-text-fill-color: rgba(246, 238, 242, 0.7) !important;
+  color: #6B5B57 !important;
+  -webkit-text-fill-color: #6B5B57 !important;
 }
 
-/* Star rating in form */
-body [class*="jdgm"] .jdgm-star,
-body [class*="jdgm"] [class*="star"] {
-  color: #d4af37 !important;
+/* ── Rating star picker in form — large gold stars ── */
+body [class*="jdgm"] .jdgm-rev-form__star-group i,
+body [class*="jdgm"] .jdgm-rev-form__star-group .jdgm-star,
+body [class*="jdgm"] [class*="rating-input"] i,
+body [class*="jdgm"] [class*="rating-input"] .jdgm-star {
+  font-size: 36px !important;
+  color: #D4AF37 !important;
+  -webkit-text-fill-color: #D4AF37 !important;
+  cursor: pointer !important;
+  transition: transform 0.15s !important;
 }
 
-/* Form submit button */
+body [class*="jdgm"] .jdgm-rev-form__star-group i:hover,
+body [class*="jdgm"] [class*="rating-input"] i:hover {
+  transform: scale(1.15) !important;
+}
+
+/* Empty/unselected picker stars */
+body [class*="jdgm"] .jdgm-rev-form__star-group i.jdgm-star.jdgm--empty,
+body [class*="jdgm"] [class*="rating-input"] i.jdgm-star.jdgm--empty {
+  color: rgba(212, 175, 55, 0.25) !important;
+  -webkit-text-fill-color: rgba(212, 175, 55, 0.25) !important;
+}
+
+/* ── Submit button ── */
 body [class*="jdgm"] [type="submit"],
 body [class*="jdgm"] .jdgm-submit-btn,
-body [class*="jdgm"] [class*="submit"] {
+body [class*="jdgm"] [class*="submit-btn"] {
   background: #7b1e3a !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   border-radius: 50px !important;
   border: none !important;
+  padding: 13px 32px !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  box-shadow: 0 4px 18px rgba(123, 30, 58, 0.32) !important;
+  transition: background 0.25s, transform 0.2s, box-shadow 0.25s !important;
+  cursor: pointer !important;
 }
 
-/* Account popup — override Shop Pay blue/gold (#22) */
-body .shopify-identity-button,
+body [class*="jdgm"] [type="submit"]:hover,
+body [class*="jdgm"] [class*="submit-btn"]:hover {
+  background: #5a1428 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 8px 24px rgba(123, 30, 58, 0.42) !important;
+}
+
+/* ── Widget review cards ── */
+body .jdgm-rev,
+body [class*="jdgm"] .jdgm-rev {
+  border-left: 3px solid #D4AF37 !important;
+  border-top: none !important;
+  border-bottom: 1px solid #F0EBE6 !important;
+  padding-left: 16px !important;
+}
+
+/* ── Reviewer name & date ── */
+body [class*="jdgm"] .jdgm-rev__author,
+body [class*="jdgm"] .jdgm-rev__author-name {
+  color: #1A0D12 !important;
+  -webkit-text-fill-color: #1A0D12 !important;
+  font-weight: 600 !important;
+}
+
+body [class*="jdgm"] .jdgm-rev__timestamp {
+  color: #B0A09B !important;
+  -webkit-text-fill-color: #B0A09B !important;
+}
+
+body [class*="jdgm"] .jdgm-rev__title {
+  color: #1A0D12 !important;
+  -webkit-text-fill-color: #1A0D12 !important;
+  font-weight: 700 !important;
+}
+
+body [class*="jdgm"] .jdgm-rev__body {
+  color: #6B5B57 !important;
+  -webkit-text-fill-color: #6B5B57 !important;
+}
+
+/* ── Summary average number ── */
+body [class*="jdgm"] .jdgm-summary__score,
+body [class*="jdgm"] .jdgm-summary-rating {
+  color: #1A0D12 !important;
+  -webkit-text-fill-color: #1A0D12 !important;
+  font-weight: 800 !important;
+}
+
+body [class*="jdgm"] .jdgm-summary__text,
+body [class*="jdgm"] .jdgm-summary__count {
+  color: #6B5B57 !important;
+  -webkit-text-fill-color: #6B5B57 !important;
+}
+
+/* ══════════════════════════════════════════════════
+   ACCOUNT POPUP — brand colour override
+   "Sign in with Shop" = burgundy primary
+   "Other sign in options" = outlined secondary
+   ══════════════════════════════════════════════════ */
+
+/* CSS custom properties for the shop-login-button web component */
+shop-login-button,
+account-login-actions,
+.account-actions__shop-login {
+  --shop-login-button-background: #7b1e3a !important;
+  --shop-login-button-color: #ffffff !important;
+  --shop-pay-button-background: #7b1e3a !important;
+  --color-shop-pay: #7b1e3a !important;
+}
+
+/* Light DOM button inside the web component */
 body shop-login-button button,
-body [data-shopify-buttonize] {
+body shop-login-button [type="button"],
+body account-login-actions button,
+body .account-actions__shop-login button,
+body .shopify-identity-button,
+body [data-shopify-buttonize],
+body .login-with-shop__button {
   background: #7b1e3a !important;
+  background-color: #7b1e3a !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   border-color: #7b1e3a !important;
+  box-shadow: 0 4px 16px rgba(123, 30, 58, 0.35) !important;
 }
 
-body .shopify-identity-button--secondary,
-body shop-login-button button:last-child {
+body shop-login-button button:hover,
+body .login-with-shop__button:hover {
+  background: #5a1428 !important;
+  background-color: #5a1428 !important;
+}
+
+/* SVG logo/wordmark inside the Shop button — keep white */
+body shop-login-button button svg,
+body shop-login-button button path,
+body .login-with-shop__button svg,
+body .login-with-shop__button path {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+  stroke: none !important;
+}
+
+/* "Other sign in options" — already handled in account-actions.liquid;
+   this is the base.css fallback for other contexts */
+body .account-actions__link.button {
   background: transparent !important;
+  background-color: transparent !important;
   color: #7b1e3a !important;
+  -webkit-text-fill-color: #7b1e3a !important;
   border: 2px solid #7b1e3a !important;
+  box-shadow: none !important;
+}
+
+body .account-actions__link.button:hover {
+  background: #7b1e3a !important;
+  background-color: #7b1e3a !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }

@@ -36,9 +36,11 @@
           {{ shop | login_button }}
         </account-login-actions>
 
+        <div class="account-actions__divider" aria-hidden="true"><span>or</span></div>
+
         <a
           href="{% if request.design_mode %}{{ routes.account_url }}{% else %}{{ routes.storefront_login_url }}{% endif %}"
-          class="account-actions__link button"
+          class="account-actions__link account-actions__other-signin"
         >
           <span class="account-actions__sign-in-text">
             {{ 'actions.sign_in_options' | t }}
@@ -86,87 +88,176 @@
 </div>
 
 {% stylesheet %}
+
+  /* ══════════════════════════════════════
+     ACCOUNT POPUP — Arousique Dark Theme
+  ══════════════════════════════════════ */
+
   .account-actions {
-    background-color: var(--color-background);
+    background: linear-gradient(160deg, #1A0D12 0%, #2D1B2E 100%);
     display: flex;
     flex-direction: column;
     position: relative;
     transition: height var(--animation-values);
+    border-radius: inherit;
+    overflow: hidden;
 
     &:has([data-active]) .account-actions__main-menu {
       visibility: hidden;
     }
   }
 
+  /* ── Header ── */
   .account-actions__header {
-    padding: var(--padding-xl);
+    padding: 22px 24px 18px;
     display: flex;
     flex-direction: column;
-    gap: var(--gap-2xs);
+    gap: 4px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+    position: relative;
+  }
+
+  /* Gold dot accent before title */
+  .account-actions__header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #D4AF37, #E75480, transparent);
   }
 
   .account-actions__title {
-    /* Ideally we set the font-size here, but specificity issues make this necessary */
     --font-h5--size: var(--font-size--lg);
-
     margin: 0;
+    color: #F6EEF2 !important;
+    -webkit-text-fill-color: #F6EEF2 !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.01em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
 
+  .account-actions__title::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    min-width: 8px;
+    background: #D4AF37;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+  }
+
   .account-actions__email {
     display: flex;
     align-items: center;
-    gap: var(--gap-2xs);
-    color: rgb(var(--color-foreground-rgb) / var(--opacity-60));
+    gap: 6px;
+    color: rgba(246, 238, 242, 0.45) !important;
+    -webkit-text-fill-color: rgba(246, 238, 242, 0.45) !important;
+    font-size: 12px;
     max-width: var(--account-actions-max-width);
     word-break: break-all;
+    padding-left: 18px;
   }
 
+  /* ── Sign-in buttons area ── */
   .account-actions__sign-ins {
-    padding: var(--padding-xl);
-    padding-block-start: 0;
-    padding-block-end: var(--padding-md);
+    padding: 20px 24px 16px;
     display: flex;
     flex-direction: column;
-    gap: var(--gap-sm);
+    gap: 0;
   }
 
-  .account-actions__sign-in-text {
-    display: inline;
-  }
-
-  .account-actions__fallback-text {
-    display: none;
-  }
+  .account-actions__sign-in-text { display: inline; }
+  .account-actions__fallback-text { display: none; }
 
   .account-actions__sign-ins:not(:has(shop-login-button)) {
-    gap: 0;
-
-    .account-actions__sign-in-text {
-      display: none;
-    }
-
-    .account-actions__fallback-text {
-      display: block;
-    }
+    .account-actions__sign-in-text { display: none; }
+    .account-actions__fallback-text { display: block; }
   }
 
-  /* Makes the shop login button radius match the theme settings */
+  /* Shop login button wrapper — CSS filter shifts purple → brand dark rose */
   .account-actions__shop-login {
-    --buttons-radius: var(--style-border-radius-buttons-primary);
+    --buttons-radius: 50px;
+    filter: hue-rotate(91deg) saturate(62%) brightness(56%);
+    transition: filter 0.25s ease;
   }
 
+  .account-actions__shop-login:hover {
+    filter: hue-rotate(91deg) saturate(70%) brightness(48%);
+  }
+
+  /* ── "or" divider ── */
+  .account-actions__divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0;
+    color: rgba(246, 238, 242, 0.25);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .account-actions__divider::before,
+  .account-actions__divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(212, 175, 55, 0.12);
+  }
+
+  .account-actions__divider span {
+    flex-shrink: 0;
+    color: rgba(246, 238, 242, 0.3);
+    -webkit-text-fill-color: rgba(246, 238, 242, 0.3);
+  }
+
+  /* ── "Other sign in options" — gold CTA ── */
+  .account-actions__other-signin {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #D4AF37 !important;
+    background-color: #D4AF37 !important;
+    color: #1A0D12 !important;
+    -webkit-text-fill-color: #1A0D12 !important;
+    border: none !important;
+    border-radius: 50px !important;
+    padding: 13px 24px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.3px !important;
+    text-decoration: none !important;
+    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.25) !important;
+    transition: background 0.25s, transform 0.2s, box-shadow 0.25s !important;
+    width: 100%;
+  }
+
+  .account-actions__other-signin:hover {
+    background: #C9A430 !important;
+    background-color: #C9A430 !important;
+    color: #1A0D12 !important;
+    -webkit-text-fill-color: #1A0D12 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 8px 22px rgba(212, 175, 55, 0.35) !important;
+  }
+
+  /* ── Orders / Profile nav tiles ── */
   .account-actions__nav {
-    padding: var(--padding-xl);
-    padding-block-start: 0;
+    padding: 0 24px 22px;
   }
 
   .account-actions__list {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--gap-sm);
+    gap: 10px;
     width: 100%;
     list-style: none;
     margin: 0;
@@ -182,7 +273,27 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: var(--gap-2xs);
+    gap: 6px;
+    text-decoration: none;
+  }
+
+  .account-actions__link.button-secondary {
+    background: rgba(246, 238, 242, 0.04) !important;
+    color: rgba(246, 238, 242, 0.65) !important;
+    -webkit-text-fill-color: rgba(246, 238, 242, 0.65) !important;
+    border: 1px solid rgba(212, 175, 55, 0.18) !important;
+    border-radius: 12px !important;
+    padding: 12px 8px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    transition: all 0.2s !important;
+  }
+
+  .account-actions__link.button-secondary:hover {
+    background: rgba(212, 175, 55, 0.1) !important;
+    color: #D4AF37 !important;
+    -webkit-text-fill-color: #D4AF37 !important;
+    border-color: rgba(212, 175, 55, 0.4) !important;
   }
 
   .account-actions__icon {
@@ -192,14 +303,12 @@
     margin-block: -4px;
   }
 
-  /* This triggers iOS < 16.4. The outline bug is not recognized as a lack of @supports */
+  .account-actions__icon svg {
+    color: #D4AF37 !important;
+    stroke: #D4AF37 !important;
+  }
 
   @supports not (background-color: rgb(from red 150 g b / alpha)) {
-    /**
-    There is a bug in safari < 16.4 that causes the outline to not follow the elements border radius. This is a workaround.
-    Using element selector to increase specificity.
-  **/
-
     .account-actions :is(a.button, a.button-secondary):focus-visible {
       outline: none;
       overflow: visible;
@@ -214,10 +323,6 @@
         display: inherit;
       }
     }
-
-    .account-actions a.button:focus-visible::after {
-      border-color: var(--button-background-color);
-      border-radius: var(--style-border-radius-buttons-primary);
-    }
   }
+
 {% endstylesheet %}

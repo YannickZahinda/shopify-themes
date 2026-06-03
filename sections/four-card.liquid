@@ -84,11 +84,6 @@
     background-position: center;
     background-repeat: no-repeat;
     z-index: 0;
-    transition: transform 0.5s ease;
-  }
-
-  .four-card-item-{{ fc_id }}:hover .four-card-bg-{{ fc_id }} {
-    transform: scale(1.04);
   }
 
   .four-card-overlay-{{ fc_id }} {
@@ -128,8 +123,8 @@
     font-weight: 700;
     margin: 0 0 8px;
     line-height: 1.2;
-    color: inherit !important;
-    -webkit-text-fill-color: inherit !important;
+    color: var(--fc-color, #ffffff) !important;
+    -webkit-text-fill-color: var(--fc-color, #ffffff) !important;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1);
     visibility: visible !important;
     opacity: 1 !important;
@@ -139,8 +134,8 @@
     font-size: {{ section.settings.text_size_desktop }}px;
     margin: 0 0 14px;
     line-height: 1.4;
-    color: inherit !important;
-    -webkit-text-fill-color: inherit !important;
+    color: var(--fc-color, #ffffff) !important;
+    -webkit-text-fill-color: var(--fc-color, #ffffff) !important;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1);
     visibility: visible !important;
     opacity: 0.9;
@@ -171,27 +166,38 @@
     opacity: 1 !important;
   }
 
+  /* All buttons match the coupon badge design: dark bg + gold dashed border */
   .four-card-btn-{{ fc_id }} {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     font-size: 13px;
-    font-weight: 600;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(4px);
-    border: 1.5px solid rgba(255, 255, 255, 0.4);
-    padding: 10px 20px;
-    border-radius: 8px;
+    font-weight: 700;
+    background: rgba(10, 5, 12, 0.72) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1.5px dashed #F0CC55 !important;
+    color: #F0CC55 !important;
+    -webkit-text-fill-color: #F0CC55 !important;
+    --color: #F0CC55;
+    --button-color: #F0CC55;
+    padding: 6px 14px;
+    border-radius: 6px;
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
     text-decoration: none;
-    transition: all 0.3s ease;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 1), 0 1px 3px rgba(0, 0, 0, 1);
+    transition: background 0.25s ease, border-color 0.25s ease;
     cursor: pointer;
-    min-height: 44px;
+    min-height: 40px;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 
   .four-card-btn-{{ fc_id }}:hover {
-    background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.6);
-    transform: translateY(-2px);
+    background: rgba(10, 5, 12, 0.88) !important;
+    border-color: #D4AF37 !important;
+    transform: none;
   }
 
   /* Scroll indicators */
@@ -299,6 +305,32 @@
     line-height: 1.5;
   }
 
+  /* Clipboard copy toast */
+  .fc-toast-{{ fc_id }} {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    background: #1A0D12;
+    color: #F0CC55;
+    padding: 11px 26px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 99999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    border: 1.5px solid rgba(240, 204, 85, 0.6);
+    white-space: nowrap;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  }
+
+  .fc-toast-{{ fc_id }}.fc-toast-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
   @media screen and (max-width: 749px) {
     .promo-grid {
       gap: {{ section.settings.card_gap_mobile }}px;
@@ -329,7 +361,7 @@
   <div class="promo-grid" id="promo-grid-{{ fc_id }}">
     {% for block in section.blocks %}
       <div class="four-card-item-{{ fc_id }}"
-           style="color: {{ block.settings.text_color }};"
+           style="color: {{ block.settings.text_color }}; --fc-color: {{ block.settings.text_color }};"
            {{ block.shopify_attributes }}>
 
         {% if block.settings.background_image %}
@@ -342,15 +374,13 @@
 
         <div class="four-card-content-{{ fc_id }}">
           {% if block.settings.heading != blank %}
-            <h3 class="four-card-heading-{{ fc_id }}"
-                style="color: {{ block.settings.text_color }};">
+            <h3 class="four-card-heading-{{ fc_id }}">
               {{ block.settings.heading }}
             </h3>
           {% endif %}
 
           {% if block.settings.subheading != blank %}
-            <p class="four-card-subheading-{{ fc_id }}"
-               style="color: {{ block.settings.text_color }};">
+            <p class="four-card-subheading-{{ fc_id }}">
               {{ block.settings.subheading }}
             </p>
           {% endif %}
@@ -365,22 +395,26 @@
           {% endif %}
 
           {% if block.settings.button_label != blank %}
+            {% capture tag_icon %}<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>{% endcapture %}
             {% if block.settings.modal_image != blank %}
               <button class="four-card-btn-{{ fc_id }}"
-                      style="color: {{ block.settings.text_color }};"
                       data-fc-modal="fc-modal-{{ fc_id }}-{{ forloop.index }}">
-                {{ block.settings.button_label }}
+                {{ tag_icon }}{{ block.settings.button_label }}
+              </button>
+            {% elsif block.settings.copy_code != blank %}
+              <button type="button"
+                      class="four-card-btn-{{ fc_id }}"
+                      data-fc-copy="{{ block.settings.copy_code }}">
+                {{ tag_icon }}{{ block.settings.button_label }}
               </button>
             {% elsif block.settings.button_link != blank %}
               <a href="{{ block.settings.button_link }}"
-                 class="four-card-btn-{{ fc_id }}"
-                 style="color: {{ block.settings.text_color }};">
-                {{ block.settings.button_label }}
+                 class="four-card-btn-{{ fc_id }}">
+                {{ tag_icon }}{{ block.settings.button_label }}
               </a>
             {% else %}
-              <span class="four-card-btn-{{ fc_id }}"
-                    style="color: {{ block.settings.text_color }};">
-                {{ block.settings.button_label }}
+              <span class="four-card-btn-{{ fc_id }}">
+                {{ tag_icon }}{{ block.settings.button_label }}
               </span>
             {% endif %}
           {% endif %}
@@ -429,6 +463,50 @@
 
 <script>
   (function() {
+    // Toast helper
+    var toastEl = document.createElement('div');
+    toastEl.className = 'fc-toast-{{ fc_id }}';
+    document.body.appendChild(toastEl);
+    var toastTimer;
+    function showToast(msg) {
+      clearTimeout(toastTimer);
+      toastEl.textContent = msg;
+      toastEl.classList.add('fc-toast-visible');
+      toastTimer = setTimeout(function() { toastEl.classList.remove('fc-toast-visible'); }, 2800);
+    }
+
+    // Clipboard copy buttons
+    document.querySelectorAll('[data-fc-copy]').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var code = btn.getAttribute('data-fc-copy');
+        var orig = btn.innerHTML;
+        function onSuccess() {
+          btn.textContent = '✓ Copied!';
+          showToast('✓ Code copied: ' + code);
+          setTimeout(function() { btn.innerHTML = orig; }, 2200);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(code).then(onSuccess).catch(function() {
+            try {
+              var ta = document.createElement('textarea');
+              ta.value = code; ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px';
+              document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+              document.body.removeChild(ta); onSuccess();
+            } catch(err) { showToast(code); }
+          });
+        } else {
+          try {
+            var ta = document.createElement('textarea');
+            ta.value = code; ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px';
+            document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+            document.body.removeChild(ta); onSuccess();
+          } catch(err) { showToast(code); }
+        }
+      });
+    });
+
     // Modal functionality
     document.querySelectorAll('[data-fc-modal]').forEach(function(btn) {
       btn.addEventListener('click', function() {
@@ -743,9 +821,15 @@
           "label": "Button label"
         },
         {
+          "type": "text",
+          "id": "copy_code",
+          "label": "Discount code to copy",
+          "info": "When set, clicking the button copies this code to clipboard instead of navigating."
+        },
+        {
           "type": "url",
           "id": "button_link",
-          "label": "Button link"
+          "label": "Button link (ignored when a copy code is set)"
         },
         {
           "type": "image_picker",
