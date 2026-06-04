@@ -9,16 +9,13 @@
     left: 0;
     right: 0;
     display: block;
-    overflow: visible;
+    overflow: hidden;
     padding-left: 0 !important;
     padding-right: 0 !important;
-    {% unless section.settings.background_image %}
-      background-color: #f5f5f5;
-      min-height: {{ section.settings.banner_height }}px;
-    {% endunless %}
+    background-color: {{ section.settings.section_background_color }};
   }
 
-  /* Background image — natural aspect ratio drives section height */
+  /* Background image — natural aspect ratio */
   .banner-bg-img-{{ banner_id }} {
     display: block;
     width: 100%;
@@ -28,16 +25,12 @@
     vertical-align: bottom;
   }
 
+  /* Placeholder when no image */
   .banner-placeholder-{{ banner_id }} {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    min-height: {{ section.settings.banner_height }}px;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1;
   }
 
   .banner-placeholder-{{ banner_id }} svg {
@@ -45,9 +38,10 @@
     height: 100%;
     max-width: 400px;
     max-height: 400px;
-    opacity: 0.3;
+    opacity: 0.15;
   }
 
+  /* Overlay on top of background image */
   .banner-overlay-{{ banner_id }} {
     position: absolute;
     inset: 0;
@@ -57,9 +51,12 @@
     pointer-events: none;
   }
 
+  /* ── Content container ── */
   .banner-content-{{ banner_id }} {
-    position: absolute;
-    inset: 0;
+    {% if section.settings.background_image %}
+      position: absolute;
+      inset: 0;
+    {% endif %}
     z-index: 3;
     display: flex;
     flex-direction: column;
@@ -69,14 +66,94 @@
     text-align: {{ section.settings.text_alignment }};
   }
 
+  /* ── Eyebrow icon ── */
+  .banner-eyebrow-{{ banner_id }} {
+    font-size: {{ section.settings.eyebrow_size }}px;
+    color: {{ section.settings.eyebrow_color }};
+    margin: 0 0 12px;
+    line-height: 1;
+    display: block;
+  }
+
+  /* ── Heading ── */
   .banner-heading-{{ banner_id }} {
     font-size: {{ section.settings.heading_size }}px;
     color: {{ section.settings.heading_color }};
-    margin: 0 0 16px;
+    margin: 0 0 20px;
     line-height: 1.2;
     font-weight: 700;
+    letter-spacing: -0.01em;
   }
 
+  /* Italic accent word inside heading */
+  .banner-heading-accent-{{ banner_id }} {
+    font-style: italic;
+    color: {{ section.settings.heading_accent_color }};
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400;
+  }
+
+  /* ── Bullet lines ── */
+  .banner-bullets-{{ banner_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0 0 24px;
+  }
+
+  .banner-bullet-{{ banner_id }} {
+    font-size: {{ section.settings.bullets_size }}px;
+    color: {{ section.settings.bullets_color }};
+    margin: 0;
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  /* ── Decorative divider ── */
+  .banner-divider-{{ banner_id }} {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 24px;
+    width: 100%;
+    max-width: 320px;
+    {% if section.settings.text_alignment == 'center' %}
+      align-self: center;
+    {% elsif section.settings.text_alignment == 'right' %}
+      align-self: flex-end;
+    {% else %}
+      align-self: flex-start;
+    {% endif %}
+  }
+
+  .banner-divider-line-{{ banner_id }} {
+    flex: 1;
+    height: 1px;
+    background: {{ section.settings.divider_color }};
+    opacity: 0.4;
+  }
+
+  .banner-divider-icon-{{ banner_id }} {
+    font-size: {{ section.settings.divider_icon_size }}px;
+    color: {{ section.settings.divider_color }};
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  /* ── Tagline ── */
+  .banner-tagline-{{ banner_id }} {
+    font-size: {{ section.settings.tagline_size }}px;
+    color: {{ section.settings.tagline_color }};
+    margin: 0 0 24px;
+    line-height: 1.6;
+    max-width: {{ section.settings.tagline_max_width }}px;
+    font-style: italic;
+    {% if section.settings.text_alignment == 'center' %}
+      align-self: center;
+    {% endif %}
+  }
+
+  /* ── Original subheading (legacy) ── */
   .banner-subheading-{{ banner_id }} {
     font-size: {{ section.settings.subheading_size }}px;
     color: {{ section.settings.subheading_color }};
@@ -84,6 +161,7 @@
     line-height: 1.5;
   }
 
+  /* ── Button ── */
   .banner-button-wrapper-{{ banner_id }} {
     display: flex;
     {% if section.settings.text_alignment == 'left' %}
@@ -95,7 +173,6 @@
     {% endif %}
   }
 
-  /* ── BUTTON FIX: explicit color on all states so text never disappears ── */
   .banner-button-{{ banner_id }} {
     display: inline-flex;
     align-items: center;
@@ -103,15 +180,14 @@
     padding: {{ section.settings.button_padding_vertical }}px {{ section.settings.button_padding_horizontal }}px;
     background-color: {{ section.settings.button_background_color }};
     color: {{ section.settings.button_text_color }} !important;
+    -webkit-text-fill-color: {{ section.settings.button_text_color }};
     text-decoration: none;
     border-radius: {{ section.settings.button_border_radius }}px;
     font-size: {{ section.settings.button_font_size }}px;
     font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     border: 2px solid {{ section.settings.button_background_color }};
     cursor: pointer;
-    /* Prevent the global `color` transition from interfering */
-    -webkit-text-fill-color: {{ section.settings.button_text_color }};
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   }
 
   .banner-button-{{ banner_id }}:hover {
@@ -123,7 +199,7 @@
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   }
 
-  /* ── COLLECTION PAGE: product images sized correctly ── */
+  /* ── Collection page image fix ── */
   .template-collection .product-card img,
   .template-collection product-card img,
   .template-collection .product-grid__card img {
@@ -136,7 +212,6 @@
     border-radius: 0 !important;
   }
 
-  /* Restore card image wrapper proportions */
   .template-collection .card-gallery,
   .template-collection .product-card__image,
   .template-collection .product-media-container {
@@ -144,62 +219,59 @@
     overflow: hidden !important;
   }
 
+  /* ── Responsive ── */
   @media screen and (max-width: 989px) {
     .banner-heading-{{ banner_id }} {
-      font-size: {{ section.settings.heading_size | times: 0.75 }}px;
+      font-size: {{ section.settings.heading_size | times: 0.78 | round }}px;
     }
-
-    .banner-subheading-{{ banner_id }} {
-      font-size: {{ section.settings.subheading_size | times: 0.9 }}px;
+    .banner-bullets-{{ banner_id }},
+    .banner-subheading-{{ banner_id }},
+    .banner-tagline-{{ banner_id }} {
+      font-size: {{ section.settings.bullets_size | times: 0.9 | round }}px;
     }
-
     .banner-content-{{ banner_id }} {
-      padding: {{ section.settings.padding_top | times: 0.75 }}px {{ section.settings.padding_horizontal | times: 0.8 }}px {{ section.settings.padding_bottom | times: 0.75 }}px;
+      padding: {{ section.settings.padding_top | times: 0.75 | round }}px {{ section.settings.padding_horizontal | times: 0.8 | round }}px {{ section.settings.padding_bottom | times: 0.75 | round }}px;
     }
   }
 
   @media screen and (max-width: 749px) {
-    .banner-content-{{ banner_id }} {
-      padding: {{ section.settings.padding_top | times: 0.6 }}px 20px {{ section.settings.padding_bottom | times: 0.6 }}px;
-    }
-
     .banner-heading-{{ banner_id }} {
-      font-size: {{ section.settings.heading_size | times: 0.6 }}px;
-      margin-bottom: 12px;
+      font-size: {{ section.settings.heading_size | times: 0.62 | round }}px;
+      margin-bottom: 14px;
     }
-
-    .banner-subheading-{{ banner_id }} {
-      font-size: {{ section.settings.subheading_size | times: 0.85 }}px;
-      margin-bottom: 20px;
+    .banner-bullet-{{ banner_id }} {
+      font-size: {{ section.settings.bullets_size | times: 0.88 | round }}px;
     }
-
+    .banner-tagline-{{ banner_id }} {
+      font-size: {{ section.settings.tagline_size | times: 0.88 | round }}px;
+    }
+    .banner-content-{{ banner_id }} {
+      padding: {{ section.settings.padding_top | times: 0.6 | round }}px 20px {{ section.settings.padding_bottom | times: 0.6 | round }}px;
+    }
     .banner-button-{{ banner_id }} {
-      padding: {{ section.settings.button_padding_vertical | times: 0.9 }}px {{ section.settings.button_padding_horizontal | times: 0.9 }}px;
-      font-size: {{ section.settings.button_font_size | times: 0.9 }}px;
+      padding: {{ section.settings.button_padding_vertical | times: 0.9 | round }}px {{ section.settings.button_padding_horizontal | times: 0.9 | round }}px;
+      font-size: {{ section.settings.button_font_size | times: 0.9 | round }}px;
     }
   }
 {% endstyle %}
 
 <div class="banner-section-{{ banner_id }}" {{ section.shopify_attributes }}>
-  {% if section.settings.background_image %}
+
+  {%- if section.settings.background_image -%}
     <picture>
-      {% if section.settings.mobile_background_image %}
-        <source
-          media="(max-width: 749px)"
+      {%- if section.settings.mobile_background_image -%}
+        <source media="(max-width: 749px)"
           srcset="{{ section.settings.mobile_background_image | image_url: width: 750 }} 750w,
                   {{ section.settings.mobile_background_image | image_url: width: 1000 }} 1000w"
           sizes="100vw"
           width="{{ section.settings.mobile_background_image.width }}"
-          height="{{ section.settings.mobile_background_image.height }}"
-        >
-      {% else %}
-        <source
-          media="(max-width: 749px)"
+          height="{{ section.settings.mobile_background_image.height }}">
+      {%- else -%}
+        <source media="(max-width: 749px)"
           srcset="{{ section.settings.background_image | image_url: width: 750 }} 750w,
                   {{ section.settings.background_image | image_url: width: 1000 }} 1000w"
-          sizes="100vw"
-        >
-      {% endif %}
+          sizes="100vw">
+      {%- endif -%}
       <img
         class="banner-bg-img-{{ banner_id }}"
         src="{{ section.settings.background_image | image_url: width: 2000 }}"
@@ -211,36 +283,75 @@
         width="{{ section.settings.background_image.width }}"
         height="{{ section.settings.background_image.height }}"
         loading="eager"
-        fetchpriority="high"
-      >
+        fetchpriority="high">
     </picture>
-  {% else %}
+    <div class="banner-overlay-{{ banner_id }}"></div>
+  {%- else -%}
     <div class="banner-placeholder-{{ banner_id }}">
       {{ 'hero-apparel-1' | placeholder_svg_tag }}
     </div>
-  {% endif %}
-
-  <div class="banner-overlay-{{ banner_id }}"></div>
+  {%- endif -%}
 
   <div class="banner-content-{{ banner_id }}">
-    {% if section.settings.heading != blank %}
-      <h2 class="banner-heading-{{ banner_id }}">{{ section.settings.heading }}</h2>
-    {% endif %}
 
-    {% if section.settings.subheading != blank %}
+    {%- comment -%} Eyebrow icon / emoji {%- endcomment -%}
+    {%- if section.settings.show_eyebrow_icon and section.settings.eyebrow_icon != blank -%}
+      <span class="banner-eyebrow-{{ banner_id }}" aria-hidden="true">{{ section.settings.eyebrow_icon }}</span>
+    {%- endif -%}
+
+    {%- comment -%} Heading — with optional italic accent word {%- endcomment -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="banner-heading-{{ banner_id }}">
+        {{- section.settings.heading -}}
+        {%- if section.settings.heading_accent != blank -%}
+          <em class="banner-heading-accent-{{ banner_id }}"> {{ section.settings.heading_accent }}</em>
+        {%- endif -%}
+      </h2>
+    {%- endif -%}
+
+    {%- comment -%} Three bullet/tagline lines {%- endcomment -%}
+    {%- if section.settings.bullet_1 != blank or section.settings.bullet_2 != blank or section.settings.bullet_3 != blank -%}
+      <div class="banner-bullets-{{ banner_id }}">
+        {%- if section.settings.bullet_1 != blank -%}
+          <p class="banner-bullet-{{ banner_id }}">{{ section.settings.bullet_1 }}</p>
+        {%- endif -%}
+        {%- if section.settings.bullet_2 != blank -%}
+          <p class="banner-bullet-{{ banner_id }}">{{ section.settings.bullet_2 }}</p>
+        {%- endif -%}
+        {%- if section.settings.bullet_3 != blank -%}
+          <p class="banner-bullet-{{ banner_id }}">{{ section.settings.bullet_3 }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} Decorative divider {%- endcomment -%}
+    {%- if section.settings.show_divider -%}
+      <div class="banner-divider-{{ banner_id }}" aria-hidden="true">
+        <span class="banner-divider-line-{{ banner_id }}"></span>
+        <span class="banner-divider-icon-{{ banner_id }}">{{ section.settings.divider_icon }}</span>
+        <span class="banner-divider-line-{{ banner_id }}"></span>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} Tagline / secondary text {%- endcomment -%}
+    {%- if section.settings.tagline != blank -%}
+      <p class="banner-tagline-{{ banner_id }}">{{ section.settings.tagline }}</p>
+    {%- endif -%}
+
+    {%- comment -%} Legacy subheading {%- endcomment -%}
+    {%- if section.settings.subheading != blank -%}
       <p class="banner-subheading-{{ banner_id }}">{{ section.settings.subheading }}</p>
-    {% endif %}
+    {%- endif -%}
 
-    {% if section.settings.button_text != blank %}
+    {%- comment -%} Button {%- endcomment -%}
+    {%- if section.settings.button_text != blank -%}
       <div class="banner-button-wrapper-{{ banner_id }}">
-        <a
-          href="{{ section.settings.button_link }}"
-          class="banner-button-{{ banner_id }}"
-        >
+        <a href="{{ section.settings.button_link }}" class="banner-button-{{ banner_id }}">
           {{ section.settings.button_text }}
         </a>
       </div>
-    {% endif %}
+    {%- endif -%}
+
   </div>
 </div>
 
@@ -252,12 +363,25 @@
   "settings": [
     {
       "type": "header",
-      "content": "Desktop Settings"
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "section_background_color",
+      "label": "Section background colour",
+      "default": "#FDEEF0",
+      "info": "Used when no background image is set"
     },
     {
       "type": "image_picker",
       "id": "background_image",
-      "label": "Background image"
+      "label": "Background image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_background_image",
+      "label": "Background image (mobile)",
+      "info": "Optional — uses desktop image if not set"
     },
     {
       "type": "range",
@@ -266,37 +390,17 @@
       "max": 900,
       "step": 50,
       "unit": "px",
-      "label": "Banner height",
+      "label": "Min height (no image)",
       "default": 500
     },
     {
       "type": "header",
-      "content": "Mobile Settings"
-    },
-    {
-      "type": "image_picker",
-      "id": "mobile_background_image",
-      "label": "Mobile background image",
-      "info": "Optional - uses desktop image if not set"
-    },
-    {
-      "type": "range",
-      "id": "mobile_height",
-      "min": 300,
-      "max": 700,
-      "step": 50,
-      "unit": "px",
-      "label": "Mobile height",
-      "default": 400
-    },
-    {
-      "type": "header",
-      "content": "Overlay Settings"
+      "content": "Overlay"
     },
     {
       "type": "color",
       "id": "overlay_color",
-      "label": "Overlay color",
+      "label": "Overlay colour",
       "default": "#000000"
     },
     {
@@ -307,7 +411,7 @@
       "step": 5,
       "unit": "%",
       "label": "Overlay opacity",
-      "default": 30
+      "default": 0
     },
     {
       "type": "header",
@@ -319,7 +423,7 @@
       "label": "Text alignment",
       "options": [
         { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
+        { "value": "center", "label": "Centre" },
         { "value": "right", "label": "Right" }
       ],
       "default": "center"
@@ -356,13 +460,54 @@
     },
     {
       "type": "header",
+      "content": "Eyebrow Icon"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_eyebrow_icon",
+      "label": "Show eyebrow icon",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_icon",
+      "label": "Icon (emoji or symbol)",
+      "default": "🤍",
+      "info": "Any emoji or character — e.g. 🤍 ♥ ✦ ★"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon size",
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Icon colour",
+      "default": "#E75480"
+    },
+    {
+      "type": "header",
       "content": "Heading"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Heading text",
-      "default": "Welcome to Our Store"
+      "default": "What We Know Is",
+      "info": "The main heading — the accent word is added below"
+    },
+    {
+      "type": "text",
+      "id": "heading_accent",
+      "label": "Accent word (italic, serif)",
+      "default": "True",
+      "info": "This word is shown in italic serif — leave blank to hide"
     },
     {
       "type": "range",
@@ -372,23 +517,137 @@
       "step": 2,
       "unit": "px",
       "label": "Heading size",
-      "default": 56
+      "default": 42
     },
     {
       "type": "color",
       "id": "heading_color",
-      "label": "Heading color",
-      "default": "#FFFFFF"
+      "label": "Heading colour",
+      "default": "#F6EEF2"
+    },
+    {
+      "type": "color",
+      "id": "heading_accent_color",
+      "label": "Accent word colour",
+      "default": "#D4AF37"
     },
     {
       "type": "header",
-      "content": "Subheading"
+      "content": "Body Lines"
+    },
+    {
+      "type": "text",
+      "id": "bullet_1",
+      "label": "Line 1",
+      "default": "You Deserve to Feel Good."
+    },
+    {
+      "type": "text",
+      "id": "bullet_2",
+      "label": "Line 2",
+      "default": "Your Fantasies are Normal."
+    },
+    {
+      "type": "text",
+      "id": "bullet_3",
+      "label": "Line 3",
+      "default": "Love Yourself. Loudly."
+    },
+    {
+      "type": "range",
+      "id": "bullets_size",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Lines font size",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "bullets_color",
+      "label": "Lines colour",
+      "default": "#F6EEF2"
+    },
+    {
+      "type": "header",
+      "content": "Decorative Divider"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show divider",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "divider_icon",
+      "label": "Divider icon",
+      "default": "∞",
+      "info": "Centre symbol — e.g. ∞ ♡ ✦ ❧"
+    },
+    {
+      "type": "range",
+      "id": "divider_icon_size",
+      "min": 14,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Divider icon size",
+      "default": 22
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider colour",
+      "default": "#D4AF37"
+    },
+    {
+      "type": "header",
+      "content": "Tagline"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline text",
+      "default": "Stop waiting. Start exploring — We craft the essential tools for every breathtaking moment.",
+      "info": "Displayed below the divider in italic"
+    },
+    {
+      "type": "range",
+      "id": "tagline_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Tagline size",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "tagline_color",
+      "label": "Tagline colour",
+      "default": "#C4A5B0"
+    },
+    {
+      "type": "range",
+      "id": "tagline_max_width",
+      "min": 300,
+      "max": 900,
+      "step": 50,
+      "unit": "px",
+      "label": "Tagline max width",
+      "default": 550
+    },
+    {
+      "type": "header",
+      "content": "Subheading (legacy)"
     },
     {
       "type": "textarea",
       "id": "subheading",
       "label": "Subheading text",
-      "default": "Discover our amazing collection"
+      "info": "Optional extra text block below the tagline"
     },
     {
       "type": "range",
@@ -398,13 +657,13 @@
       "step": 2,
       "unit": "px",
       "label": "Subheading size",
-      "default": 20
+      "default": 18
     },
     {
       "type": "color",
       "id": "subheading_color",
-      "label": "Subheading color",
-      "default": "#FFFFFF"
+      "label": "Subheading colour",
+      "default": "#F6EEF2"
     },
     {
       "type": "header",
@@ -413,8 +672,7 @@
     {
       "type": "text",
       "id": "button_text",
-      "label": "Button text",
-      "default": "Shop Now"
+      "label": "Button text"
     },
     {
       "type": "url",
@@ -466,7 +724,7 @@
     {
       "type": "color",
       "id": "button_text_color",
-      "label": "Button text color",
+      "label": "Button text colour",
       "default": "#FFFFFF"
     },
     {

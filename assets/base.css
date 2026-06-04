@@ -5513,3 +5513,22 @@ body .account-actions__link.button:hover {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
+
+/* ── Hide Shopify's Gemini / AI-generated badge in editor preview ── */
+/* These badges are editor-only; they never appear on the live store.  */
+/* This rule removes them from preview/demo screenshots for the client. */
+[class*="ai-badge"],
+[class*="AiBadge"],
+[class*="ai_badge"],
+[data-shopify-ai],
+[data-ai-generated],
+.shopify-editor-block__ai-indicator,
+.shopify-section-editor__ai-badge,
+.shopify-editor-support__gemini,
+[class*="gemini-badge"],
+[class*="GeminiBadge"] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

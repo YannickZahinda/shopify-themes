@@ -75,7 +75,7 @@
   
   .ai-bestsellers-subtitle-{{ ai_gen_id }} {
     font-size: {{ block.settings.subtitle_size }}px;
-    color: #8a5568;
+    color: rgba(246, 238, 242, 0.75);
     margin: 0 auto;
     line-height: 1.6;
     max-width: 600px;
@@ -190,22 +190,24 @@
     display: contents;
   }
   
-  /* Image Wrapper */
+  /* Image Wrapper — equal dimensions for every card */
   .ai-bestsellers-image-wrapper-{{ ai_gen_id }} {
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    background: #160710;
-    border-radius: 16px;
+    background: #f8f4f5;
+    border-radius: 20px;
+    flex-shrink: 0;
   }
 
   .ai-bestsellers-image-{{ ai_gen_id }} {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    object-position: center;
-    padding: {{ block.settings.image_padding }}px;
+    object-fit: cover;
+    object-position: center top;
+    padding: 0;
+    display: block;
   }
   
   /* Premium Badges */
@@ -509,7 +511,9 @@
     }
     
     .ai-bestsellers-image-{{ ai_gen_id }} {
-      padding: 12px;
+      padding: 0;
+      object-fit: cover;
+      object-position: center top;
     }
     
     .ai-bestsellers-badge-{{ ai_gen_id }},

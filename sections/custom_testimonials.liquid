@@ -103,6 +103,14 @@
     background: linear-gradient(135deg, var(--arousique-cream) 0%, var(--arousique-light) 100%);
     position: relative;
     overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .promotional-grid {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
   }
 
   .promotional-grid-wrapper::before {
@@ -158,33 +166,28 @@
     border-radius: 3px;
   }
 
+  /* ── Scroll container: text-align center allows inline-flex centering ── */
   .promo-scroll-container {
-    overflow-x: auto;
+    overflow-x: visible;
     overflow-y: visible;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
     padding-bottom: 20px;
-    cursor: grab;
     position: relative;
     z-index: 2;
+    text-align: center;
+    width: 100%;
   }
 
-  .promo-scroll-container:active { cursor: grabbing; }
-
-  /* Hidden scrollbar */
-  .promo-scroll-container {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  .promo-scroll-container::-webkit-scrollbar { display: none; }
-
+  /* ── Grid: inline-flex responds to parent text-align: center ── */
   .promo-grid {
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: {{ section.settings.card_gap }}px;
-    width: fit-content;
     padding: 0 20px;
+    text-align: left;
+    vertical-align: top;
+    max-width: 100%;
   }
 
   .promo-card {
@@ -196,8 +199,8 @@
     box-shadow: 0 4px 12px rgba(45, 27, 46, 0.04), 0 10px 30px rgba(45, 27, 46, 0.06);
     position: relative;
     overflow: hidden;
-    scroll-snap-align: start;
     flex: 0 0 {{ section.settings.card_width }}px;
+    max-width: 100%;
   }
 
   .promo-card::before {
@@ -323,25 +326,62 @@
     50% { transform: translateX(5px); }
   }
 
+  /* ── Tablet: 2-per-row, still centered ── */
   @media screen and (max-width: 989px) {
-    .promo-card { flex: 0 0 {{ section.settings.card_width_tablet }}px; }
+    .promo-card {
+      flex: 0 0 {{ section.settings.card_width_tablet }}px;
+      max-width: {{ section.settings.card_width_tablet }}px;
+    }
     .promo-section-title { font-size: {{ section.settings.title_size | times: 0.85 | round }}px; }
   }
 
+  /* ── Mobile: single-column horizontal scroll ── */
   @media screen and (max-width: 749px) {
+    .promo-scroll-container {
+      overflow-x: auto;
+      overflow-y: visible;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      cursor: grab;
+    }
+    .promo-scroll-container:active { cursor: grabbing; }
+    .promo-scroll-container::-webkit-scrollbar { display: none; }
+
+    .promo-grid {
+      display: inline-flex;
+      flex-wrap: nowrap;
+      width: max-content;
+      justify-content: flex-start;
+      padding: 0 20px;
+      text-align: left;
+    }
+
     .promo-card {
       flex: 0 0 {{ section.settings.card_width_mobile }}px;
+      max-width: {{ section.settings.card_width_mobile }}px;
       padding: 22px 18px 18px;
+      scroll-snap-align: start;
     }
+
     .promo-section-title    { font-size: {{ section.settings.title_size_mobile }}px; }
     .promo-section-subtitle { font-size: {{ section.settings.subtitle_size_mobile }}px; }
     .promo-review { font-size: 13px; min-height: 80px; }
+    .promo-scroll-hint { display: flex; justify-content: center; }
+  }
+
+  /* ── Desktop: hide scroll hint since all cards are visible ── */
+  @media screen and (min-width: 750px) {
     .promo-scroll-hint { display: none; }
   }
 </style>
 
 <script>
   (function() {
+    /* Drag-scroll only on mobile where horizontal scroll is active */
+    if (window.innerWidth > 749) return;
     const container = document.querySelector('.promo-scroll-container');
     if (!container) return;
     let isScrolling = false, startX, scrollLeft;
@@ -363,7 +403,6 @@
       isScrolling = false;
       container.style.cursor = 'grab';
     });
-    container.style.cursor = 'grab';
   })();
 </script>
 
