@@ -34,8 +34,11 @@
 
     {{ content_for_header }}
     <style>
-  
-  
+  /* Prevent horizontal scrollbar caused by 100vw full-width sections */
+  html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
 </style>
 
     <!-- Google Tag Manager -->

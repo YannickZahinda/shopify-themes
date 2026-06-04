@@ -11,6 +11,8 @@
     background: {{ block.settings.background_color }} !important;
     padding: {{ block.settings.padding_top }}px 20px {{ block.settings.padding_bottom }}px;
     width: 100vw;
+    /* Re-center the 100vw element so it doesn't overflow to the right */
+    margin-left: calc(50% - 50vw);
     position: relative;
   }
 
@@ -106,11 +108,11 @@
     justify-content: center;
     flex-shrink: 0;
     position: relative;
-    /* Inner padding so icon never bleeds to the circle edge */
+    /* overflow:hidden clips the image to the circle reliably */
+    overflow: hidden;
     padding: {{ block.settings.icon_padding }}px;
     box-sizing: border-box;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    /* Soft shadow to lift circles off the background */
     box-shadow: 0 4px 16px rgba(0,0,0,0.12);
   }
 
@@ -126,11 +128,10 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: center center;
     display: block;
-    /* Clip the image into a circle — removes the white square background */
-    border-radius: 50%;
-    /* No blend mode — full natural colors */
+    /* overflow:hidden on wrapper handles circle clipping */
+    border-radius: 0;
   }
 
   /* ── Placeholder (no image uploaded) ── */

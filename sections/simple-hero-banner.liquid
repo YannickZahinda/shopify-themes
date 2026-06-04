@@ -235,18 +235,41 @@
   }
 
   @media screen and (max-width: 749px) {
+    /* Fixed height on the image keeps it in normal flow so the section
+       grows to match it — no reliance on min-height with abs-pos children */
+    .banner-bg-img-{{ banner_id }} {
+      height: 380px;
+      width: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
+
+    /* picture wrapper must also be block so it contributes its height */
+    .banner-section-{{ banner_id }} picture {
+      display: block;
+    }
+
+    /* Ensure section is never shorter than the image */
+    .banner-section-{{ banner_id }} {
+      min-height: 380px;
+    }
+
+    /* Content overlay: vertical padding to keep text away from edges */
+    .banner-content-{{ banner_id }} {
+      padding: 28px 20px;
+      justify-content: center;
+    }
+
+    /* Headings: gentler scale to match desktop hierarchy */
     .banner-heading-{{ banner_id }} {
-      font-size: {{ section.settings.heading_size | times: 0.62 | round }}px;
-      margin-bottom: 14px;
+      font-size: {{ section.settings.heading_size | times: 0.75 | round }}px;
+      margin-bottom: 12px;
     }
     .banner-bullet-{{ banner_id }} {
-      font-size: {{ section.settings.bullets_size | times: 0.88 | round }}px;
+      font-size: {{ section.settings.bullets_size | times: 0.9 | round }}px;
     }
     .banner-tagline-{{ banner_id }} {
-      font-size: {{ section.settings.tagline_size | times: 0.88 | round }}px;
-    }
-    .banner-content-{{ banner_id }} {
-      padding: {{ section.settings.padding_top | times: 0.6 | round }}px 20px {{ section.settings.padding_bottom | times: 0.6 | round }}px;
+      font-size: {{ section.settings.tagline_size | times: 0.9 | round }}px;
     }
     .banner-button-{{ banner_id }} {
       padding: {{ section.settings.button_padding_vertical | times: 0.9 | round }}px {{ section.settings.button_padding_horizontal | times: 0.9 | round }}px;
