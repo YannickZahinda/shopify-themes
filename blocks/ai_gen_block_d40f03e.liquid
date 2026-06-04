@@ -106,17 +106,23 @@
     stroke: var(--cat-color, #7B1E3A);
   }
 
-  /* Uploaded PNG — contained at 68%, centered, with drop shadow for depth */
+  /* Uploaded image — fills the full circle, zoomed + cropped from center */
   .ai-category-nav-icon-{{ ai_gen_id }} {
-    width: 68%;
-    height: 68%;
-    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    transform: none;
     z-index: 1;
-    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.18));
+    transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  }
+
+  /* Subtle zoom-in on hover to enhance the feel */
+  .ai-category-nav-link-{{ ai_gen_id }}:hover .ai-category-nav-icon-{{ ai_gen_id }} {
+    transform: scale(1.08);
   }
 
   /* ── Label ── */

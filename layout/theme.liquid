@@ -120,170 +120,77 @@
     {%- comment -%} Wishlist Drawer JavaScript {%- endcomment -%}
     <script src="{{ 'wishlist-drawer.js' | asset_url }}" defer></script>
 
-    {%- comment -%} Judge.me popup brand styling — click-triggered polling ensures styles apply after Judge.me JS {%- endcomment -%}
+    {%- comment -%} Judge.me popup brand styling — MutationObserver overrides web-component JS re-styles {%- endcomment -%}
     <script>
       (function () {
-        var pollTimer = null;
-        var pollCount = 0;
-
-        /* Broad selector list — catches whatever element Judge.me actually uses */
-        var POPUP_SELECTORS = [
-          '#jdgm-popup',
-          '.jdgm-popup',
-          '.jdgm-rev-form-wrap',
-          '.jdgm-rev-form',
-          '[class*="jdgm"][class*="popup"]:not([class*="overlay"]):not([class*="close"]):not([class*="btn"])',
-          '[id*="jdgm"][id*="popup"]'
-        ].join(', ');
-
-        var OVERLAY_SELECTORS = [
-          '.jdgm-overlay',
-          '[class*="jdgm"][class*="overlay"]',
-          '[id*="jdgm"][id*="overlay"]'
-        ].join(', ');
-
-        function styleElement(el, styles) {
-          Object.keys(styles).forEach(function (k) {
-            el.style.setProperty(k.replace(/([A-Z])/g, '-$1').toLowerCase(), styles[k], 'important');
-          });
-        }
+        var CARD_STYLES = {
+          background: '#ffffff',
+          borderRadius: '20px',
+          boxShadow: '0 24px 80px rgba(26,13,18,0.28)',
+          padding: '40px 36px',
+          maxWidth: '520px',
+          width: '92%',
+          margin: 'auto',
+          border: 'none',
+          position: 'relative'
+        };
+        var OVERLAY_STYLES = {
+          background: 'rgba(26,13,18,0.78)',
+          backdropFilter: 'blur(6px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '20px'
+        };
 
         function applyPopupStyles() {
-          var found = false;
-
-          /* Style any overlay backdrop */
-          document.querySelectorAll(OVERLAY_SELECTORS).forEach(function (el) {
-            styleElement(el, {
-              background: 'rgba(26,13,18,0.80)',
-              backdropFilter: 'blur(6px)',
-              webkitBackdropFilter: 'blur(6px)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '20px'
-            });
-            found = true;
+          // Overlay (full-screen backdrop)
+          var overlays = document.querySelectorAll('.jdgm-overlay, #jdgm-popup-overlay');
+          overlays.forEach(function (el) {
+            Object.assign(el.style, OVERLAY_STYLES);
           });
 
-          /* Style the popup card */
-          document.querySelectorAll(POPUP_SELECTORS).forEach(function (el) {
-            /* Skip if this element is actually a full-screen overlay (large area) */
-            var rect = el.getBoundingClientRect();
-            var isFullscreen = rect.width > window.innerWidth * 0.95 && rect.height > window.innerHeight * 0.95;
-
-            if (isFullscreen) {
-              /* It IS the full-screen overlay — give it a dark backdrop and flex-center children */
-              styleElement(el, {
-                background: 'rgba(26,13,18,0.80)',
-                backdropFilter: 'blur(6px)',
-                webkitBackdropFilter: 'blur(6px)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              });
-
-              /* Find the first significant child to use as the white card */
-              var children = el.children;
-              for (var i = 0; i < children.length; i++) {
-                var child = children[i];
-                var childRect = child.getBoundingClientRect();
-                /* Skip tiny elements (close button, scripts, etc.) */
-                if (childRect.width > 200 && childRect.height > 150) {
-                  styleElement(child, {
-                    background: '#ffffff',
-                    borderRadius: '20px',
-                    boxShadow: '0 24px 80px rgba(26,13,18,0.30)',
-                    padding: '40px 36px',
-                    maxWidth: '520px',
-                    width: '92%',
-                    margin: '0',
-                    border: 'none',
-                    position: 'relative',
-                    color: '#1A0D12',
-                    webkitTextFillColor: '#1A0D12'
-                  });
-                  break;
-                }
-              }
-            } else {
-              /* It's the card itself — style directly */
-              styleElement(el, {
-                background: '#ffffff',
-                borderRadius: '20px',
-                boxShadow: '0 24px 80px rgba(26,13,18,0.30)',
-                padding: '40px 36px',
-                maxWidth: '520px',
-                width: '92%',
-                margin: 'auto',
-                border: 'none',
-                position: 'relative',
-                color: '#1A0D12',
-                webkitTextFillColor: '#1A0D12'
-              });
-            }
-            found = true;
-
-            /* Dark text on all non-star children */
-            el.querySelectorAll('p, h1, h2, h3, h4, h5, label, a').forEach(function (t) {
-              if (!t.closest('i.jdgm-star') && !t.classList.contains('jdgm-star')) {
+          // Card (the white box)
+          var cards = document.querySelectorAll('#jdgm-popup, .jdgm-popup, .jdgm-rev-form-wrap');
+          cards.forEach(function (el) {
+            Object.assign(el.style, CARD_STYLES);
+            // Ensure all direct text children are dark
+            el.querySelectorAll('p, h1, h2, h3, h4, label, span:not(.jdgm-star)').forEach(function (t) {
+              if (!t.classList.contains('jdgm-star') && !t.closest('i.jdgm-star')) {
                 t.style.setProperty('color', '#1A0D12', 'important');
                 t.style.setProperty('-webkit-text-fill-color', '#1A0D12', 'important');
               }
             });
           });
-
-          return found;
         }
 
-        function startPolling() {
-          stopPolling();
-          pollCount = 0;
-          pollTimer = setInterval(function () {
-            applyPopupStyles();
-            pollCount++;
-            if (pollCount > 40) stopPolling(); /* Stop after 4 seconds */
-          }, 100);
-        }
-
-        function stopPolling() {
-          if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
-          pollCount = 0;
-        }
-
-        /* Start polling whenever any Judge.me "write review" trigger is clicked */
-        document.addEventListener('click', function (e) {
-          var trigger = e.target.closest(
-            '.jdgm-write-rev-link, .jdgm-write-rev-btn, [class*="jdgm"][class*="write"], ' +
-            '[class*="jdgm"][class*="rev-btn"], .jdgm-button'
-          );
-          if (trigger) startPolling();
-        }, true);
-
-        /* Also watch for DOM insertions/visibility changes as fallback */
+        // Run immediately and watch for Judge.me injecting the popup
         var observer = new MutationObserver(function (mutations) {
           mutations.forEach(function (m) {
-            var relevant = false;
-            m.addedNodes.forEach(function (n) {
-              if (n.nodeType === 1) {
-                var s = (n.id || '') + ' ' + (n.className || '');
-                if (s.indexOf('jdgm') !== -1) relevant = true;
+            m.addedNodes.forEach(function (node) {
+              if (node.nodeType === 1) {
+                var id = node.id || '';
+                var cls = node.className || '';
+                if (id === 'jdgm-popup' || cls.indexOf('jdgm-popup') !== -1 ||
+                    cls.indexOf('jdgm-overlay') !== -1 || cls.indexOf('jdgm-rev-form-wrap') !== -1) {
+                  setTimeout(applyPopupStyles, 0);
+                }
               }
             });
+            // Also catch attribute changes (Judge.me may toggle visibility via style)
             if (m.type === 'attributes' && m.target) {
-              var s = (m.target.id || '') + ' ' + (m.target.className || '');
-              if (s.indexOf('jdgm') !== -1) relevant = true;
+              var t = m.target;
+              if ((t.id === 'jdgm-popup' || (t.className && t.className.indexOf('jdgm') !== -1))) {
+                setTimeout(applyPopupStyles, 0);
+              }
             }
-            if (relevant) startPolling();
           });
         });
 
         document.addEventListener('DOMContentLoaded', function () {
-          observer.observe(document.body, {
-            childList: true,
-            subtree: true,
-            attributes: true,
-            attributeFilter: ['style', 'class', 'hidden', 'aria-hidden']
-          });
+          observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
+          // In case popup already exists
+          applyPopupStyles();
         });
       })();
     </script>
