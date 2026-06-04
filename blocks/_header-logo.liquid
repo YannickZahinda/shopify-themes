@@ -124,10 +124,13 @@
     object-fit: contain;
     height: var(--header-logo-image-height-mobile);
     width: auto;
+    /* Prevent wide logos from overflowing the center column on mobile */
+    max-width: 160px;
 
     @media screen and (min-width: 750px) {
       height: var(--header-logo-image-height);
       width: auto;
+      max-width: none;
     }
   }
 
