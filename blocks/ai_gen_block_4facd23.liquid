@@ -1,84 +1,197 @@
-{% comment %} AI Generated Banner Block {% endcomment %}
+{% comment %} Arousique Quiz Banner — brand-matched redesign {% endcomment %}
+
+{% assign b = block.id %}
 
 <style>
-  .ai-banner-{{ block.id }} {
+  .quiz-banner-{{ b }} {
     position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
     min-height: {{ block.settings.banner_height }}px;
     display: flex;
-    align-items: {{ block.settings.text_alignment }};
+    align-items: center;
     justify-content: center;
-    text-align: {{ block.settings.text_alignment }};
-    padding: {{ block.settings.padding_top }}px {{ block.settings.padding_horizontal }}px {{ block.settings.padding_bottom }}px;
-    background-image: url({{ block.settings.background_image | img_url: 'master' }});
-    background-size: cover;
-    background-position: center;
+    text-align: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, #7B1E3A 0%, #C4365C 40%, #E75480 70%, #F9B8D4 100%);
   }
 
-  .ai-banner-{{ block.id }}::after {
-    content: '';
+  /* Floating hearts background pattern */
+  .quiz-banner-hearts-{{ b }} {
     position: absolute;
     inset: 0;
-    background-color: {{ block.settings.overlay_color }};
-    opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+    pointer-events: none;
+    overflow: hidden;
   }
 
-  .ai-banner-{{ block.id }} .banner-content {
+  .quiz-banner-hearts-{{ b }} span {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.08);
+    font-size: 40px;
+    line-height: 1;
+    animation: quiz-float-{{ b }} 8s ease-in-out infinite;
+  }
+
+  .quiz-banner-hearts-{{ b }} span:nth-child(1)  { top: 10%; left: 5%;   font-size: 28px; animation-delay: 0s;    animation-duration: 7s; }
+  .quiz-banner-hearts-{{ b }} span:nth-child(2)  { top: 60%; left: 12%;  font-size: 48px; animation-delay: 1.5s;  animation-duration: 9s; }
+  .quiz-banner-hearts-{{ b }} span:nth-child(3)  { top: 20%; left: 22%;  font-size: 20px; animation-delay: 3s;    animation-duration: 6s; }
+  .quiz-banner-hearts-{{ b }} span:nth-child(4)  { top: 75%; left: 35%;  font-size: 36px; animation-delay: 0.8s;  animation-duration: 8s; }
+  .quiz-banner-hearts-{{ b }} span:nth-child(5)  { top: 8%;  left: 55%;  font-size: 24px; animation-delay: 2s;    animation-duration: 7s; }
+  .quiz-banner-hearts-{{ b }} span:nth-child(6)  { top: 50%; left: 68%;  font-size: 44px; animation-delay: 4s;    animation-duration: 10s; }
+  .quiz-banner-hearts-{{ b }} span:nth-child(7)  { top: 80%; left: 78%;  font-size: 22px; animation-delay: 1s;    animation-duration: 6s; }
+  .quiz-banner-hearts-{{ b }} span:nth-child(8)  { top: 30%; left: 88%;  font-size: 38px; animation-delay: 3.5s;  animation-duration: 8s; }
+  .quiz-banner-hearts-{{ b }} span:nth-child(9)  { top: 65%; left: 92%;  font-size: 18px; animation-delay: 2.5s;  animation-duration: 7s; }
+
+  @keyframes quiz-float-{{ b }} {
+    0%, 100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.08; }
+    50%       { transform: translateY(-18px) rotate(8deg) scale(1.1); opacity: 0.14; }
+  }
+
+  /* Gold accent top line */
+  .quiz-banner-{{ b }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+  }
+
+  .quiz-banner-content-{{ b }} {
     position: relative;
-    z-index: 1;
-    max-width: {{ block.settings.content_width }}px;
+    z-index: 2;
+    max-width: 640px;
+    padding: {{ block.settings.padding_top }}px {{ block.settings.padding_horizontal }}px {{ block.settings.padding_bottom }}px;
   }
 
-  .ai-banner-{{ block.id }} .banner-heading {
-    font-size: {{ block.settings.heading_size }}px;
-    color: {{ block.settings.heading_color }};
-    margin-bottom: 10px;
-  }
-
-  .ai-banner-{{ block.id }} .banner-subheading {
-    font-size: {{ block.settings.subheading_size }}px;
-    color: {{ block.settings.subheading_color }};
-    margin-bottom: 20px;
-  }
-
-  .ai-banner-{{ block.id }} .banner-btn {
+  .quiz-banner-badge-{{ b }} {
     display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #D4AF37;
+    background: rgba(212, 175, 55, 0.12);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    padding: 6px 18px;
+    border-radius: 50px;
+    margin-bottom: 22px;
+  }
+
+  .quiz-banner-heading-{{ b }} {
+    font-size: {{ block.settings.heading_size }}px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0 0 14px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .quiz-banner-subheading-{{ b }} {
+    font-size: {{ block.settings.subheading_size }}px;
+    color: rgba(255, 255, 255, 0.88);
+    margin: 0 0 30px;
+    line-height: 1.6;
+  }
+
+  .quiz-banner-btn-{{ b }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-size: {{ block.settings.button_font_size }}px;
+    font-weight: 700;
     padding: {{ block.settings.button_padding_vertical }}px {{ block.settings.button_padding_horizontal }}px;
-    background-color: {{ block.settings.button_background_color }};
-    color: {{ block.settings.button_text_color }};
+    background: #FFFFFF;
+    color: #7B1E3A;
     border-radius: {{ block.settings.button_border_radius }}px;
     text-decoration: none;
-    transition: background-color 0.3s ease;
+    letter-spacing: 0.3px;
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(212, 175, 55, 0);
   }
 
-  .ai-banner-{{ block.id }} .banner-btn:hover {
-    background-color: {{ block.settings.button_hover_background }};
+  .quiz-banner-btn-{{ b }}:hover {
+    background: #D4AF37;
+    color: #FFFFFF;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 0 0 4px rgba(212, 175, 55, 0.25);
+  }
+
+  .quiz-banner-btn-{{ b }} svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  .quiz-banner-btn-{{ b }}:hover svg {
+    transform: translateX(4px);
   }
 
   @media (max-width: 768px) {
-    .ai-banner-{{ block.id }} {
+    .quiz-banner-{{ b }} {
       min-height: {{ block.settings.mobile_banner_height }}px;
-      background-image: url({{ block.settings.mobile_background_image | img_url: 'master' }});
     }
-    .ai-banner-{{ block.id }} .banner-content {
+
+    .quiz-banner-content-{{ b }} {
       max-width: {{ block.settings.mobile_content_width }}%;
+      padding: 40px 24px;
+    }
+
+    .quiz-banner-heading-{{ b }} {
+      font-size: {{ block.settings.heading_size | times: 0.72 | round }}px;
+    }
+
+    .quiz-banner-subheading-{{ b }} {
+      font-size: {{ block.settings.subheading_size | times: 0.9 | round }}px;
+      margin-bottom: 22px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .quiz-banner-content-{{ b }} {
+      max-width: 92%;
+      padding: 36px 20px;
+    }
+
+    .quiz-banner-heading-{{ b }} {
+      font-size: {{ block.settings.heading_size | times: 0.62 | round }}px;
+    }
+
+    .quiz-banner-badge-{{ b }} {
+      font-size: 10px;
+      padding: 5px 14px;
+      margin-bottom: 16px;
     }
   }
 </style>
 
-<div class="ai-banner-{{ block.id }}" {{ block.shopify_attributes }}>
-  <div class="banner-content">
+<div class="quiz-banner-{{ b }}" {{ block.shopify_attributes }}>
+  <!-- Floating hearts -->
+  <div class="quiz-banner-hearts-{{ b }}" aria-hidden="true">
+    <span>♥</span><span>♥</span><span>♥</span><span>♥</span>
+    <span>♥</span><span>♥</span><span>♥</span><span>♥</span><span>♥</span>
+  </div>
+
+  <div class="quiz-banner-content-{{ b }}">
+    <div class="quiz-banner-badge-{{ b }}">✨ Find Your Perfect Match</div>
+
     {% if block.settings.heading != blank %}
-      <h2 class="banner-heading">{{ block.settings.heading }}</h2>
+      <h2 class="quiz-banner-heading-{{ b }}">{{ block.settings.heading }}</h2>
     {% endif %}
 
     {% if block.settings.subheading != blank %}
-      <p class="banner-subheading">{{ block.settings.subheading }}</p>
+      <p class="quiz-banner-subheading-{{ b }}">{{ block.settings.subheading }}</p>
     {% endif %}
 
     {% if block.settings.button_text != blank %}
-      <a href="{{ block.settings.button_link }}" class="banner-btn">
+      <a href="{{ block.settings.button_link }}" class="quiz-banner-btn-{{ b }}">
         {{ block.settings.button_text }}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
       </a>
     {% endif %}
   </div>
@@ -86,35 +199,24 @@
 
 {% schema %}
 {
-  "name": "AI Banner Block",
+  "name": "Quiz Banner",
   "settings": [
-    { "type": "image_picker", "id": "background_image", "label": "Background Image" },
-    { "type": "range", "id": "banner_height", "label": "Banner Height (px)", "min": 50, "max": 800, "step": 10, "default": 200 },
-    { "type": "image_picker", "id": "mobile_background_image", "label": "Mobile Background Image" },
-    { "type": "range", "id": "mobile_banner_height", "min": 50, "max": 800, "step": 10, "default": 200, "label": "Mobile Banner Height" },
-    { "type": "color", "id": "overlay_color", "label": "Overlay Color", "default": "#000000" },
-    { "type": "range", "id": "overlay_opacity", "label": "Overlay Opacity", "min": 0, "max": 100, "step": 5, "default": 0 },
-    { "type": "select", "id": "text_alignment", "label": "Text Alignment", "options": [{"value": "left", "label": "Left"}, {"value": "center", "label": "Center"}, {"value": "right", "label": "Right"}], "default": "center" },
-    { "type": "range", "id": "content_width", "label": "Content Width (px)", "min": 200, "max": 1200, "step": 10, "default": 550 },
-    { "type": "range", "id": "mobile_content_width", "label": "Mobile Content Width (%)", "min": 10, "max": 100, "step": 5, "default": 70 },
-    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 0, "max": 200, "step": 5, "default": 60 },
-    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 0, "max": 200, "step": 5, "default": 60 },
-    { "type": "range", "id": "padding_horizontal", "label": "Padding Horizontal", "min": 0, "max": 200, "step": 5, "default": 30 },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
-    { "type": "range", "id": "heading_size", "label": "Heading Size (px)", "min": 12, "max": 80, "step": 1, "default": 36 },
-    { "type": "color", "id": "heading_color", "label": "Heading Color", "default": "#000000" },
-    { "type": "text", "id": "subheading", "label": "Subheading" },
-    { "type": "range", "id": "subheading_size", "label": "Subheading Size (px)", "min": 10, "max": 40, "step": 1, "default": 14 },
-    { "type": "color", "id": "subheading_color", "label": "Subheading Color", "default": "#000000" },
-    { "type": "text", "id": "button_text", "label": "Button Text" },
+    { "type": "range", "id": "banner_height", "label": "Banner Height (px)", "min": 120, "max": 600, "step": 10, "default": 260 },
+    { "type": "range", "id": "mobile_banner_height", "min": 80, "max": 500, "step": 10, "default": 220, "label": "Mobile Banner Height" },
+    { "type": "range", "id": "mobile_content_width", "label": "Mobile Content Width (%)", "min": 60, "max": 100, "step": 5, "default": 90 },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 20, "max": 120, "step": 5, "default": 60 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 20, "max": 120, "step": 5, "default": 60 },
+    { "type": "range", "id": "padding_horizontal", "label": "Padding Horizontal", "min": 10, "max": 80, "step": 5, "default": 30 },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Need Help Choosing the perfect massager?" },
+    { "type": "range", "id": "heading_size", "label": "Heading Size (px)", "min": 20, "max": 60, "step": 1, "default": 36 },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Take our 30s quiz & find the perfect bedroom addition for you" },
+    { "type": "range", "id": "subheading_size", "label": "Subheading Size (px)", "min": 12, "max": 24, "step": 1, "default": 16 },
+    { "type": "text", "id": "button_text", "label": "Button Text", "default": "Start Quiz" },
     { "type": "url", "id": "button_link", "label": "Button Link" },
-    { "type": "range", "id": "button_font_size", "label": "Button Font Size (px)", "min": 10, "max": 30, "step": 1, "default": 14 },
-    { "type": "range", "id": "button_padding_vertical", "label": "Button Padding Vertical", "min": 0, "max": 50, "step": 1, "default": 10 },
-    { "type": "range", "id": "button_padding_horizontal", "label": "Button Padding Horizontal", "min": 0, "max": 100, "step": 1, "default": 25 },
-    { "type": "color", "id": "button_background_color", "label": "Button Background", "default": "#e7596b" },
-    { "type": "color", "id": "button_hover_background", "label": "Button Hover Background", "default": "#333333" },
-    { "type": "color", "id": "button_text_color", "label": "Button Text Color", "default": "#ffffff" },
-    { "type": "range", "id": "button_border_radius", "label": "Button Border Radius", "min": 0, "max": 100, "step": 1, "default": 50 }
+    { "type": "range", "id": "button_font_size", "label": "Button Font Size (px)", "min": 12, "max": 22, "step": 1, "default": 15 },
+    { "type": "range", "id": "button_padding_vertical", "label": "Button Padding Vertical", "min": 8, "max": 24, "step": 1, "default": 14 },
+    { "type": "range", "id": "button_padding_horizontal", "label": "Button Padding Horizontal", "min": 16, "max": 60, "step": 1, "default": 32 },
+    { "type": "range", "id": "button_border_radius", "label": "Button Border Radius", "min": 0, "max": 50, "step": 1, "default": 50 }
   ]
 }
 {% endschema %}
